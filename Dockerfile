@@ -3,4 +3,4 @@ WORKDIR /app
 ADD package*.json ./
 RUN npm install
 ADD . .
-CMD ts-node-dev --respawn --transpile-only ./src/server.ts,
+CMD  transpile-only ./src/server.ts,
