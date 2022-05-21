@@ -16,7 +16,6 @@
   },
   "include": [
     "src/**/*.ts",
-    "src/middlewares/error.ts"
   ],
   "exclude": [
     "node_modules"
