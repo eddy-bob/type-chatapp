@@ -8,10 +8,21 @@ import database from "./database/database"
 import bodyParser from "body-parser";
 import cors from "cors"
 import colors from 'colors';
+import * as path from "path"
+import socketConnection from "./services/socketConnection"
 
 const app: express.Application = express();
-// set app port
+let http = require("http").Server(app)
+// set up socket and bind it to server
+// set app 
+let io = require("socket.io")(http)
+// pass socket to custom function
+socketConnection(io)
+// serve static files
+app.use(express.static(path.resolve(__dirname, "/public")))
 app.set("port", endpoints.port)
+app.set("enviroment", endpoints.enviroment)
+
 // instantiate colors for use in app
 colors.enable()
 // run database

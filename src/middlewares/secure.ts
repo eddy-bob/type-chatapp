@@ -14,7 +14,7 @@ let userDetails: any;
 // declare fetch details 
 const getUserDetails = async (id: ObjectID, next: NextFunction) => {
        try {
-              userDetails = await repository.findOne({ where: { id: id } });
+              userDetails = await repository.findOne({ where: { id } });
               console.log(userDetails)
        } catch (err) {
               return next(new customError())
