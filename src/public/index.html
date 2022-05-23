@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <form onsubmit="sendMsg(event)">
+      <p id="user"></p>
+      <button>Hit Me</button>
+      <input type="text" onkeyup="getText(this)" id="myInput" required />
+      <button type="button" onclick="disconnect()">disconnect</button>
+    </form>
+
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+
+    <script>
+      var text = "";
+      var user;
+      const socket = io("http://localhost:3000");
+      socket.on("connection", (data) => {
+        user = data;
+        console.log(user);
+        document.getElementById("user").innerHTML = user;
+      });
+
+      function disconnect() {
+        socket.on("logout", (data) => {
+          document.getElementById("user").innerHTML = user;
+        });
+      }
+      function sendMsg(event) {
+        event.preventDefault();
+        text = document.getElementById("myInput").value;
+
+        socket.emit("message", text);
+      }
+      function getText(event) {
+        text = event.value;
+        console.log(text);
+      }
+    </script>
+  </body>
+</html>

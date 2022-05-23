@@ -10,14 +10,21 @@ import cors from "cors"
 import colors from 'colors';
 import * as path from "path"
 import socketConnection from "./services/socketConnection"
-
+import * as http from "http"
 const app: express.Application = express();
-let http = require("http").Server(app)
-// set up socket and bind it to server
-// set app 
-let io = require("socket.io")(http)
+
+var server = http.createServer(app);
+const io = require('socket.io')(server, {
+       cors: {
+              origin: "http://localhost:3000"
+       }
+
+});
+
 // pass socket to custom function
 socketConnection(io)
+// app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200"] }))
+
 // serve static files
 app.use(express.static(path.resolve(__dirname, "/public")))
 app.set("port", endpoints.port)
@@ -32,11 +39,10 @@ app.use(error),
        // compress all the responses  to reduce data consumption
        app.use(compression())
 // add set of security middlewares
-app.use(helmet())
+// app.use(helmet())
 // parser all incoming request and  append data to req.body
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200"] }))
 app.use("/api/v1", useRouter)
 
-export default app
+export { app, server }
