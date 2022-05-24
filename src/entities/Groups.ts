@@ -1,8 +1,10 @@
 import {
-       Column, Entity, ObjectIdColumn, ObjectID, CreateDateColumn, UpdateDateColumn, BaseEntity, ManyToMany, ManyToOne, JoinColumn, OneToOne
+       Column, Entity, ObjectIdColumn, ObjectID, CreateDateColumn, UpdateDateColumn, BaseEntity, ManyToMany, ManyToOne, JoinColumn, OneToOne, OneToMany
 } from "typeorm"
 
 import { User } from "./User";
+import { GroupMessage } from "./GroupMessages";
+
 
 @Entity("group")
 export class Group extends BaseEntity {
@@ -25,8 +27,11 @@ export class Group extends BaseEntity {
        @JoinColumn({ name: "group-owner" })
        owner!: User
 
+       @OneToMany(() => GroupMessage,
+              (groupmessage) => { groupmessage.group }
+       )
 
-
+       messages!: GroupMessage
        @CreateDateColumn()
        created_at!: Date
 
