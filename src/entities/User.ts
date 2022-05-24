@@ -6,6 +6,11 @@ import * as bcrypt from 'bcryptjs';
 
 import endPoint from "../config/endpoints.config"
 import { PrivateMessage } from "./PrivateMessages";
+import { Group } from "./Groups";
+import { FriendRequest } from "./FriendRequest";
+import { Friend } from "./Friend";
+
+
 
 // define enum
 enum UserEnum {
@@ -63,11 +68,33 @@ export class User extends BaseEntity {
        @Column({ nullable: true })
        access_token!: string
 
+
        @OneToMany(() => PrivateMessage,
               (message) => message.sender
 
        )
        messages!: PrivateMessage
+       @OneToMany(() => Friend,
+              (friend) => friend.friend
+
+       )
+       friends!: Friend
+
+       @OneToMany(() => Group,
+              (group) => group.owner
+
+       )
+       groups!: Group
+
+       @OneToMany(() => FriendRequest,
+              (friendRequest) => friendRequest.requestSender
+
+       )
+
+       friendRequests!: FriendRequest
+
+       // @Column({ nullable: true, type: "simple-array", default: [] })
+       // friendList!: string[]
 
        @CreateDateColumn()
        created_at!: Date
