@@ -14,7 +14,7 @@ export class Group extends BaseEntity {
 
        @Column()
        description!: string
-       
+
        @Column()
        photo!: string
 
@@ -22,7 +22,7 @@ export class Group extends BaseEntity {
               (user) => { user.groups }
        )
 
-       @JoinColumn({ name: "owner-owner" })
+       @JoinColumn({ name: "group-owner" })
        owner!: User
 
 
