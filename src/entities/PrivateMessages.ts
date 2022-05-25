@@ -9,7 +9,7 @@ export class PrivateMessage extends BaseEntity {
        @ObjectIdColumn({ generated: true })
        id!: ObjectID;
 
-       @Column()
+       @Column({ type: "varchar" })
        message!: string
        @ManyToOne(() => User,
               (user) => { user.messages }

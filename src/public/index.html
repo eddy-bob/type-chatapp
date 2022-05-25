@@ -28,7 +28,7 @@
 
       function disconnect() {
         socket.on("logout", (data) => {
-          document.getElementById("user").innerHTML = user;
+          document.getElementById("user").innerHTML = data;
         });
       }
       function sendMsg(event) {

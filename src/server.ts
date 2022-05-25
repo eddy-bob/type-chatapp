@@ -1,4 +1,6 @@
 import { app, server as appServer } from "./app"
+import "reflect-metadata";
+
 import { exit } from 'process';
 import { Request, Response, NextFunction } from "express"
 import * as path from "path"

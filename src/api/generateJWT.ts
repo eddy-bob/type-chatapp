@@ -2,7 +2,7 @@ import { sign, SignOptions } from "jsonwebtoken"
 import * as fs from 'fs';
 import * as path from 'path';
 
-export default function generateJWT(payload: string) {
+export default function generateJWT(payload: { id: string }) {
 
        const privateKey = fs.readFileSync(path.join(__dirname, '../private.pem'))
        const signInOptions: SignOptions = {

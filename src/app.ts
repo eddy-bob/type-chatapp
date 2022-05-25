@@ -4,26 +4,28 @@ import endpoints from "./config/endpoints.config"
 import useRouter from "./core/Router";
 import helmet from "helmet";
 import compression from "compression";
-import database from "./database/database"
 import bodyParser from "body-parser";
 import cors from "cors"
 import colors from 'colors';
 import * as path from "path"
+import database from "./database/database"
 import socketConnection from "./services/socketConnection"
 import * as http from "http"
 const app: express.Application = express();
 
 var server = http.createServer(app);
+// instantiate database
+database()
+
 const io = require('socket.io')(server, {
        cors: {
               origin: "http://localhost:3000"
        }
 
 });
-
 // pass socket to custom function
 socketConnection(io)
-// app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200"] }))
+app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200"] }))
 
 // serve static files
 app.use(express.static(path.resolve(__dirname, "/public")))
@@ -32,8 +34,8 @@ app.set("enviroment", endpoints.enviroment)
 
 // instantiate colors for use in app
 colors.enable()
-// run database
-database()
+
+
 app.use(error),
 
        // compress all the responses  to reduce data consumption

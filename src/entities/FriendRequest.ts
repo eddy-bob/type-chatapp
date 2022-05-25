@@ -56,13 +56,6 @@ export class FriendRequest extends BaseEntity {
        requestReciever!: User
 
 
-       @OneToMany(() => Group,
-              (group) => group.owner
-
-       )
-       groups!: Group
-
-
 
        @CreateDateColumn()
        created_at!: Date

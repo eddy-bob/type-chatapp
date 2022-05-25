@@ -1,15 +1,11 @@
-import {
-       Column, Entity, ObjectIdColumn, ObjectID, CreateDateColumn, UpdateDateColumn, BeforeInsert, BaseEntity, OneToOne, OneToMany
-} from "typeorm"
-import { IsEmail, MinLength } from "class-validator";
-import * as bcrypt from 'bcryptjs';
-
+import { geocoder } from '../services/goecoder';
+import * as bcrypt from 'bcrypt';
+import generateJWT from "../api/generateJWT"
+import { NextFunction } from "express"
 import endPoint from "../config/endpoints.config"
-import { PrivateMessage } from "./PrivateMessages";
-import { Group } from "./Groups";
-import { FriendRequest } from "./FriendRequest";
-import { Friend } from "./Friend";
+import * as crypto from "crypto";
 
+// import { Point } from "geoJson"
 
 
 // define enum
@@ -19,96 +15,123 @@ enum UserEnum {
        MODERATOR = "MODERATOR"
 
 }
-@Entity("user")
-export class User extends BaseEntity {
-       @ObjectIdColumn({ generated: true })
-       id!: ObjectID;
+import { Schema, model } from "mongoose"
+const User = new Schema({
 
-       @Column({ type: "varchar" })
-       @MinLength(3)
-       firstName!: string;
 
-       @Column({ type: "varchar" })
-       @MinLength(3)
-       lastName!: string;
 
-       @Column({ select: false })
-       password!: string;
+       firstName: {
+              require: true,
+              type: String
+       },
 
-       @Column({ unique: true })
-       @IsEmail()
-       email!: string;
+       lastName: {
+              require: true,
+              type: String
+       },
 
-       @Column({ type: "boolean", default: false })
-       isLoggedIn!: boolean;
-       @Column({ type: "enum", enum: UserEnum, default: "USER" })
-       role!: string;
-       @Column({ nullable: true })
-       profilePicture!: string;
 
-       @Column({ type: "int", nullable: true })
-       mobile!: number;
 
-       @Column({ type: "int" })
-       zipcode!: number;
+       password: {
+              type: String,
+              select: false,
+              required: [true, "please include a password"],
+       },
+       resetPasswordToken: { type: String, select: false },
+       resetPasswordExpire: { type: Date, select: false },
 
-       @Column({ type: "geometry", nullable: true, name: "user-address-details" })
-       location!: {
-              coordinates: number[]
-              formattedAddress: string
-              street: string
-              city: string
-              streetNumber: number
-              country: string
-              countryCode: string
-              state: string
 
+       email: {
+              require: true,
+              type: String,
+              match: [
+                     // eslint-disable-next-line no-useless-escape
+                     /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                     "please add a valid email",
+              ],
+       },
+
+
+
+       isLoggedIn: { type: Boolean, default: false },
+       role: {
+              require: true,
+              type: String,
+              enum: UserEnum,
+              default: "USER"
+       },
+
+
+       profilePicture: { type: String, defualt: "noProfile.jpg" },
+
+       mobile: { required: [true, "please include a phone"], type: Number },
+       zipcode: { type: Number },
+
+       location: {
+              type: {
+                     type: String,
+                     enum: ['Point'],
+
+              },
+              coordinates: {
+                     type: [Number],
+
+              },
+       },
+
+       formattedAddress: String,
+
+
+       street: String,
+       city: String,
+       streetNumber: Number,
+
+       country: String,
+       countryCode: String,
+       state: String,
+       access_token: String
+
+},
+       { timestamps: true }
+
+
+
+
+);
+User.pre('save', async function (next: NextFunction) {
+       if (this.isModified("zipcode")) {
+              const loc = await geocoder(this.zipcode)
+              this.location = {
+                     type: 'Point',
+                     coordinates: [loc[0].longitude, loc[0].latitude]
+              }
+
+              console.log(loc[0])
+              next()
        }
+       else { next() }
+})
 
-       @Column({ nullable: true })
-       access_token!: string
+User.methods.hashPassword = async function (next: NextFunction) {
+       const saltRounds = endPoint.bycriptHashRound;
+       const hashPassword = await bcrypt.hash(this.password, saltRounds);
+       this.password = hashPassword;
+       return this.password;
+};
+User.methods.comparePassword = async function (oldPassword: string) {
+       return bcrypt.compare(oldPassword, this.password);
+};
+User.methods.genResetPasswordToken = async function () {
+       let hashToken;
+       var token = crypto.randomBytes(20).toString("hex");
+       hashToken = crypto.createHash("sha256").update(token).digest("hex");
 
+       return hashToken;
+};
 
-       @OneToMany(() => PrivateMessage,
-              (message) => message.sender
+User.methods.getToken = async function () {
+       var token = generateJWT({ id: this._id })
+       return token;
+};
 
-       )
-       messages!: PrivateMessage
-       @OneToMany(() => Friend,
-              (friend) => friend.friend
-
-       )
-       friends!: Friend
-
-       @OneToMany(() => Group,
-              (group) => group.owner
-
-       )
-       groups!: Group
-
-       @OneToMany(() => FriendRequest,
-              (friendRequest) => friendRequest.requestSender
-
-       )
-
-       friendRequests!: FriendRequest
-
-       // @Column({ nullable: true, type: "simple-array", default: [] })
-       // friendList!: string[]
-
-       @CreateDateColumn()
-       created_at!: Date
-
-       @UpdateDateColumn()
-       updatedDate!: Date
-
-
-       @BeforeInsert()
-       async beforeInsert() {
-              this.password = await bcrypt.hash(this.password, endPoint.bycriptHashRound);
-              console.log(this.password)
-
-
-       }
-
-}
+module.exports = model("userModel", User);

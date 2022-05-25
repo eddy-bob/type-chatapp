@@ -12,7 +12,8 @@
     "skipLibCheck": true, /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */,
     "experimentalDecorators": true,
-    "allowJs": true
+    "allowJs": true,
+    "emitDecoratorMetadata": true
   },
   "include": [
     "src/**/*.ts",
