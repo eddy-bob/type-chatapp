@@ -98,7 +98,7 @@ const User = new Schema({
 
 
 );
-User.pre('save', async function (next: NextFunction) {
+User.pre('save', async function () {
        if (this.isModified("zipcode")) {
               const loc = await geocoder(this.zipcode)
               this.location = {
@@ -106,10 +106,11 @@ User.pre('save', async function (next: NextFunction) {
                      coordinates: [loc[0].longitude, loc[0].latitude]
               }
 
+
               console.log(loc[0])
-              next()
+              return loc
        }
-       else { next() }
+       else { return }
 })
 
 User.methods.hashPassword = async function (next: NextFunction) {
@@ -134,4 +135,4 @@ User.methods.getToken = async function () {
        return token;
 };
 
-module.exports = model("userModel", User);
+export default model("userModel", User);
