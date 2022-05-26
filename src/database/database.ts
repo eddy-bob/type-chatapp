@@ -2,6 +2,7 @@ import endPoint from "../config/endpoints.config"
 // import { Connection, ConnectionManager, ConnectionOptions, createConnection, getConnectionManager } from 'typeorm';
 // import { User } from "../entities/User"
 import { MongoClient, Db } from "mongodb"
+import mongoose from "mongoose"
 
 const database = async () => {
 
@@ -27,18 +28,19 @@ const database = async () => {
        //                      User
        //               ]
        //        }
-       //        const connection = await createConnection(connectionOptions)
+       // const connection = await createConnection(connectionOptions)
 
-       //        if (connection.isInitialized == true) { console.log(`Successfully connected to database: ${connection.name}`.blue); }
-       //        return connection.getRepository(rep)
-              const client: MongoClient = new MongoClient(endPoint.mongoString);
+       // if (connection.isInitialized == true) { console.log(`Successfully connected to database: ${connection.name}`.blue); }
 
-              await client.connect();
+       // const client: MongoClient = new MongoClient(endPoint.mongoString);
 
-              const db: Db = client.db(endPoint.mongoName);
+       // await client.connect();
+
+       // const db: Db = client.db(endPoint.mongoName);
 
 
-              console.log(`Successfully connected to database: ${db.databaseName}`.blue);
-       
+       const db = mongoose.connect(endPoint.mongoString)
+       console.log(`Successfully connected to database: ${endPoint.mongoName}`.blue);
+
 }
 export default database

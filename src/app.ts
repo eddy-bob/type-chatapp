@@ -14,6 +14,8 @@ import * as http from "http"
 const app: express.Application = express();
 
 var server = http.createServer(app);
+
+
 // instantiate database
 database()
 
@@ -36,15 +38,20 @@ app.set("enviroment", endpoints.enviroment)
 colors.enable()
 
 
-app.use(error),
 
-       // compress all the responses  to reduce data consumption
-       app.use(compression())
+// compress all the responses  to reduce data consumption
+app.use(compression())
 // add set of security middlewares
 // app.use(helmet())
 // parser all incoming request and  append data to req.body
 app.use(express.json())
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use("/api/v1", useRouter)
+// Handle 404 Requests
+app.use("*", (req, res, next) => {
+       error({ message: "Route Not Found", statusCode: 404 }, req, res, next)
+});
+
+app.use(error)
 
 export { app, server }

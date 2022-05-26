@@ -1,7 +1,6 @@
 import { geocoder } from '../services/goecoder';
 import * as bcrypt from 'bcrypt';
 import generateJWT from "../api/generateJWT"
-import { NextFunction } from "express"
 import endPoint from "../config/endpoints.config"
 import * as crypto from "crypto";
 
@@ -16,18 +15,22 @@ enum UserEnum {
 
 }
 import { Schema, model } from "mongoose"
+
 const User = new Schema({
 
 
 
        firstName: {
-              require: true,
-              type: String
+              type: String,
+              trim: true,
+              required: [true, "please include a first name"]
        },
 
        lastName: {
-              require: true,
-              type: String
+              type: String,
+              trim: true,
+              required: [true, "please include a last name"]
+
        },
 
 
@@ -36,14 +39,16 @@ const User = new Schema({
               type: String,
               select: false,
               required: [true, "please include a password"],
+              min: [6, "password can not be less than 6 characters"]
        },
        resetPasswordToken: { type: String, select: false },
        resetPasswordExpire: { type: Date, select: false },
 
 
        email: {
-              require: true,
+              required: [true, "please include an email"],
               type: String,
+              index: { unique: true, dropDups: true },
               match: [
                      // eslint-disable-next-line no-useless-escape
                      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
@@ -55,17 +60,20 @@ const User = new Schema({
 
        isLoggedIn: { type: Boolean, default: false },
        role: {
-              require: true,
+              required: true,
               type: String,
               enum: UserEnum,
               default: "USER"
        },
 
 
-       profilePicture: { type: String, defualt: "noProfile.jpg" },
+       profilePicture: { type: String, default: "noProfile.jpg" },
 
-       mobile: { required: [true, "please include a phone"], type: Number },
-       zipcode: { type: Number },
+       mobile: {
+              type: String,
+              index: { unique: true, dropDups: true }
+       },
+       zipcode: Number,
 
        location: {
               type: {
@@ -78,14 +86,10 @@ const User = new Schema({
 
               },
        },
-
        formattedAddress: String,
-
-
        street: String,
        city: String,
        streetNumber: Number,
-
        country: String,
        countryCode: String,
        state: String,
@@ -98,36 +102,51 @@ const User = new Schema({
 
 
 );
-User.pre('save', async function () {
-       if (this.isModified("zipcode")) {
-              const loc = await geocoder(this.zipcode)
-              this.location = {
-                     type: 'Point',
-                     coordinates: [loc[0].longitude, loc[0].latitude]
+User.pre('save', async function (next) {
+
+       if (!this.isModified("zipcode") && !this.isModified("country")) { return next() } else {
+              const loc = await geocoder([this.zipcode, this.country])
+              if (loc[0]) {
+
+                     this.location = {
+                            type: 'Point',
+                            coordinates: [loc[0].longitude, loc[0].latitude]
+                     }
+
+                     this.formattedAddress = loc[0]?.formattedAddress,
+                            this.countryCode = loc[0]?.countryCode,
+
+                            this.state = loc[0]?.administrativeLevels.level1lon
+
               }
 
 
-              console.log(loc[0])
-              return loc
+
        }
-       else { return }
+
+
+
 })
 
-User.methods.hashPassword = async function (next: NextFunction) {
+
+User.methods.hashPassword = async function () {
        const saltRounds = endPoint.bycriptHashRound;
-       const hashPassword = await bcrypt.hash(this.password, saltRounds);
+       const hashPassword = bcrypt.hashSync(this.password, 10);
        this.password = hashPassword;
        return this.password;
 };
 User.methods.comparePassword = async function (oldPassword: string) {
-       return bcrypt.compare(oldPassword, this.password);
+       return bcrypt.compareSync(oldPassword, this.password);
 };
 User.methods.genResetPasswordToken = async function () {
        let hashToken;
        var token = crypto.randomBytes(20).toString("hex");
        hashToken = crypto.createHash("sha256").update(token).digest("hex");
+       // set expire=y date
+       this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
-       return hashToken;
+       return token;
+
 };
 
 User.methods.getToken = async function () {
@@ -135,4 +154,4 @@ User.methods.getToken = async function () {
        return token;
 };
 
-export default model("userModel", User);
+export default model("user", User);

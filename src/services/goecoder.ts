@@ -1,13 +1,14 @@
-export const geocoder = async (payload: Number) => {
+export const geocoder = async (payload: [number, string]) => {
        const NodeGeocoder = require('node-geocoder');
        const options = {
-              provider: 'Mapquest',
-              apiKey: 'EU7u1m3DSST6cDeun4unv2bGQSWinRQM', // Google Premier
+              provider: 'google',
+              apiKey: 'AIzaSyB2D1wwqCbO6dxeYKIBeEisPgiR0QEhpgc', // Google Premier
               formatter: null // 'gpx', 'string', ...
        };
 
        const geocoder = NodeGeocoder(options);
-
-       const res = await geocoder.geocode(payload);
+       const res = await geocoder.geocode(
+              ["460103", "Nigeria"]
+       );
        return res
 }
