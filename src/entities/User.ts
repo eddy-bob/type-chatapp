@@ -143,9 +143,9 @@ User.methods.genResetPasswordToken = async function () {
        var token = crypto.randomBytes(20).toString("hex");
        hashToken = crypto.createHash("sha256").update(token).digest("hex");
        // set expire=y date
-       this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
-
-       return token;
+       this.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000);
+       this.resetPasswordToken = hashToken
+       return hashToken;
 
 };
 

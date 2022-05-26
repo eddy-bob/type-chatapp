@@ -2,26 +2,22 @@ import { Request, Response, NextFunction } from "express"
 import { customError } from "../helpers/customError"
 import { validateToken } from "../api/validateToken"
 
-import { User } from "../entities/User"
-import {
-       getMongoRepository,
-       ObjectID
-} from "typeorm"
-// instantiate repository
-const repository = getMongoRepository(User);
+import User from "../entities/User"
+import { ObjectId } from "mongoose"
+
 
 let userDetails: any;
 // declare fetch details 
-const getUserDetails = async (id: ObjectID, next: NextFunction) => {
+const getUserDetails = async (id: ObjectId, next: NextFunction) => {
        try {
-              userDetails = await repository.findOne({ where: { id } });
+              userDetails = await User.findById(id)
               console.log(userDetails)
-       } catch (err) {
-              return next(new customError())
+       } catch (err: any) {
+              return next(new customError(err.message, 500))
        }
 }
 // extend the request interface to make provision for non natice parameters
-interface Authorize extends Request { userId: ObjectID, userRole: string }
+interface Authorize extends Request { userId: ObjectId, userRole: string, userData: any }
 // declare middleware
 const secure = (req: Authorize, res: Response, next: NextFunction) => {
        // make sure req.headers.authorization doesnt come undefined
@@ -40,6 +36,7 @@ const secure = (req: Authorize, res: Response, next: NextFunction) => {
                             req.userId = response.id;
                      // store user role in the userRole variable
                      req.userRole = userDetails.role
+                     req.userData = userDetails
 
                      next()
               }

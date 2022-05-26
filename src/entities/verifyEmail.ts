@@ -17,7 +17,7 @@ verifyEmail.methods.getToken = async function () {
   var token = crypto.randomBytes(20).toString("hex");
   hashEmailToken = crypto.createHash("sha256").update(token).digest("hex");
   this.verificationToken = hashEmailToken;
-  this.expires = Date.now() + 10 * 60 * 1000;
+  this.expires = new Date(Date.now() + 10 * 60 * 1000);
   return hashEmailToken;
 };
 export default model("verifyEmailSchema", verifyEmail);
