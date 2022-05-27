@@ -52,12 +52,13 @@ const auth = {
               if (!email || !password) { return next(new customError("Email and Password required", 400)) }
               const user = await User.findOne({ email }).select("+password")
               if (!user) { return next(new customError("User not a registered User", 400)) }
-              const isAuth = user.comparePassword();
+              const isAuth = await user.comparePassword(password);
+              console.log(isAuth)
               if (isAuth == true) {
                      const authUser = await User.findByIdAndUpdate(
                             user._id, { $set: { isLoggedIn: true } }, { runValidators: true, new: true }
                      )
-                     const token = authUser.generateJWT()
+                     const token = authUser.getToken()
                      successResponse(res, authUser, 201, "Signin successful", token)
               } else { return next(new customError("Sorry Email and Password did not work", 401)) }
 

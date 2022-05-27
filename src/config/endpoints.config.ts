@@ -7,7 +7,8 @@ interface Endpoint {
        contactAddress: string,
        mailPassword: string,
        mailUsername: string,
-       mailerHost: string
+       mailerHost: string,
+       passPhrase: string
 }
 // instantiate enviroment variables
 config({ path: ".env" })
@@ -26,6 +27,7 @@ const endpoint: Endpoint = {
        contactAddress: process.env.MY_CONTACT_ADDRESS as string,
        mailPassword: process.env.MAIL_PASSWORD as string,
        mailUsername: process.env.MAIL_USERNAME as string,
-       mailerHost: process.env.NODE_MAILER_HOST as string
+       mailerHost: process.env.NODE_MAILER_HOST as string,
+       passPhrase: process.env.PASSPHRASE as string
 }
 export default endpoint

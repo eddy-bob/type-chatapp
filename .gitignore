@@ -1,5 +1,5 @@
 .env
-private.pem
-public.pem
+private.key
+public.key
 node_modules
 Dockerfile
