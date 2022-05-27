@@ -53,12 +53,13 @@ const auth = {
               const user = await User.findOne({ email }).select("+password")
               if (!user) { return next(new customError("User not a registered User", 400)) }
               const isAuth = await user.comparePassword(password);
-              console.log(isAuth)
+
               if (isAuth == true) {
                      const authUser = await User.findByIdAndUpdate(
                             user._id, { $set: { isLoggedIn: true } }, { runValidators: true, new: true }
                      )
-                     const token = authUser.getToken()
+                     const token = await authUser.getToken()
+
                      successResponse(res, authUser, 201, "Signin successful", token)
               } else { return next(new customError("Sorry Email and Password did not work", 401)) }
 
@@ -75,7 +76,7 @@ const auth = {
               if (!user) {
                      return next(new customError("Email not linked to any registered user", 404));
               }
-              const resetToken = await user.genResetPasswordToken();
+              const resetToken = await user.gentoken();
               if (!resetToken) {
                      return next(
                             new customError(
@@ -106,9 +107,9 @@ const auth = {
        forgotPasswordComplete: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
 
 
-              const { resetPasswordToken } = req.params;
+              const { token } = req.params;
               var { newPassword, confirmPassword } = req.body;
-              const userToken = await User.findOne({ resetPasswordToken, $gte: { resetPasswordExpire: new Date(Date.now()) } });
+              const userToken = await User.findOne({ token, $gte: { resetPasswordExpire: new Date(Date.now()) } });
 
               if (!userToken) {
                      return next(new customError("token does not exist or expired"));
@@ -124,7 +125,7 @@ const auth = {
               }
 
               const newUser = await User
-                     .findOne({ resetPasswordToken })
+                     .findOne({ token })
                      .select("+password");
               newUser.password = newPassword;
               await newUser.hashPassword(newPassword);
@@ -136,7 +137,7 @@ const auth = {
 
               interface customRes extends Request { userId: ObjectId, userData: any }
               var { newPassword, oldPassword } = req.body;
-              const { userId, userData } = req as customRes;
+              const { userId } = req as customRes;
               if (!newPassword || !oldPassword) {
                      return next(
                             new customError("please include new password and old password", 400)
@@ -205,12 +206,12 @@ const auth = {
 
 
        checkVerifyEmailToken: async (req: Request, res: Response, next: NextFunction) => {
-              const { verifyEmailToken } = req.params;
+              const { token } = req.params;
               interface customRes extends Request { userId: ObjectId, userData: any }
               const { userId } = req as customRes
               const isToken = await verifyEmail.findOne({
                      user: userId,
-                     verificationToken: verifyEmailToken,
+                     verificationToken: token,
                      $lte: { expires: new Date(Date.now()) }
               });
 

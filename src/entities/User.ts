@@ -93,7 +93,7 @@ const User = new Schema({
        country: String,
        countryCode: String,
        state: String,
-       access_token: String
+
 
 },
        { timestamps: true }
@@ -151,7 +151,6 @@ User.methods.genResetPasswordToken = async function () {
 
 User.methods.getToken = async function () {
        var token = generateJWT({ id: this._id })
-       this.access_token = token
        return token;
 };
 
