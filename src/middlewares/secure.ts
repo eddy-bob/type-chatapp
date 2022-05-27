@@ -6,20 +6,14 @@ import User from "../entities/User"
 import { ObjectId } from "mongoose"
 
 
-let userDetails: any;
-// declare fetch details 
-const getUserDetails = async (id: ObjectId, next: NextFunction) => {
-       try {
-              userDetails = await User.findById(id)
-              console.log(userDetails)
-       } catch (err: any) {
-              return next(new customError(err.message, 500))
-       }
-}
 // extend the request interface to make provision for non natice parameters
 interface Authorize extends Request { userId: ObjectId, userRole: string, userData: any }
+interface MoreRes extends Response { id: ObjectId, role: string }
+// declare fetch details 
+
+
 // declare middleware
-const secure = (req: Authorize, res: Response, next: NextFunction) => {
+const secure = async (req: Authorize, res: Response, next: NextFunction) => {
        // make sure req.headers.authorization doesnt come undefined
        if (typeof req.headers.authorization === "undefined") { req.headers.authorization = "" }
 
@@ -31,13 +25,13 @@ const secure = (req: Authorize, res: Response, next: NextFunction) => {
               const response = validateToken(token)
               if (response.id) {
                      // fetch user details from database
-                     getUserDetails(response.id, next),
-                            // store user id in the userId variable
-                            req.userId = response.id;
+
+
+                     const userDetails = await User.findById(response.id)
+                     req.userId = response.id;
                      // store user role in the userRole variable
                      req.userRole = userDetails.role
                      req.userData = userDetails
-
                      next()
               }
               else {

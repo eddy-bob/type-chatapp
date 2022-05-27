@@ -10,7 +10,7 @@ export const validateToken = (token: string): any => {
               algorithms: ['RS256'],
        }
        // fetch public key
-       const publicKey = fs.readFileSync(path.resolve(__dirname, '../../public.key'));
-       const response = verify(token, { key: publicKey, passphrase: endpoint.passPhrase }, verifyOptions)
+       const publicKey = fs.readFileSync(path.resolve(__dirname, '../../public.key'), { encoding: "utf8" });
+       const response = verify(token, publicKey, verifyOptions)
        return response
 }

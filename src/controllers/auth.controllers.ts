@@ -27,7 +27,6 @@ const auth = {
                             const verifyEmailToken = await emailVerification.getToken();
                             await emailVerification.save();
                             const url = `${req.protocol}://www.nodechatpapp.com/checkVerifyEmailToken/${verifyEmailToken}`;
-                            console.log(url)
                             // send welcome mail
                             const mail = await nodemailer(req.body.email, endPoint.contactAddress, "Welcome to type-chat-app. You are getting this mail because you have just recently opened an account with us.please disregard if you didnt.Cclick on the link below to verify your account", "Account creation", url)
 
@@ -166,9 +165,12 @@ const auth = {
        },
        updatePassword: async (req: Request, res: Response, next: NextFunction): Promise<void> => {
               try {
+
                      interface customRes extends Request { userId: ObjectId, userData: any }
                      var { newPassword, oldPassword } = req.body;
                      const { userId } = req as customRes;
+
+
                      if (!newPassword || !oldPassword) {
                             return next(
                                    new customError("please include new password and old password", 400)
@@ -177,10 +179,11 @@ const auth = {
 
                      const user = await User.findById(userId).select("+password");
 
+
                      const oldIsInDatabase = await user.comparePassword(oldPassword);
 
                      // check if old password is equal to  password in database
-                     if (!oldIsInDatabase) {
+                     if (oldIsInDatabase == false) {
                             return next(
                                    new customError(
 
@@ -200,7 +203,7 @@ const auth = {
                      }
                      // hash password
 
-                     const updateNewPassword = await User
+                     const updateUser = await User
                             .findByIdAndUpdate(
                                    userId,
                                    {
@@ -209,12 +212,12 @@ const auth = {
                                           }
                                    },
                                    { new: true, runValidator: true }
-                            )
+                            ).select("password")
 
-                     await updateNewPassword.hashPassword(newPassword);
-                     await updateNewPassword.save();
-                     const updateUser = await User.findById(userId);
-                     successResponse(res, updateUser, 200, "password updated successfully");
+                     await updateUser.hashPassword();
+                     await updateUser.save();
+                     const cleanUser = await User.findById(updateUser._id)
+                     successResponse(res, cleanUser, 200, "password updated successfully");
               } catch (err: any) {
 
                      return next(
@@ -237,7 +240,6 @@ const auth = {
                      const verifyEmailToken = await emailVerification.getToken();
                      await emailVerification.save();
                      const url = `${req.protocol}://www.nodechatpapp.com/checkVerifyEmailToken/${verifyEmailToken}`;
-                     console.log(url)
                      // send welcome mail
                      const mail = await nodemailer(req.body.email, endPoint.contactAddress, "Welcome to type-chat-app. You are getting this mail because you have just recently opened an account with us.please disregard if you didnt.Cclick on the link below to verify your account", "Account creation", url)
 

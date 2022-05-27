@@ -146,7 +146,6 @@ User.methods.genResetPasswordToken = async function () {
        // set expire=y date
        this.resetPasswordExpire = new Date(Date.now() + 10 * 60 * 1000);
        this.resetPasswordToken = hashToken
-       console.log(this.email, this.resetPasswordToken, this.resetPasswordExpire)
        return hashToken;
 
 };
@@ -156,4 +155,4 @@ User.methods.getToken = async function () {
        return token;
 };
 
-export default model("userM", User);
+export default model("userMod", User);
