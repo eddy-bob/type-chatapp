@@ -238,6 +238,7 @@ const auth = {
                      });
                      // get verify email token
                      const verifyEmailToken = await emailVerification.getToken();
+                     console.log(verifyEmailToken)
                      await emailVerification.save();
                      const url = `${req.protocol}://www.nodechatpapp.com/checkVerifyEmailToken/${verifyEmailToken}`;
                      // send welcome mail
@@ -261,7 +262,7 @@ const auth = {
               try {
                      const { token } = req.params;
                      interface customRes extends Request { userId: ObjectId, userData: any }
-                     const { userId } = req as customRes
+                     const { userId, userData } = req as customRes
                      const isToken = await verifyEmail.findOne({
                             user: userId,
                             verificationToken: token,
@@ -271,9 +272,16 @@ const auth = {
                      if (!isToken) {
                             return next(new customError("link expired or does not exist", 404));
                      }
+                     if (userData.role && userData.role.verified == false) {
+                            await User.findByIdAndUpdate(userId, { $set: { verified: true } })
 
 
-                     successResponse(res, undefined, 200, "Email verified successfully");
+                            successResponse(res, undefined, 200, "Email verified successfully");
+                     }
+                     else {
+                            successResponse(res, undefined, 200, "Email Already Verified ");
+                     }
+
               } catch (err: any) {
 
                      return next(
