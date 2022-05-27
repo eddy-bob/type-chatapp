@@ -26,13 +26,12 @@ const sendMail = async (reciever: string, sender: string, message: string, subje
     },
 
     function (err: any, result: any) {
-      console.log("this is the result from nodemailer" + result);
-      console.log("this is the err from nodemailer" + err);
+
       error = err;
       if (err) {
         error = err;
       } else {
-        console.log(result);
+
       }
     }
   );
