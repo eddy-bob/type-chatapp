@@ -67,8 +67,11 @@ const User = new Schema({
        },
 
 
-       profilePicture: { type: String, default: "noProfile.jpg" },
-
+       photo: {
+              name: String,
+              MimeType: String,
+              size: String
+       },
        mobile: {
               type: String,
               index: { unique: true, dropDups: true }

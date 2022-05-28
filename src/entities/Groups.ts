@@ -1,43 +1,38 @@
-import {
-       Column, Entity, ObjectIdColumn, ObjectID, CreateDateColumn, UpdateDateColumn, BaseEntity, ManyToMany, ManyToOne, JoinColumn, OneToOne, OneToMany
-} from "typeorm"
+import { ObjectId } from "mongodb";
 
-import { User } from "./User";
-import { GroupMessage } from "./GroupMessages";
+const { Schema, model } = require("mongoose");
+const Group = new Schema(
+       {
+              admin: {
+                     type: Schema.ObjectId,
+                     ref: "User",
+                     required: [true, "please provide a group creato"],
+              },
 
+              name: {
+                     type: String,
+                     trim: true,
+                     required: [true, "please include a group name"]
+              },
 
-@Entity("group")
-export class Group extends BaseEntity {
-       @ObjectIdColumn({ generated: true })
-       id!: ObjectID;
+              description: {
+                     type: String,
+                     trim: true,
+                     required: [true, "please include a group description"],
+                     max: [40, "description can have more than 40 characters"],
+                     min: [15, "description can have less than 15 characters"]
 
-       @Column({ unique: true })
-       name!: string
+              },
+              photo: {
+                     name: String,
+                     MimeType: String,
+                     size: String
+              },
 
-       @Column()
-       description!: string
+              moderator: [{ type: Schema.ObjectId, ref: "User" }]
 
-       @Column()
-       photo!: string
+       },
+       { timestamps: true }
+);
 
-       @ManyToOne(() => User,
-              (user) => { user.groups }
-       )
-
-       @JoinColumn({ name: "group-owner" })
-       owner!: User
-
-       @OneToMany(() => GroupMessage,
-              (groupmessage) => { groupmessage.group }
-       )
-
-       messages!: GroupMessage
-       @CreateDateColumn()
-       created_at!: Date
-
-       @UpdateDateColumn()
-       updatedDate!: Date
-
-
-
-}
+export default model("Group", Group);

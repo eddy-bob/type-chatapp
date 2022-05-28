@@ -1,39 +1,29 @@
-import {
-       Column, Entity, ObjectIdColumn, ObjectID, CreateDateColumn, UpdateDateColumn, BaseEntity, ManyToMany, ManyToOne, JoinColumn
-} from "typeorm"
+import { ObjectId } from "mongodb";
 
-import { User } from "./User";
-import { Group } from "./Groups";
-
-
-@Entity("group-message")
-export class GroupMessage extends BaseEntity {
-       @ObjectIdColumn({ generated: true })
-       id!: ObjectID;
-
-
-       @ManyToOne(() => Group,
-              (group) => { group.messages }
-       )
-
-       @JoinColumn({ name: "group" })
-       group!: Group
+const { Schema, model } = require("mongoose");
+const Group = new Schema(
+       {
+              group: {
+                     type: Schema.ObjectId,
+                     ref: "Group",
+                     required: [true, "please provide a group "],
+              },
+              sender: {
+                     type: Schema.ObjectId,
+                     ref: "User",
+                     required: [true, "please provide a sender"],
+              },
 
 
-       @ManyToOne(() => User
-       )
-       @JoinColumn({ name: "messsage-sender" })
-       sender!: User
+              message: {
+                     type: String,
+                     trim: true,
+                     required: [true, "please include a group message"],
 
 
-       @Column()
-       message!: string
-       @CreateDateColumn()
-       created_at!: Date
+              },
+       },
+       { timestamps: true }
+);
 
-       @UpdateDateColumn()
-       updatedDate!: Date
-
-
-
-}
+export default model("Group", Group);

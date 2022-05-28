@@ -1,32 +1,28 @@
-import {
-       Column, Entity, ObjectIdColumn, ObjectID, CreateDateColumn, UpdateDateColumn, BaseEntity, ManyToMany, ManyToOne, JoinColumn
-} from "typeorm"
 
-import { User } from "./User";
+const { Schema, model } = require("mongoose");
+const PrivateChat = new Schema(
+       {
 
-@Entity("private-message")
-export class PrivateMessage extends BaseEntity {
-       @ObjectIdColumn({ generated: true })
-       id!: ObjectID;
+              sender: {
+                     type: Schema.ObjectId,
+                     ref: "User",
+                     required: [true, "please provide a sender"],
+              },
 
-       @Column({ type: "varchar" })
-       message!: string
-       @ManyToOne(() => User,
-              (user) => { user.messages }
-       )
-
-       @JoinColumn({ name: "messsage-sender" })
-       sender!: User
-
-       @JoinColumn({ name: "messsage-reciever" })
-       reciever!: User
-
-       @CreateDateColumn()
-       created_at!: Date
-
-       @UpdateDateColumn()
-       updatedDate!: Date
+              reciever: {
+                     type: Schema.ObjectId,
+                     ref: "User",
+                     required: [true, "please provide a reciever"],
+              },
+              message: {
+                     type: String,
+                     trim: true,
+                     required: [true, "please include a  message"],
 
 
+              },
+       },
+       { timestamps: true }
+);
 
-}
+export default model("PrivateChat", PrivateChat);
