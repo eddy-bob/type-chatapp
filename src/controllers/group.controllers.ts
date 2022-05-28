@@ -8,11 +8,12 @@ const appGroup = {
 
        createGroup: async (req: Request, res: Response, next: NextFunction) => {
               interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
+              const { name, description } = req.body
 
               const { userId } = req as customRes;
               try {
-
-                     const newGroup = await group.create({ $set: { ...req.body, admin: userId, members: [userId] } })
+                     console.log(name)
+                     const newGroup = await group.create({ name, description, admin: userId, members: [userId] })
 
                      await newGroup.save()
                      successResponse(res, newGroup, 200, "Group created successfully")
@@ -38,7 +39,7 @@ const appGroup = {
                      const isGroup = await group.findById(groupId)
                      if (!isGroup) { return next(new customError("Group doesnt exist or disabled by admin", 404)) }
 
-                     if (userRole === "ADMIN" || isGroup.admin === userId || isGroup.moderators.includes(userId)) {
+                     if (userRole === "ADMIN" || isGroup.admin.toString() === userId || isGroup.moderators.includes(userId)) {
                             const newGroup = await group.findByIdAndUpdate(groupId,
                                    {
                                           $set:
@@ -74,9 +75,11 @@ const appGroup = {
               try {
 
                      const isGroup = await group.findById(groupId)
+
+
                      if (!isGroup) { return next(new customError("Group doesnt exist or disabled by admin", 404)) }
 
-                     if (userRole === "ADMIN" || isGroup.admin === userId) {
+                     if (userRole === "ADMIN" || isGroup.admin.toString() === userId) {
                             await group.findByIdAndDelete(groupId)
                             successResponse(res, undefined, 200, "Group deleted successfully")
                      }

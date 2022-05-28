@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+
 
 const { Schema, model } = require("mongoose");
 const Group = new Schema(
@@ -6,12 +6,13 @@ const Group = new Schema(
               admin: {
                      type: Schema.ObjectId,
                      ref: "User",
-                     required: [true, "please provide a group creator"],
+
               },
 
               name: {
                      type: String,
                      trim: true,
+                     unique: true,
                      required: [true, "please include a group name"]
               },
 
@@ -36,4 +37,4 @@ const Group = new Schema(
        { timestamps: true }
 );
 
-export default model("Group", Group);
+export default model("GroupSchema", Group);

@@ -60,7 +60,7 @@ const groupChat = {
                      if (isMember == true || userRole === "ADMIN") {
 
 
-                            if (userRole === "ADMIN" || isGroup.admin === userId || isGroup.moderators.includes(userId) || isChat.sender === userId) {
+                            if (userRole === "ADMIN" || isGroup.admin.toString() === userId || isGroup.moderators.includes(userId) || isChat.sender === userId) {
                                    await groupMessage.findByIdAndDelete(chatId)
                             }
                             else {
