@@ -5,9 +5,9 @@ import secure from "../middlewares/secure"
 import authorize from "../middlewares/authorize"
 
 user.use(secure)
-userRouter.get("/users", authorize, user.getUsers)
+userRouter.get("/users", authorize("ADMIN"), user.getUsers)
 userRouter.get("/user-profile/:id", user.getUser)
-userRouter.delete("/delete-all", authorize, user.deleteUsers)
+userRouter.delete("/delete-all", authorize("ADMIN"), user.deleteUsers)
 userRouter.delete("/delete-account", user.deleteUser)
 userRouter.put("/update-user", user.updateUser)
 
