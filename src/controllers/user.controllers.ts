@@ -2,6 +2,7 @@ import { Response, Request, NextFunction } from "express"
 import successResponse from "../helpers/success.response"
 import { customError } from "../helpers/customError"
 import User from "../entities/User"
+import { ObjectId } from "mongoose"
 
 const user = {
 
@@ -71,14 +72,22 @@ const user = {
 
               try {
 
+                     interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
+
+                     const { userId, userRole, } = req as customRes;
 
                      const { id } = req.params;
+                     if (id === userId.toString() || userRole === "ADMIN") {
 
-                     const user = await User.findByIdAndDelete(id);
-                     if (user) {
-                            successResponse(res, undefined, 204, "user deleted Successfully")
-                     }
-                     else { return next(new customError("User not found or disabled", 404)) }
+
+                            const authUser = await User.findByIdAndDelete(id);
+                            if (authUser) {
+                                   successResponse(res, undefined, 204, "user deleted Successfully")
+                            }
+                            else { return next(new customError("User not found or disabled", 404)) }
+
+                     } else { return next(new customError("You are unauthorized to delete this account", 403)) }
+
               } catch (err: any) {
 
                      return next(
