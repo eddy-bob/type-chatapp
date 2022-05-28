@@ -11,7 +11,7 @@ const GroupMessage = new Schema(
               sender: {
                      type: Schema.ObjectId,
                      ref: "User",
-                     required: [true, "please provide a sender"],
+                     
               },
 
 
