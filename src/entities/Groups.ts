@@ -6,7 +6,7 @@ const Group = new Schema(
               admin: {
                      type: Schema.ObjectId,
                      ref: "User",
-                     required: [true, "please provide a group creato"],
+                     required: [true, "please provide a group creator"],
               },
 
               name: {
@@ -24,12 +24,13 @@ const Group = new Schema(
 
               },
               photo: {
-                     name: String,
+                     name: { type: String, default: "noimage.jpg" },
                      MimeType: String,
                      size: String
               },
 
-              moderator: [{ type: Schema.ObjectId, ref: "User" }]
+              moderators: [{ type: Schema.ObjectId, ref: "User" }],
+              members: [{ type: Schema.ObjectId, ref: "User" }]
 
        },
        { timestamps: true }

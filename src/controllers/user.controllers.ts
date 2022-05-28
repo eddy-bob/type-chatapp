@@ -35,7 +35,7 @@ const user = {
 
                      const allUsers = await User.deleteMany({});
 
-                     successResponse(res, undefined, 204, "All Users Deleted Successfully")
+                     successResponse(res, undefined, 200, "All Users Deleted Successfully")
               } catch (err: any) {
 
                      return next(
@@ -82,7 +82,7 @@ const user = {
 
                             const authUser = await User.findByIdAndDelete(id);
                             if (authUser) {
-                                   successResponse(res, undefined, 204, "user deleted Successfully")
+                                   successResponse(res, undefined, 200, "user deleted Successfully")
                             }
                             else { return next(new customError("User not found or disabled", 404)) }
 

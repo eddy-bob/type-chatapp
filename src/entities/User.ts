@@ -68,7 +68,7 @@ const User = new Schema({
 
 
        photo: {
-              name: String,
+              name: { type: String, default: "noimage.jpg" },
               MimeType: String,
               size: String
        },

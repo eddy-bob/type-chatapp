@@ -1,7 +1,7 @@
 import { ObjectId } from "mongodb";
 
 const { Schema, model } = require("mongoose");
-const Group = new Schema(
+const GroupMessage = new Schema(
        {
               group: {
                      type: Schema.ObjectId,
@@ -22,8 +22,10 @@ const Group = new Schema(
 
 
               },
+              hideFrom: [{ type: Schema.ObjectId, ref: "User" }]
+
        },
        { timestamps: true }
 );
 
-export default model("Group", Group);
+export default model("GroupMessages", GroupMessage);
