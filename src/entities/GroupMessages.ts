@@ -6,12 +6,11 @@ const GroupMessage = new Schema(
               group: {
                      type: Schema.ObjectId,
                      ref: "Group",
-                     required: [true, "please provide a group "],
               },
               sender: {
                      type: Schema.ObjectId,
                      ref: "User",
-                     
+
               },
 
 
@@ -22,6 +21,7 @@ const GroupMessage = new Schema(
 
 
               },
+              status: { type: String, enum: ["READ,DELIEVERD"], default: "DELIEVERD" },
               hideFrom: [{ type: Schema.ObjectId, ref: "User" }]
 
        },

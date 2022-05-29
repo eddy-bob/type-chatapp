@@ -6,6 +6,9 @@ groupRouter.use(secure)
 groupRouter.post("/create", group.createGroup)
 groupRouter.delete("/delete/:groupId", group.deleteGroup)
 groupRouter.put("/update/:groupId", group.updateGroup)
+groupRouter.put("/join/:groupId", group.joinGroup)
+groupRouter.put("/leave/:groupId", group.leaveGroup)
+
 groupRouter.get("/fetch-groups", group.getGroups)
 groupRouter.get("/get-group/:groupId", group.getGroup)
 
