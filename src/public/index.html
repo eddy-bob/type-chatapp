@@ -37,7 +37,6 @@
             id="name"
             placeholder="name"
             style="padding: 10px"
-            required
           />
           <div id="body" style="min-height: 200px; height: auto"></div>
           <div style="display: flex">
@@ -46,7 +45,6 @@
               id="myInput"
               placeholder="input"
               style="width: 100%"
-              required
             />
 
             <button
@@ -74,15 +72,25 @@
       var text = "";
       var connected = [];
       var user;
-
-      const socket = io("http://localhost:3000");
-
+      const token =
+        "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTEzY2JhOGIwZmFlYmIwMDE3MzM2MCIsImlhdCI6MTY1Mzk0MDgwNSwiZXhwIjoxNjUzOTQ4MDA1fQ.MrStZiD8kinwTgHCYPEgKgkfdsROrP7mcJMk2YVzERU3VSQfbbMpq2eEWEANyX-_Sp2Ac2lHwZQR4jH6p-bK8KnX8CQPl1goip2o0wIpoq4YAj9j3YH-9ZpFDthzfhfSyeRx2uwAz80yUlvBP1xGYXyCil84XaqWWDL_CyyYb3OyjyLAN7Yjj6o68ltF0WvkfwbjP1CPoUe4TXPrN8Ogn4PIpBMpZpnMpDEvrFswri1NZzhRouVxbKhAyo_QFnlEf1JV6iCoKaz6GvjH7rBynpIyhKfPtip7hgw1ea2GOrfyF4S_p9ECEIBevJi-uth0AXgdNOoGUAPPc3d00J-k-g";
+      const socket = io("http://localhost:3000", {
+        extraHeaders: {
+          Authorization: token,
+        },
+      });
+      if (token === "") {
+        socket.emit("forceDisconnect");
+      }
+      socket.on("noAuthDisconect", (data) => {
+        console.log(data);
+      });
       socket.on("welcome", (data) => {
         let b = document.createElement("div");
         b.innerHTML = `<h3>${data.name}</h3>
-              <p>${data.message}</p>
-              <p>${data.time}</p>
-      `;
+                        <p>${data.message}</p>
+                        <p>${data.time}</p>
+                `;
         document.getElementById("body").appendChild(b);
         socket.emit("newJoin", { name: "eddy" });
       });
@@ -90,21 +98,25 @@
       socket.on("newJoin", (data) => {
         let newJoin = document.createElement("div");
         newJoin.innerHTML = `<p>${data.name} joined the chat</p>
-        <p>${data.time}</p>`;
+                  <p>${data.time}</p>`;
         document.getElementById("body").appendChild(newJoin);
       });
 
       function sendMsg(event) {
         event.preventDefault();
-        console.log(event.target.name.value);
-        socket.emit("message", {
-          name: event.target.name.value,
-          message: event.target.myInput.value,
+        socket.emit("joinGroup", { groupId: event.target.myInput.value });
+        socket.on("joinGroupSuccess", (data) => {
+          console.log(data);
         });
+        socket.on("groupError", (data) => {
+          console.log(data);
+        });
+        // console.log(event.target.name.value);
+        // socket.emit("message", {
+        //  name: event.target.name.value,
+        //   message: event.target.myInput.value,
+        // });
       }
-      socket.on("joinGroup", (data) => {
-        console.log("group", data);
-      });
 
       socket.on("groupJoin", (data) => {
         console.log("group", data);
@@ -112,21 +124,24 @@
       socket.on("leaveGroup", (data) => {
         console.log("group", data);
       });
+      socket.on("leaveGroupSuccess", (data) => {
+        console.log("group leave", data);
+      });
       socket.on("groupLeave", (data) => {
-        console.log("group", data);
+        console.log("group Leave", data);
       });
       socket.on("message", (data) => {
         console.log(data);
         let newM = document.createElement("div");
         newM.innerHTML = `<p>${data.name} </p>
-              <p>${data.message} </p>
-              `;
+                        <p>${data.message} </p>
+                        `;
         document.getElementById("body").appendChild(newM);
       });
       socket.on("left", (data) => {
         let newJoin = document.createElement("div");
         newJoin.innerHTML = `<h2>${data.name} left the chat</h2>
-        <p>${data.time}</p>`;
+                  <p>${data.time}</p>`;
         document.getElementById("body").appendChild(newJoin);
       });
     </script>

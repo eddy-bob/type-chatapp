@@ -1,5 +1,6 @@
 import { Router } from "express"
-import group from "../controllers/group.controllers"
+import groupFunc from "../controllers/group.controllers"
+const group = groupFunc()
 const groupRouter = Router();
 import secure from "../middlewares/secure"
 groupRouter.use(secure)
