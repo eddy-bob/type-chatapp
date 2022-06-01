@@ -4,44 +4,45 @@ import { customError } from "../helpers/customError"
 import groupMessage from "../entities/GroupMessages"
 import Group from "../entities/Groups"
 import { ObjectId } from "mongoose"
+import { format } from "../utils/formatMessage"
 
 const groupChat = {
 
-       addChat: async (req: Request, res: Response, next: NextFunction) => {
-              interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
+       addChat: async (socket: any, data: any, userId: ObjectId, userData: any, io: any, userFullName: string) => {
 
-              const { userId, userRole } = req as customRes;
-              const { groupId } = req.params
               try {
-                     const isGroup = await Group.findById(groupId)
-                     if (!isGroup) { return next(new customError("Group doesnt exist or disabled by admin", 404)) }
+                     const isGroup = await Group.findById(data.groupId)
+                     if (!isGroup) {
+                            return socket.emit("groupChatError",
+                                   { message: "Group does not exist or disabled by admin", statusCode: 404 })
+                     }
                      const isMember = isGroup.members.includes(userId)
-                     if (isMember == true || userRole === "ADMIN") {
+                     if (isMember == true || userData.role === "ADMIN") {
 
                             const newChat = await groupMessage.create({
-                                   $set: {
-                                          group: groupId as unknown as ObjectId,
-                                          sender: userId,
-                                          message: req.body.message
-                                   }
+
+                                   group: data.groupId as unknown as ObjectId,
+                                   sender: userId,
+                                   message: data.message
+
                             })
 
                             await newChat.save()
-                            successResponse(res, newChat, 200, "New group chat created successfully")
+
+
+                            io.in(isGroup.name).emit("newGroupMessage", format(userFullName, data.message))
 
 
                      }
-                     else { return next(new customError("You must belong to this group to be able to chat in it")) }
+                     else {
+                            return socket.emit("groupChatError",
+                                   { message: "You are not a member of this group", statusCode: 401 })
+                     }
 
 
               } catch (err: any) {
-
-                     return next(
-                            new customError(
-
-                                   err.message, 500
-                            )
-                     );
+                     socket.emit("groupChatError",
+                            { message: err.message, statusCode: 500 })
               }
        },
 

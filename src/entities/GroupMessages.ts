@@ -1,5 +1,10 @@
 import { ObjectId } from "mongodb";
+// define enum
+enum ChatEnum {
+       DELIVERED = "DELIVERED",
+       READ = "READ"
 
+}
 const { Schema, model } = require("mongoose");
 const GroupMessage = new Schema(
        {
@@ -21,11 +26,11 @@ const GroupMessage = new Schema(
 
 
               },
-              status: { type: String, enum: ["READ,DELIEVERD"], default: "DELIEVERD" },
+              status: { type: String, enum:ChatEnum, default: "DELIVERED" },
               hideFrom: [{ type: Schema.ObjectId, ref: "User" }]
 
        },
        { timestamps: true }
 );
 
-export default model("GroupMessages", GroupMessage);
+export default model("GroupChats", GroupMessage);

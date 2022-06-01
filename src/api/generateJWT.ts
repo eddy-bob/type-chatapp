@@ -11,7 +11,7 @@ export default function generateJWT(payload: { id: string }) {
               // signature
 
               algorithm: 'RS256',
-              expiresIn: '2h'
+              expiresIn: '5d'
        };
        const signed = sign(payload, { key: privateKey, passphrase: endpoint.passPhrase }, signInOptions);
        return signed

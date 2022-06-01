@@ -183,8 +183,8 @@ const groupFunc = () => {
                             if (updatedGroup) {
 
                                    socket.join(isGroup.name)
-                                   socket.emit("joinGroupSuccess", { message: "Welcome to " + isGroup.name, statusCode: 200 })
-                                   socket.broadcast.to(isGroup.name).emit("groupJoin", format(`${userData.firstName} ${userData.lastName}`, "joined group"))
+                                   socket.emit("joinGroupSuccess", format(isGroup.name + "Bot", "Welcome to " + isGroup.name))
+                                   socket.in(isGroup.name).emit("groupJoin", format(`${userData.firstName} ${userData.lastName}`, "joined group"))
 
                             }
 
