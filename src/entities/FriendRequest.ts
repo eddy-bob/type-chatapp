@@ -5,14 +5,15 @@ const FriendRequest = new Schema(
        {
 
 
-              owner: {
+              reciever: {
                      type: Schema.ObjectId,
                      ref: "User",
-                     required: [true, "please provide a friend owner"],
-              }, PendingFriend: {
+                     required: [true, "please provide a friend request reciever"],
+              },
+              PendingFriend: {
                      type: Schema.ObjectId,
                      ref: "User",
-                     required: [true, "please provide a friend"],
+                     required: [true, "please provide a friend request sender"],
               },
 
 

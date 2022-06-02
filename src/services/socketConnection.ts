@@ -6,6 +6,7 @@ import { validateToken } from "../api/validateToken"
 import { ObjectId } from "mongoose"
 import groupChat from "../controllers/groupChat.controllers"
 import Group from "../entities/Groups"
+import privateChat from "../controllers/privateChat.controllers"
 const socketCon = {
 
        socketConnection: (io: any) => {
@@ -35,7 +36,6 @@ const socketCon = {
                             if (!response.id) {
                                    socket.emit("noAuthDisconect", { statusCode: 401, message: "Unauthorized" })
                             } else {
-                                   console.log("connected")
                                    // rejoin all groups
                                    const groups = await Group.find({ members: { $in: [userId] } })
                                    if (groups[0]) {
@@ -54,19 +54,16 @@ const socketCon = {
                                    // send welcome message to the user that just  the group chat
 
 
-                                   socket.on("message", (data: any) => {
+                                   socket.on("privateMessage", (data: any) => {
+                                          privateChat.addChat(socket, data, userId, io, userFullName)
                                           // send a notification to the other users that a new message has just been recieved
-                                          socket.broadcast.emit("newMessage", "A new message recieved")
+
                                           // send the new message all the users 
-                                          io.emit("message", format(userFullName, data.message))
+                                          // io.emit("message", format(userFullName, data.message))
                                    })
                                    // send a notification to all users that a user started typing
-                                   socket.on("typing", (data: any) => {
-                                          socket.broadcast.emit("typing", {
-                                                 name: data.name,
-                                                 message: "typing..."
-                                          })
-                                   })
+                                   // socket.on("typing", (data: any) => {
+                                   //        io.to(data.socketId).emit("typing",format({name:userFullName,id:socket.id},"typing....."))
 
 
                                    socket.on("joinGroup", (data: any) => {

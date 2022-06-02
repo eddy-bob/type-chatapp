@@ -26,8 +26,8 @@ const GroupMessage = new Schema(
 
 
               },
-              status: { type: String, enum:ChatEnum, default: "DELIVERED" },
-              hideFrom: [{ type: Schema.ObjectId, ref: "User" }]
+              status: { type: String, enum: ChatEnum, default: "DELIVERED" },
+              hideFrom: { type: [Schema.ObjectId], ref: "User" }
 
        },
        { timestamps: true }

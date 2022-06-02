@@ -69,6 +69,9 @@
     <script src="http://localhost:3000/socket.io/socket.io.js"></script>
 
     <script>
+      d = new Date();
+      datetext = d.toTimeString();
+      datetext = datetext.split(" ")[0];
       var text = "";
       var connected = [];
       var user;
@@ -103,15 +106,26 @@
 
       function sendMsg(event) {
         event.preventDefault();
+        let newM = document.createElement("div");
+        newM.innerHTML = `<h4>you </h4>
+                        <p>${event.target.myInput.value} </p>
+                        <p>${datetext} </p>
+
+                        `;
+        document.getElementById("body").appendChild(newM);
+        socket.emit("privateMessage", {
+          socketId: event.target.name.value,
+          message: event.target.myInput.value,
+        });
         // console.log(event.target.name.value);
         // socket.emit("message", {
         // socket.emit("joinGroup", { groupId: event.target.myInput.value });
         //  name: event.target.name.value,
         //   message: event.target.myInput.value,
-        socket.emit("groupMessage", {
-          message: event.target.myInput.value,
-          groupId: "6293e257c097a3cf89a82afe",
-        });
+        // socket.emit("groupMessage", {
+        //   message: event.target.myInput.value,
+        //   groupId: "6293e257c097a3cf89a82afe",
+        // });
 
         // });
       }
@@ -132,6 +146,16 @@
 
       socket.on("groupLeave", (data) => {
         console.log("group Leave", data);
+      });
+      socket.on("newMessage", (data) => {
+        console.log(data);
+        let newM = document.createElement("div");
+        newM.innerHTML = `<h4>${data.name.name} </h4>
+                        <p>${data.message} </p>
+                        <p>${data.time} </p>
+
+                        `;
+        document.getElementById("body").appendChild(newM);
       });
       socket.on("newGroupMessage", (data) => {
         console.log(data);

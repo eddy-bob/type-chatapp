@@ -177,7 +177,7 @@ const groupFunc = () => {
                             }
 
                             const updatedGroup = await group.findByIdAndUpdate(data.groupId,
-                                   { members: [...isGroup.members, userId] },
+                                   { $push: { members: userId } },
                                    { new: true, runValidators: true })
 
                             if (updatedGroup) {

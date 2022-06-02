@@ -48,7 +48,7 @@ const groupChat = {
 
        deleteChat: async (req: Request, res: Response, next: NextFunction) => {
               interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
-              const { chatId, groupId } = req.params;
+              const { chatId, groupId } = req.query;
               const { userId, userRole } = req as customRes;
               try {
 
@@ -61,13 +61,13 @@ const groupChat = {
                      if (isMember == true || userRole === "ADMIN") {
 
 
-                            if (userRole === "ADMIN" || isGroup.admin.toString() === userId || isGroup.moderators.includes(userId) || isChat.sender === userId) {
+                            if (userRole === "ADMIN" || isGroup.admin.toString() === userId || isGroup.moderators.includes(userId) || isChat.sender.toString() === userId) {
                                    await groupMessage.findByIdAndDelete(chatId)
                             }
                             else {
                                    await groupMessage.findByIdAndUpdate(chatId,
 
-                                          { $set: { hideFrom: [...isChat.hideFrom, userId] } })
+                                          { $set: { $push: { hideFrom: userId } } })
 
                             }
 
@@ -94,8 +94,8 @@ const groupChat = {
 
        getChats: async (req: Request, res: Response, next: NextFunction) => {
               interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
-              const { groupId, userRole } = req.params;
-              const { userId } = req as customRes
+              const { groupId } = req.params;
+              const { userId, userRole } = req as customRes
 
               try {
 
@@ -105,7 +105,7 @@ const groupChat = {
                      const isMember = isGroup.members.includes(userId)
                      if (isMember == true || userRole === "ADMIN") {
 
-                            const groupChats = await groupMessage.find({})
+                            const groupChats = await groupMessage.find({ _id: groupId, hideFrom: { $nin: [userId] } })
                             successResponse(res, groupChats, 200, "chats fetched successfully")
 
                      }

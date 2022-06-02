@@ -21,6 +21,8 @@ const PrivateChat = new Schema(
 
 
               },
+              hideFrom: { type: Schema.ObjectId, ref: "User" }
+
        },
        { timestamps: true }
 );

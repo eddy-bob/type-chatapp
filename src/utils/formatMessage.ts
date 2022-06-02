@@ -1,5 +1,5 @@
 import moment from "moment"
-export const format = (name?: string, message?: string) => {
+export const format = (name?: any, message?: string) => {
        return {
               name,
               message,

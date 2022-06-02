@@ -1,4 +1,4 @@
-import { ObjectId } from "mongodb";
+
 
 const { Schema, model } = require("mongoose");
 const Friend = new Schema(
@@ -14,6 +14,7 @@ const Friend = new Schema(
                      ref: "User",
                      required: [true, "please provide a friend"],
               },
+              blocked: { type: Boolean, default: false }
 
 
        },
