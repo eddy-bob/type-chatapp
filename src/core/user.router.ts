@@ -4,7 +4,7 @@ const userRouter = Router();
 import secure from "../middlewares/secure"
 import authorize from "../middlewares/authorize"
 
-userRouter.use(secure)
+userRouter.use(secure as any)
 userRouter.get("/users", authorize("ADMIN"), user.getUsers)
 userRouter.get("/user-profile/:id", user.getUser)
 userRouter.delete("/delete-all", authorize("ADMIN"), user.deleteUsers)

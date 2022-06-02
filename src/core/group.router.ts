@@ -3,7 +3,7 @@ import groupFunc from "../controllers/group.controllers"
 const group = groupFunc()
 const groupRouter = Router();
 import secure from "../middlewares/secure"
-groupRouter.use(secure)
+groupRouter.use(secure as any)
 groupRouter.post("/create", group.createGroup)
 groupRouter.delete("/delete/:groupId", group.deleteGroup)
 groupRouter.put("/update/:groupId", group.updateGroup)
