@@ -1,5 +1,6 @@
-.env
-private.key
-public.key
 node_modules
 Dockerfile
+private.key
+public.key
+.env
+.dockerignore
