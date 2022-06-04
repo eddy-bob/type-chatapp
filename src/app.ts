@@ -30,7 +30,6 @@ const io = require('socket.io')(server, {
 socketCon.socketConnection(io)
 
 app.set('socketio', io);//here you export my socket.io to a global       
-
 app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200"] }))
 
 // serve static files

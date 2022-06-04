@@ -4,7 +4,7 @@ const groupChatRouter = Router();
 import secure from "../middlewares/secure"
 groupChatRouter.use(secure as any)
 groupChatRouter.delete("/delete", groupChat.deleteChat)
-groupChatRouter.get("/update/:groupId", groupChat.getChats)
+groupChatRouter.get("/:groupId", groupChat.getChats)
 
 
 

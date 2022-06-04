@@ -34,7 +34,7 @@ const groupFunc = () => {
               updateGroup: async (req: Request, res: Response, next: NextFunction) => {
                      interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
                      const { groupId } = req.params;
-                     const { members, name, description, moderators } = req.body
+                     const {name, description} = req.body
                      const { userId, userRole } = req as customRes;
                      try {
 
@@ -73,7 +73,7 @@ const groupFunc = () => {
               deleteGroup: async (req: Request, res: Response, next: NextFunction) => {
                      interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
                      const { groupId } = req.params;
-                     const io = req.app.get('socketio');
+
 
                      const { userId, userRole, userData } = req as customRes;
                      try {
