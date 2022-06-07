@@ -7,6 +7,7 @@ import { ObjectId } from "mongoose"
 import groupChat from "../controllers/groupChat.controllers"
 import Group from "../entities/Groups"
 import privateChat from "../controllers/privateChat.controllers"
+import { group } from "console"
 const socketCon = {
 
        socketConnection: (io: any) => {
@@ -81,6 +82,13 @@ const socketCon = {
                                           groupChat.addChat(socket, data, userId, userData, io, userFullName)
 
                                    })
+                                   socket.on("groupForward", (data: any[]) => {
+                                          groupChat.forwardMessage(data, socket, userId, userData, userFullName, io)
+                                   })
+                                   socket.on("privateForward",
+                                          socket.on("groupForward", (data: any[]) => {
+                                                 privateChat.forwardMessage(data, socket, userId, userData, userFullName, io)
+                                          }))
                                    socket.on("disconnect", () => {
                                           console.log("disconnected")
                                           io.emit("left", format(userFullName, "went offline"))

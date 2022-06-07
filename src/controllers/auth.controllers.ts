@@ -26,7 +26,7 @@ const auth = {
                             // get verify email token
                             const verifyEmailToken = await emailVerification.getToken();
                             await emailVerification.save();
-                            const url = `${req.protocol}://www.nodechatpapp.com/checkVerifyEmailToken/${verifyEmailToken}`;
+                            const url = `${req.protocol}://${req.baseUrl}/checkVerifyEmailToken/${verifyEmailToken}`;
                             // send welcome mail
                             const mail = await nodemailer(req.body.email, endPoint.contactAddress, "Welcome to type-chat-app. You are getting this mail because you have just recently opened an account with us.please disregard if you didnt.Cclick on the link below to verify your account", "Account creation", url)
 
@@ -101,7 +101,7 @@ const auth = {
 
                      const subject = "forgot password";
                      const message = `you requested a reset password.click on the link below to reset password .`;
-                     const url = `https://www.typechatapp.com/reset-password/${resetToken}`;
+                     const url = `https://${req.baseUrl}/reset-password/${resetToken}`;
                      const err = nodemailer(
                             email,
                             endPoint.contactAddress,
@@ -240,7 +240,7 @@ const auth = {
                      const verifyEmailToken = await emailVerification.getToken();
                      console.log(verifyEmailToken)
                      await emailVerification.save();
-                     const url = `${req.protocol}://www.nodechatpapp.com/checkVerifyEmailToken/${verifyEmailToken}`;
+                     const url = `${req.protocol}://${req.baseUrl}/checkVerifyEmailToken/${verifyEmailToken}`;
                      // send welcome mail
                      const mail = await nodemailer(req.body.email, endPoint.contactAddress, "Welcome to type-chat-app. You are getting this mail because you have just recently opened an account with us.please disregard if you didnt.Cclick on the link below to verify your account", "Account creation", url)
 
@@ -266,7 +266,7 @@ const auth = {
                      const isToken = await verifyEmail.findOne({
                             user: userId,
                             verificationToken: token,
-                            $lte: { expires: new Date(Date.now()) }
+                            $gte: { expires: new Date(Date.now()) }
                      });
 
                      if (!isToken) {

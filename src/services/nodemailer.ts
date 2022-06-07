@@ -1,7 +1,7 @@
 import * as nodemailer from "nodemailer"
 import endpoint from "../config/endpoints.config";
 
-const sendMail = async (reciever: string, sender: string, message: string, subject: any, url?: string) => {
+const sendMail = async (reciever: string, sender: string, message: string, subject: any, url?: string, buttonMessage?: string) => {
   var error;
   const transporter = await nodemailer.createTransport({
     port: 465,
@@ -21,7 +21,7 @@ const sendMail = async (reciever: string, sender: string, message: string, subje
       subject: subject,
 
       html: `<p>${message}</p>
-      <a href=${url}> Verify Email Here</a> 
+      <a href=${url}>${buttonMessage || 'verifyEmail'}</a> 
       `,
     },
 

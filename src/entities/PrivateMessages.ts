@@ -1,5 +1,11 @@
 
 const { Schema, model } = require("mongoose");
+// define enum
+enum ChatEnum {
+       DELIVERED = "DELIVERED",
+       READ = "READ"
+
+}
 const PrivateChat = new Schema(
        {
 
@@ -21,7 +27,14 @@ const PrivateChat = new Schema(
 
 
               },
-              hideFrom: { type: Schema.ObjectId, ref: "User" }
+              attatchment: {
+                     type: [String]
+
+              },
+              forwarded: { type: Boolean, default: false },
+              hideFrom: { type: Schema.ObjectId, ref: "User" },
+              status: { type: String, enum: ChatEnum, default: "DELIVERED" },
+
 
        },
        { timestamps: true }

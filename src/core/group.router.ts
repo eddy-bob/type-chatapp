@@ -9,7 +9,8 @@ groupRouter.delete("/delete/:groupId", group.deleteGroup)
 groupRouter.put("/update/:groupId", group.updateGroup)
 groupRouter.get("/fetch-groups", group.getGroups)
 groupRouter.get("/get-group/:groupId", group.getGroup)
-
+groupRouter.post("/send-invite/:groupId", group.sendGroupInvite)
+groupRouter.get("/verify-invite/:inviteToken", group.verifyGroupInvite)
 
 
 

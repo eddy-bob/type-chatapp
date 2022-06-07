@@ -3,11 +3,60 @@ import successResponse from "../helpers/success.response"
 import { customError } from "../helpers/customError"
 import groupMessage from "../entities/GroupMessages"
 import Group from "../entities/Groups"
+import User from "../entities/User"
 import { ObjectId } from "mongoose"
 import { format } from "../utils/formatMessage"
+import privateChat from "../entities/PrivateMessages"
+import friend from "../entities/Friend"
 
 const groupChat = {
+       forwardMessage: async (data: any, socket: any, userId: ObjectId, userData: any, userFullName: string, io: any) => {
 
+              try {
+
+                     const isMessage = await groupMessage.findOne(data.messageId)
+                     if (!isMessage) {
+                            return socket.emit("forwardfail", { statusCode: 400, message: `message to forward doesnt exist or deleted` })
+                     }
+                     data.recipients.forEach(async (recipient: { clientId: string, id: string }) => {
+                            const isGroup = await Group.findOne({ _id: recipient.id, members: { $in: [userId] } })
+                            const isUser = await User.findById(recipient.id)
+                            if (isGroup) {
+                                   const isSent = await groupMessage.create({
+                                          owner: userId, message: isMessage.message,
+                                          group: recipient, forwarded: true
+                                   })
+                                   if (isSent) {
+                                          io.in(isGroup.name).emit("newGroupMessage", format(userFullName, isMessage.message))
+                                   }
+                                   else { return socket.emit("forwardfail", { statusCode: 500, message: `group message forward to ${isGroup.name} failed` }) }
+
+                            }
+                            else if (isUser) {
+                                   const isFriend = await friend.findOne({ owner: recipient.id, friend: userId, blocked: false })
+                                   if (!isFriend) {
+                                          return socket.emit("forwardfail", {
+                                                 statusCode: 401, message:
+                                                        `private message forward to isUser.firstName} ${isUser.lastName} failed because you are not friends with the requested user`
+                                          })
+                                   }
+
+                                   const sent = await privateChat.create({ sender: userId, reciever: recipient.id, message: isMessage.message, forwarded: true })
+
+                                   if (sent) { io.to(recipient.clientId).emit("newMessage", format({ name: userFullName, id: socket.id }, isGroup.message)) }
+
+                                   else { return socket.emit("forwardfail", { statusCode: 500, message: `private message forward to ${isUser.firstName} ${isUser.lastName} failed` }) }
+                            }
+
+                     })
+              }
+
+              catch (err: any) {
+
+                     return socket.emit("forwardFail",
+                            { message: err.message, statusCode: 500 })
+              }
+       },
        addChat: async (socket: any, data: any, userId: ObjectId, userData: any, io: any, userFullName: string) => {
 
               try {

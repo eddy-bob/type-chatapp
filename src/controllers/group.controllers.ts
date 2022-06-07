@@ -4,6 +4,9 @@ import { customError } from "../helpers/customError"
 import group from "../entities/Groups"
 import { ObjectId } from "mongoose"
 import { format } from "../utils/formatMessage"
+import groupInvite from "../entities/groupInvite"
+import endPoint from "../config/endpoints.config"
+import nodemailer from "../services/nodemailer"
 
 const groupFunc = () => {
        return {
@@ -34,7 +37,7 @@ const groupFunc = () => {
               updateGroup: async (req: Request, res: Response, next: NextFunction) => {
                      interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
                      const { groupId } = req.params;
-                     const {name, description} = req.body
+                     const { name, description } = req.body
                      const { userId, userRole } = req as customRes;
                      try {
 
@@ -114,8 +117,9 @@ const groupFunc = () => {
 
               getGroup: async (req: Request, res: Response, next: NextFunction) => {
                      interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
-                     const { groupId } = req.params;
+
                      const { userId, userRole } = req as customRes;
+                     const { groupId } = req.params;
                      try {
 
                             const isGroup = await group.findById(groupId)
@@ -160,8 +164,68 @@ const groupFunc = () => {
                             );
                      }
               },
-              joinGroup: async (data: any, socket: any, userId: ObjectId, userData: any) => {
+              
+              sendGroupInvite: async (req: Request, res: Response, next: NextFunction) => {
+                     const { groupId } = req.params;
+                     const { invitees } = req.body
+                     interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
 
+                     const { userData, userId, userRole } = req as customRes;
+                     try {
+                            const isGroup = await group.findById(groupId)
+                            const isModerator = await group.findOne({ _id: groupId, moderators: { $in: [userId] } })
+                            if (!isGroup) { return next(new customError("Group doesnt exist or disabled by admin")) }
+                            if (isModerator || isGroup.admin.toString() === userId) {
+                                   invitees.forEach(async (invite: string) => {
+                                          const singleInvite = await groupInvite.create({ group: groupId, invitee: invite });
+                                          const inviteToken = await singleInvite.getToken()
+                                          const url = `${req.protocol}://${req.baseUrl}/checkVerifyEmailToken/${inviteToken}`;
+
+                                          // send welcome mail
+                                          await nodemailer(userData.email, endPoint.contactAddress, `You have been invited to collaborate in the ${isGroup.name}
+                                   kindly click on  'accept invite' below to get started`, url, "accept invite")
+                                   });
+
+                                   successResponse(res, undefined, 200, "Groups invite sent  successfully to user email")
+                            }
+                            else { return next(new customError("Only admins or moderatore can send out group invite", 403)) }
+
+                     } catch (err: any) {
+
+                            return next(
+                                   new customError(
+
+                                          err.message, 500
+                                   )
+                            );
+                     }
+              },
+              verifyGroupInvite: async (req: Request, res: Response, next: NextFunction) => {
+                     interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
+                     const { userId } = req as customRes;
+                     const { inviteToken } = req.params;
+
+                     try {
+
+                            const isInvited = await groupInvite.findOne({ invitee: userId, token: inviteToken, $gte: { expires: new Date(Date.now()) } })
+                            if (!isInvited) { return next(new customError("Invite token expired or does not exist", 403)) }
+                            else {
+                                   await groupInvite.findByIdAndDelete(isInvited._id)
+                                   successResponse(res, undefined, 200, "Group invite verified successfully")
+                            }
+
+                     } catch (err: any) {
+
+                            return next(
+                                   new customError(
+
+                                          err.message, 500
+                                   )
+                            );
+                     }
+              },
+
+              joinGroup: async (data: any, socket: any, userId: ObjectId, userData: any) => {
 
 
                      try {
