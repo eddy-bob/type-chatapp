@@ -77,6 +77,10 @@ const User = new Schema({
               required: [true, "please include a mobile number"],
               index: { unique: true, dropDups: true }
        },
+       region: {
+              type: String,
+
+       },
        zipcode: Number,
 
        location: {
