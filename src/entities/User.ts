@@ -74,6 +74,7 @@ const User = new Schema({
        },
        mobile: {
               type: String,
+              required: [true, "please include a mobile number"],
               index: { unique: true, dropDups: true }
        },
        zipcode: Number,
