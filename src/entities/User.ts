@@ -33,7 +33,14 @@ const User = new Schema({
 
        },
 
+       about: {
+              type: String,
+              trim: true,
+              min: [10, "About you must not be less 10 letters"],
 
+              max: [32, "About you must not be less 32 letters"]
+
+       },
 
        password: {
               type: String,
@@ -68,6 +75,12 @@ const User = new Schema({
 
 
        photo: {
+              name: { type: String, default: "noimage.jpg" },
+              MimeType: String,
+              size: String
+       },
+
+       coverPhoto: {
               name: { type: String, default: "noimage.jpg" },
               MimeType: String,
               size: String

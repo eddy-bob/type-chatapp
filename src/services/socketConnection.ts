@@ -69,11 +69,11 @@ const socketCon = {
 
                                    socket.on("joinGroup", (data: any) => {
 
-                                          groupMethod.joinGroup(data, socket, userId, userData)
+                                          groupMethod.joinGroup(data, socket, userId, userData, userFullName)
                                    })
                                    socket.on("leaveGroup", (data: any) => {
 
-                                          groupMethod.leaveGroup(data, socket, userId, userData)
+                                          groupMethod.leaveGroup(data, socket, userId, userData, userFullName)
                                    })
                                    // notify all the users that a user just left the chat
 

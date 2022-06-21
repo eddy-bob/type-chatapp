@@ -13,8 +13,9 @@ const GroupMessage = new Schema(
                      ref: "Group",
               },
               sender: {
-                     type: Schema.ObjectId,
+                     type: Schema.ObjectId || String,
                      ref: "User",
+                     default: "NotifBot"
 
               },
 

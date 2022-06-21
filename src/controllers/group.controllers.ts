@@ -7,18 +7,19 @@ import { format } from "../utils/formatMessage"
 import groupInvite from "../entities/groupInvite"
 import endPoint from "../config/endpoints.config"
 import nodemailer from "../services/nodemailer"
+import GroupMessages from "../entities/GroupMessages"
 
 const groupFunc = () => {
        return {
 
               createGroup: async (req: Request, res: Response, next: NextFunction) => {
                      interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
-                     const { name, description } = req.body
+                     const { name, description, members } = req.body
 
                      const { userId } = req as customRes;
                      try {
 
-                            const newGroup = await group.create({ name, description, admin: userId, members: [userId] })
+                            const newGroup = await group.create({ name, description, admin: userId, members: [userId, ...members] })
 
                             await newGroup.save()
                             successResponse(res, newGroup, 200, "Group created successfully")
@@ -164,7 +165,7 @@ const groupFunc = () => {
                             );
                      }
               },
-              
+
               sendGroupInvite: async (req: Request, res: Response, next: NextFunction) => {
                      const { groupId } = req.params;
                      const { invitees } = req.body
@@ -225,11 +226,12 @@ const groupFunc = () => {
                      }
               },
 
-              joinGroup: async (data: any, socket: any, userId: ObjectId, userData: any) => {
+              joinGroup: async (data: any, socket: any, userId: ObjectId, userData: any, userFullName: string) => {
 
 
                      try {
                             const isGroup = await group.findById(data.groupId)
+
                             if (!isGroup) {
 
                                    return socket.emit("groupError",
@@ -247,6 +249,22 @@ const groupFunc = () => {
                             if (updatedGroup) {
 
                                    socket.join(isGroup.name)
+                                   // send notification to group and persist
+                                   await GroupMessages.insertMany([{
+                                          $push: { hideFrom: userId },
+                                          group: data.groupId as unknown as ObjectId,
+                                          message: `${userFullName} joined group`
+
+                                   }, {
+                                          $pushAll: {
+                                                 hideFrom: [{ 'isGroup.$.members': { $nin: [userId] } }]
+                                          },
+
+                                          group: data.groupId as unknown as ObjectId,
+                                          message: ``
+
+                                   }])
+
                                    socket.emit("joinGroupSuccess", format(isGroup.name + "Bot", "Welcome to " + isGroup.name))
                                    socket.in(isGroup.name).emit("groupJoin", format(`${userData.firstName} ${userData.lastName}`, "joined group"))
 
@@ -260,7 +278,7 @@ const groupFunc = () => {
 
                      }
               },
-              leaveGroup: async (data: any, socket: any, userId: ObjectId, userData: any) => {
+              leaveGroup: async (data: any, socket: any, userId: ObjectId, userData: any, userFullName: string) => {
 
 
 
@@ -274,10 +292,16 @@ const groupFunc = () => {
                             }
 
                             await group.findByIdAndUpdate(data.groupId,
-                                   { $pullAll: { members: [userId] } },
+                                   { $pull: { members: userId } },
                                    { new: true, runValidators: true })
 
                             socket.leave(isGroup.name)
+                            // send notification to group and persist
+                            await GroupMessages.create({
+                                   group: data.groupId as unknown as ObjectId,
+                                   message: `${userFullName} left group`
+                            }
+                            )
                             socket.emit("leaveGroupSuccess", { message: "You left" + isGroup.name, statusCode: 200 })
                             socket.broadcast.to(isGroup.name).emit("groupLeave", format(`${userData.firstName} ${userData.lastName}`, "joined group"))
 
