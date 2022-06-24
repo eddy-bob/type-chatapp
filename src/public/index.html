@@ -66,7 +66,7 @@
         </div>
       </form>
     </div>
-    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="http://localhost:5000/socket.io/socket.io.js"></script>
 
     <script>
       d = new Date();
@@ -77,7 +77,7 @@
       var user;
       const token =
         "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYyOTEzY2JhOGIwZmFlYmIwMDE3MzM2MCIsImlhdCI6MTY1Mzk0ODU1NywiZXhwIjoxNjU0NTUzMzU3fQ.QFSGItDhuX_QIow-l6Eb28hfgc-nqHP3YIWIj887bAsM8FmVu1ewqww3D__SF0v_puVH--P8owKbEknbipppADxPKpxWZqoVQtxVqbG1C0V9AzGdpZSfcpnYwFE1hBgK5m-FEOP77CMM657DWaMliUbKz1BTWm9lK28YipeISuIN12CkKFVBausG8P6sQEFRjk6jvAl9IK1DgAd9KxMxvzdYoueedeYnDs2rutaq0I59nVDbXKZWRf95IxtjoCgPeY0CLPHdgynMXKwsYaWzGVWUXB2ScROhQm5V68tPzySgHQm1_FcdzymALtaHQvyyPftSufml-fXm83NYjbPUUg";
-      const socket = io("http://localhost:3000", {
+      const socket = io("http://localhost:5000", {
         extraHeaders: {
           Authorization: token,
         },

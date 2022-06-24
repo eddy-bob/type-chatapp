@@ -4,7 +4,7 @@ import groupRouter from "./group.router"
 import privateChatRouter from "./chat.router"
 import groupChatRouter from "./group.chat.router"
 import friendRouter from "./friend.router"
-
+import userRouter from "./user.router"
 import friendRequestRouter from "./friendRequest.router"
 
 const useRouter = Router();
@@ -13,6 +13,7 @@ useRouter.use("/group", groupRouter)
 useRouter.use("/group/chat", groupChatRouter)
 useRouter.use("/user/private-chat", privateChatRouter)
 useRouter.use("/user/friend", friendRouter)
+useRouter.use("/", userRouter)
 useRouter.use("/user/friend/request", friendRequestRouter)
 
 

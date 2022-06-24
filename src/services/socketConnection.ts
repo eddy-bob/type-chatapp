@@ -7,7 +7,7 @@ import { ObjectId } from "mongoose"
 import groupChat from "../controllers/groupChat.controllers"
 import Group from "../entities/Groups"
 import privateChat from "../controllers/privateChat.controllers"
-import { group } from "console"
+import socketAuth from "../utils/socket-auth"
 const socketCon = {
 
        socketConnection: (io: any) => {
@@ -17,9 +17,8 @@ const socketCon = {
               var userFullName: string;
               const groupMethod = groupFunc()
               return io.on("connection", async (socket: any) => {
-                     let token = socket.handshake.headers.authorization.split(" ")[1];
 
-
+                     let token = socket.handshake.headers.authorization;
                      socket.on('forceDisconnnect', () => {
                             socket.disconnect()
                             console.log("disconnected")
@@ -32,11 +31,13 @@ const socketCon = {
 
                      if (token) {
 
-                            const response = validateToken(token)
-
+                            const response = socketAuth(token)
                             if (!response.id) {
                                    socket.emit("noAuthDisconect", { statusCode: 401, message: "Unauthorized" })
+
                             } else {
+
+                                   console.log(" socket connected")
                                    // rejoin all groups
                                    const groups = await Group.find({ members: { $in: [userId] } })
                                    if (groups[0]) {
@@ -46,9 +47,6 @@ const socketCon = {
 
                                    }
 
-
-
-
                                    userData = await User.findById(response.id)
                                    userId = userData._id;
                                    userFullName = userData.firstName + " " + userData.lastName
@@ -57,10 +55,7 @@ const socketCon = {
 
                                    socket.on("privateMessage", (data: any) => {
                                           privateChat.addChat(socket, data, userId, io, userFullName)
-                                          // send a notification to the other users that a new message has just been recieved
 
-                                          // send the new message all the users 
-                                          // io.emit("message", format(userFullName, data.message))
                                    })
                                    // send a notification to all users that a user started typing
                                    // socket.on("typing", (data: any) => {
@@ -95,14 +90,6 @@ const socketCon = {
                                    })
                             }
                      }
-
-
-                     // joinGroup: (groupName: string, userName: string) => {
-                     //        socket.join(groupName)
-                     //        //tell all the other groups that a user joined
-                     //        socket.broadcast.to(groupName).emit("groupJoin", format(userName, "joined group"))
-                     // },
-                     // test: "madu"
 
                      return socket
               })
