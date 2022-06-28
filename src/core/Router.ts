@@ -13,7 +13,7 @@ useRouter.use("/group", groupRouter)
 useRouter.use("/group/chat", groupChatRouter)
 useRouter.use("/user/private-chat", privateChatRouter)
 useRouter.use("/user/friend", friendRouter)
-useRouter.use("/", userRouter)
+useRouter.use("/user", userRouter)
 useRouter.use("/user/friend/request", friendRequestRouter)
 
 
