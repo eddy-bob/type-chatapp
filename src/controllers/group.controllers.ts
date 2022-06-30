@@ -123,7 +123,7 @@ const groupFunc = () => {
                      const { groupId } = req.params;
                      try {
 
-                            const isGroup = await group.findOne({ id: groupId, members: { $in: [userId] } })
+                            const isGroup = await group.findOne({ _id: groupId, members: { $in: [userId] } })
                             if (!isGroup) { return next(new customError("Group doesnt exist or disabled by admin", 404)) }
 
 
