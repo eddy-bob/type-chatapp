@@ -16,8 +16,8 @@ const socketCon = {
               var userId: ObjectId;
               var userFullName: string;
               const groupMethod = groupFunc()
-              return io.on("connection", async (socket: any) => {
-       
+              io.on("connection", async (socket: any) => {
+
                      let token = socket.handshake.headers.authorization;
                      socket.on('forceDisconnnect', () => {
                             socket.disconnect()
@@ -91,7 +91,7 @@ const socketCon = {
                             }
                      }
 
-                     return socket
+
               })
 
 

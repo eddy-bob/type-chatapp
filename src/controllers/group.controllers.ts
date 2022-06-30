@@ -123,7 +123,7 @@ const groupFunc = () => {
                      const { groupId } = req.params;
                      try {
 
-                            const isGroup = await group.findById(groupId)
+                            const isGroup = await group.findOne({ id: groupId, members: { $in: [userId] } })
                             if (!isGroup) { return next(new customError("Group doesnt exist or disabled by admin", 404)) }
 
 
@@ -147,8 +147,11 @@ const groupFunc = () => {
               getGroups: async (req: Request, res: Response, next: NextFunction) => {
 
                      try {
+                            interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
 
-                            const groups = await group.find({})
+                            const { userId, userRole } = req as customRes;
+
+                            const groups = await group.find({ members: { $in: [userId] } })
                             successResponse(res, groups, 200, "Groups fetched successfully")
 
 

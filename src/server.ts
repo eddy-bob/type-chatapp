@@ -14,7 +14,7 @@ const server = (): void => {
        process.on('unhandledRejection', function (reason: Error) {
 
               // write error to file
-              appendFileSync("error.txt", `Error:${reason.message}`)
+              appendFileSync("error.txt", `\n Error: ${new Date(Date.now())} ${reason.message}`)
 
 
               if (reason.message === "querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net") {
