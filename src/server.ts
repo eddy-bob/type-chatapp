@@ -12,7 +12,7 @@ const server = (): void => {
 
        const myApp = appServer.listen(port, "0.0.0.0", () => { console.log(`server running on port ${port} in mode ${mode}`.blue) });
        process.on('unhandledRejection', function (reason: Error) {
-
+console.log(reason)
               // write error to file
               appendFileSync("error.txt", `\n Error: ${new Date(Date.now())} ${reason.message}`)
 

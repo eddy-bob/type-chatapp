@@ -8,7 +8,7 @@ export const geocoder = async (payload: [number, string]) => {
 
        const geocoder = NodeGeocoder(options);
        const res = await geocoder.geocode(
-              ["460103", "Nigeria"]
+              [payload[0], payload[1]]
        );
        return res
 }

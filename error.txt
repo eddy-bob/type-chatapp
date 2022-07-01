@@ -48,3 +48,25 @@
  Error: Thu Jun 30 2022 19:42:56 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
  Error: Thu Jun 30 2022 19:44:37 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
  Error: Thu Jun 30 2022 19:45:29 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Thu Jun 30 2022 19:46:10 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Thu Jun 30 2022 19:50:35 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Thu Jun 30 2022 19:51:25 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Thu Jun 30 2022 19:51:27 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Thu Jun 30 2022 19:51:36 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Thu Jun 30 2022 19:52:40 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Thu Jun 30 2022 19:55:38 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Fri Jul 01 2022 10:26:57 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 10:33:35 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Fri Jul 01 2022 10:33:37 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Fri Jul 01 2022 10:34:26 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 10:48:59 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 10:49:58 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 10:50:11 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 10:50:16 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 10:50:27 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 10:59:09 GMT+0100 (West Africa Standard Time) Server selection timed out after 30000 ms
+ Error: Fri Jul 01 2022 11:03:30 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Fri Jul 01 2022 11:03:36 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Fri Jul 01 2022 11:05:06 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Fri Jul 01 2022 11:05:54 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Fri Jul 01 2022 11:07:49 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket

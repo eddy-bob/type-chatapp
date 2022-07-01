@@ -81,13 +81,13 @@ const socketCon = {
                                           groupChat.forwardMessage(data, socket, userId, userData, userFullName, io)
                                    })
                                    socket.on("privateForward",
-                                          socket.on("groupForward", (data: any[]) => {
+                                          (data: any[]) => {
                                                  privateChat.forwardMessage(data, socket, userId, userData, userFullName, io)
-                                          }))
-                                   socket.on("disconnect", () => {
-                                          console.log("disconnected")
-                                          io.emit("left", format(userFullName, "went offline"))
-                                   })
+                                          }),
+                                          socket.on("disconnect", () => {
+                                                 console.log("disconnected")
+                                                 io.emit("left", format(userFullName, "went offline"))
+                                          })
                             }
                      }
 
