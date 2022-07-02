@@ -70,3 +70,52 @@
  Error: Fri Jul 01 2022 11:05:06 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
  Error: Fri Jul 01 2022 11:05:54 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
  Error: Fri Jul 01 2022 11:07:49 GMT+0100 (West Africa Standard Time) The "listener" argument must be of type function. Received an instance of Socket
+ Error: Fri Jul 01 2022 12:37:56 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:29:00 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Fri Jul 01 2022 13:29:22 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Fri Jul 01 2022 13:31:01 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Fri Jul 01 2022 13:31:10 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Fri Jul 01 2022 13:31:43 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Fri Jul 01 2022 13:33:27 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:33:35 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:33:46 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:36:19 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:36:28 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:36:44 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:51:17 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:51:18 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:51:18 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:51:50 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:52:04 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:53:04 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:53:13 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:53:13 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:53:40 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 13:54:16 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 22:07:29 GMT+0100 (West Africa Standard Time) Server selection timed out after 30000 ms
+ Error: Fri Jul 01 2022 22:36:54 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 22:37:23 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 22:37:26 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Fri Jul 01 2022 22:37:27 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:14:44 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:14:44 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:14:44 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:14:48 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:14:59 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:15:00 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:15:01 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:15:32 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Sat Jul 02 2022 13:15:32 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Sat Jul 02 2022 13:15:32 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Sat Jul 02 2022 13:15:47 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Sat Jul 02 2022 13:15:47 GMT+0100 (West Africa Standard Time) connection timed out
+ Error: Sat Jul 02 2022 13:19:13 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:19:14 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:19:17 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 13:19:59 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-02.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 15:50:21 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net
+ Error: Sat Jul 02 2022 15:58:09 GMT+0100 (West Africa Standard Time) Operation `usermods.findOne()` buffering timed out after 10000ms
+ Error: Sat Jul 02 2022 15:58:30 GMT+0100 (West Africa Standard Time) Server selection timed out after 30000 ms
+ Error: Sat Jul 02 2022 15:58:33 GMT+0100 (West Africa Standard Time) Operation `usermods.findOne()` buffering timed out after 10000ms
+ Error: Sat Jul 02 2022 15:58:39 GMT+0100 (West Africa Standard Time) Operation `usermods.findOne()` buffering timed out after 10000ms
+ Error: Sat Jul 02 2022 15:59:23 GMT+0100 (West Africa Standard Time) Operation `usermods.findOne()` buffering timed out after 10000ms

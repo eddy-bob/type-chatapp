@@ -72,8 +72,8 @@ const socketCon = {
                                    })
                                    // notify all the users that a user just left the chat
 
-                                   socket.on("groupMessage", (data: string) => {
-
+                                   socket.on("groupMessage", (data: { groupId: ObjectId, message: string }) => {
+                                          console.log("fired", data)
                                           groupChat.addChat(socket, data, userId, userData, io, userFullName)
 
                                    })

@@ -61,6 +61,7 @@ const groupChat = {
 
               try {
                      const isGroup = await Group.findById(data.groupId)
+
                      if (!isGroup) {
                             return socket.emit("groupChatError",
                                    { message: "Group does not exist or disabled by admin", statusCode: 404 })
@@ -77,7 +78,6 @@ const groupChat = {
                             })
 
                             await newChat.save()
-
 
                             io.in(isGroup.name).emit("newGroupMessage", format(userFullName, data.message))
 
@@ -153,8 +153,8 @@ const groupChat = {
 
                      const isMember = isGroup.members.includes(userId)
                      if (isMember == true || userRole === "ADMIN") {
-
-                            const groupChats = await groupMessage.find({ _id: groupId, hideFrom: { $nin: [userId] } })
+                     
+                            const groupChats = await groupMessage.find({ group: groupId, hideFrom: { $nin: [userId] } })
                             successResponse(res, groupChats, 200, "chats fetched successfully")
 
                      }
