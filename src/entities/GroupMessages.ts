@@ -18,7 +18,10 @@ const GroupMessage = new Schema(
                      default: "NotifBot"
 
               },
-
+              senderName: {
+                     type: String,
+                     required: [true, "please include a  sender name"],
+              },
 
               message: {
                      type: String,

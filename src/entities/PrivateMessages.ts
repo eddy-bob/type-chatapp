@@ -14,7 +14,10 @@ const PrivateChat = new Schema(
                      ref: "User",
                      required: [true, "please provide a sender"],
               },
-
+              senderName: {
+                     type: String,
+                     required: [true, "please include a  sender name"],
+              },
               reciever: {
                      type: Schema.ObjectId,
                      ref: "User",

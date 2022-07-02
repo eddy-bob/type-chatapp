@@ -73,7 +73,8 @@ const groupChat = {
 
                                    group: data.groupId as unknown as ObjectId,
                                    sender: userId,
-                                   message: data.message
+                                   message: data.message,
+                                   senderName: userFullName
 
                             })
 
@@ -153,7 +154,7 @@ const groupChat = {
 
                      const isMember = isGroup.members.includes(userId)
                      if (isMember == true || userRole === "ADMIN") {
-                     
+
                             const groupChats = await groupMessage.find({ group: groupId, hideFrom: { $nin: [userId] } })
                             successResponse(res, groupChats, 200, "chats fetched successfully")
 
