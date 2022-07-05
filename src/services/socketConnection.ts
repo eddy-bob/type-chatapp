@@ -53,7 +53,7 @@ const socketCon = {
                                    // send welcome message to the user that just  the group chat
 
 
-                                   socket.on("privateMessage", (data: any) => {
+                                   socket.on("privateMessage", (data: { userId: ObjectId, message: string, attatchment: string[] }) => {
                                           privateChat.addChat(socket, data, userId, io, userFullName)
 
                                    })
@@ -72,7 +72,7 @@ const socketCon = {
                                    })
                                    // notify all the users that a user just left the chat
 
-                                   socket.on("groupMessage", (data: { groupId: ObjectId, message: string }) => {
+                                   socket.on("groupMessage", (data: { groupId: ObjectId, message: string, attatchment: string[] }) => {
                                           console.log("fired", data)
                                           groupChat.addChat(socket, data, userId, userData, io, userFullName)
 

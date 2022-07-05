@@ -74,6 +74,7 @@ const groupChat = {
                                    group: data.groupId as unknown as ObjectId,
                                    sender: userId,
                                    message: data.message,
+                                   attatchment:data.attatchment,
                                    senderName: userFullName
 
                             })

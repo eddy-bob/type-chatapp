@@ -32,7 +32,7 @@ const PrivateChat = new Schema(
               },
               attatchment: {
                      type: [String]
-
+                     , default: []
               },
               forwarded: { type: Boolean, default: false },
               hideFrom: { type: Schema.ObjectId, ref: "User" },

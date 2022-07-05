@@ -33,7 +33,8 @@ const GroupMessage = new Schema(
               status: { type: String, enum: ChatEnum, default: "DELIVERED" },
               hideFrom: { type: [Schema.ObjectId], ref: "User" },
               attatchment: {
-                     type: [String]
+                     type: [String],
+                     default: []
 
               }
 
