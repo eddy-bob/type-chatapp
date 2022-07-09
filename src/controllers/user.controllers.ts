@@ -92,10 +92,10 @@ const user = {
 
               try {
                      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                     const isEmail = re.test(String(req.body.query).toLowerCase());
+                     const isEmail = re.test(String(req.query.search).toLowerCase());
 
                      if (isEmail == true) {
-                            const user = await User.findOne({ email: req.body.query });
+                            const user = await User.findOne({ email: req.body.search });
                             if (user) { successResponse(res, user, 200, "User Fetched Successfully") }
                             else { return next(new customError("User not found or disabled", 404)) }
                      } else {
