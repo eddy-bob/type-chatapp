@@ -1,6 +1,6 @@
 import { config } from "dotenv"
 interface Endpoint {
-       port: string, mongoString: string, mongoName: string, userName: string, password: string, bycriptHashRound: number, enviroment: string, cloudName: string,
+       port: string, baseUrl: string, mongoString: string, mongoName: string, userName: string, password: string, bycriptHashRound: number, enviroment: string, cloudName: string,
        cloudinaryUrl: string,
        cloudApiSecret: string,
        cloudApiKey: string,
@@ -14,6 +14,7 @@ interface Endpoint {
 config({ path: ".env" })
 const endpoint: Endpoint = {
        port: process.env.PORT as string,
+       baseUrl: process.env.BASE_URL as string,
        mongoString: process.env.DB_CONN_STRING as string,
        mongoName: process.env.DB_NAME as string,
        userName: process.env.DB_USERNAME as string,

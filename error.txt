@@ -177,3 +177,4 @@
  Error: Mon Jul 04 2022 11:40:16 GMT+0100 (West Africa Standard Time) Operation `usermods.findOne()` buffering timed out after 10000ms
  Error: Mon Jul 04 2022 11:40:16 GMT+0100 (West Africa Standard Time) Operation `usermods.findOne()` buffering timed out after 10000ms
  Error: Tue Jul 05 2022 10:28:01 GMT+0100 (West Africa Standard Time) getaddrinfo ENOTFOUND nodechatapp-shard-00-00.khmbi.mongodb.net
+ Error: Tue Jul 05 2022 16:15:54 GMT+0100 (West Africa Standard Time) querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net

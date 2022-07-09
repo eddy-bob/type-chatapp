@@ -8,6 +8,7 @@ import groupInvite from "../entities/groupInvite"
 import endPoint from "../config/endpoints.config"
 import nodemailer from "../services/nodemailer"
 import GroupMessages from "../entities/GroupMessages"
+import User from "../entities/User"
 
 const groupFunc = () => {
        return {
@@ -15,14 +16,37 @@ const groupFunc = () => {
               createGroup: async (req: Request, res: Response, next: NextFunction) => {
                      interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
                      const { name, description, members } = req.body
-
+                     const failedMail: any[] = []
                      const { userId } = req as customRes;
                      try {
 
-                            const newGroup = await group.create({ name, description, admin: userId, members: [userId, ...members] })
+
+                            const newGroup = await group.create({ name, description, admin: userId, members: [userId] })
+                            if (newGroup) {
+                                   members.forEach(async (invite: string) => {
+                                          const singleInvite = await groupInvite.create({ group: newGroup._id, invitee: invite });
+                                          const inviteToken = await singleInvite.getToken()
+                                          const url = `${req.protocol}://${endPoint.baseUrl}/chat-home/${inviteToken}`;
+
+                                          // send invite mail
+                                          members.forEach(async (member: string) => {
+                                                 let mem = await User.findById(member)
+                                                 if (!mem) { failedMail.push(mem) } else {
+                                                        await nodemailer(mem.email, endPoint.contactAddress, `You have been invited to collaborate in  ${newGroup.name}
+                                                 kindly click on  'accept invite' below to get started`, url, "accept invite")
+                                                 }
+
+                                          });
+
+                                   })
+                            }
 
                             await newGroup.save()
-                            successResponse(res, newGroup, 200, "Group created successfully")
+                            if (failedMail[0]) {
+                                   res.status(200).send({ data: newGroup, failedMail, message: "Group created successfully but couldnt send invite to all requested users because they not exist " })
+                            } else {
+                                   successResponse(res, newGroup, 200, "Group created successfully")
+                            }
 
                      } catch (err: any) {
 
@@ -79,7 +103,7 @@ const groupFunc = () => {
                      const { groupId } = req.params;
 
 
-                     const { userId, userRole, userData } = req as customRes;
+                     const { userId, userRole } = req as customRes;
                      try {
 
                             const isGroup = await group.findById(groupId)
@@ -119,7 +143,7 @@ const groupFunc = () => {
               getGroup: async (req: Request, res: Response, next: NextFunction) => {
                      interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
 
-                     const { userId, userRole } = req as customRes;
+                     const { userId } = req as customRes;
                      const { groupId } = req.params;
                      try {
 
@@ -174,25 +198,25 @@ const groupFunc = () => {
                      const { invitees } = req.body
                      interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
 
-                     const { userData, userId, userRole } = req as customRes;
+                     const { userData, userId } = req as customRes;
                      try {
                             const isGroup = await group.findById(groupId)
                             const isModerator = await group.findOne({ _id: groupId, moderators: { $in: [userId] } })
                             if (!isGroup) { return next(new customError("Group doesnt exist or disabled by admin")) }
-                            if (isModerator || isGroup.admin.toString() === userId) {
+                            if (isModerator || isGroup.admin.toString() === userId.toString()) {
                                    invitees.forEach(async (invite: string) => {
-                                          const singleInvite = await groupInvite.create({ group: groupId, invitee: invite });
+                                          const singleInvite = await groupInvite.create({ group: isGroup._id, invitee: invite });
                                           const inviteToken = await singleInvite.getToken()
-                                          const url = `${req.protocol}://${req.baseUrl}/checkVerifyEmailToken/${inviteToken}`;
+                                          const url = `${req.protocol}://${endPoint.baseUrl}/chat-home/${inviteToken}`;
 
-                                          // send welcome mail
-                                          await nodemailer(userData.email, endPoint.contactAddress, `You have been invited to collaborate in the ${isGroup.name}
+                                          // send invite mail
+                                          await nodemailer(userData.email, endPoint.contactAddress, `You have been invited to collaborate in  ${isGroup.name}
                                    kindly click on  'accept invite' below to get started`, url, "accept invite")
                                    });
 
                                    successResponse(res, undefined, 200, "Groups invite sent  successfully to user email")
                             }
-                            else { return next(new customError("Only admins or moderatore can send out group invite", 403)) }
+                            else { return next(new customError("Only admins or moderators can send out group invite", 403)) }
 
                      } catch (err: any) {
 

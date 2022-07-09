@@ -24,6 +24,7 @@ const user = {
                      );
               }
        },
+
        deleteUsers: async (req: Request, res: Response, next: NextFunction) => {
 
               try {
@@ -76,6 +77,38 @@ const user = {
                      const user = await User.findById(id);
                      if (user) { successResponse(res, user, 200, "User Fetched Successfully") }
                      else { return next(new customError("User not found or disabled", 404)) }
+              } catch (err: any) {
+
+                     return next(
+                            new customError(
+
+                                   err.message, 500
+                            )
+                     );
+              }
+       },
+       searchUser: async (req: Request, res: Response, next: NextFunction) => {
+
+
+              try {
+                     const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                     const isEmail = re.test(String(req.body.query).toLowerCase());
+
+                     if (isEmail == true) {
+                            const user = await User.findOne({ email: req.body.query });
+                            if (user) { successResponse(res, user, 200, "User Fetched Successfully") }
+                            else { return next(new customError("User not found or disabled", 404)) }
+                     } else {
+                            let nameArr = req.body.query.split(" ")
+                            const users = await User.find({
+                                   $or: [{ firstName: nameArr[0], lastName: nameArr[1] },
+                                   { lastName: nameArr[0], firstName: nameArr[1] }]
+                            });
+                            successResponse(res, user, 200, "User Fetched Successfully")
+
+                     }
+
+
               } catch (err: any) {
 
                      return next(
