@@ -2,6 +2,7 @@ import { Response, Request, NextFunction } from "express"
 import successResponse from "../helpers/success.response"
 import { customError } from "../helpers/customError"
 import User from "../entities/User"
+import uploadPhoto from "../utils/uploadPhoto"
 import { ObjectId } from "mongoose"
 
 const user = {
@@ -14,6 +15,78 @@ const user = {
                      const allUsers = await User.find({});
 
                      successResponse(res, allUsers, 200, "All Users Fetched Successfully")
+              } catch (err: any) {
+
+                     return next(
+                            new customError(
+
+                                   err.message, 500
+                            )
+                     );
+              }
+       },
+       uploadProfilePicture: async (req: Request, res: Response, next: NextFunction) => {
+              interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
+
+              const { userId } = req as customRes;
+              try {
+
+                     const { photo } = req.body
+                     // upload image to cloudinary
+                     if (!photo) { return } next(
+                            new customError(
+
+                                   "Profile picture is required", 400
+                            ))
+                     const image = await uploadPhoto(photo);
+                     const updateProfile = await User.findByIdAndUpdate(userId, {
+                            $set: {
+                                   photo: {
+                                          name: image.name,
+                                          mimeType: image.type,
+                                          size: image.size,
+                                          url: image.url
+                                   },
+                            }
+                     });
+
+                     successResponse(res, updateProfile, 200, "Profile picture updated Successfully")
+              } catch (err: any) {
+
+                     return next(
+                            new customError(
+
+                                   err.message, 500
+                            )
+                     );
+              }
+       },
+       uploadCoverPicture: async (req: Request, res: Response, next: NextFunction) => {
+              interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
+
+              const { userId } = req as customRes;
+              try {
+
+                     const { coverPhoto } = req.body
+                     // upload image to cloudinary
+                     if (!coverPhoto) { return } next(
+                            new customError(
+
+                                   "cover photo is required", 400
+                            ))
+                     const image = await uploadPhoto(coverPhoto);
+                     const updateProfile = await User.findByIdAndUpdate(userId, {
+                            $set: {
+                                   photo: {
+                                          name: image.name,
+                                          mimeType: image.type,
+                                          size: image.size,
+                                          url: image.url
+                                   },
+                            }
+                     });
+
+                     successResponse(res, updateProfile, 200, "Cover photo updated Successfully")
               } catch (err: any) {
 
                      return next(
@@ -46,12 +119,12 @@ const user = {
        },
        getProfile: async (req: Request, res: Response, next: NextFunction) => {
 
+              interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
+
+              const { userId } = req as customRes;
               try {
 
 
-                     interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
-
-                     const { userId } = req as customRes;
 
 
                      const user = await User.findById(userId);
@@ -147,13 +220,13 @@ const user = {
               }
        },
        deleteAccount: async (req: Request, res: Response, next: NextFunction) => {
+              interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
 
+              const { userId } = req as customRes;
 
               try {
 
-                     interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
 
-                     const { userId } = req as customRes;
 
 
                      const authUser = await User.findByIdAndDelete(userId);
@@ -174,11 +247,11 @@ const user = {
               }
        },
        updateProfile: async (req: Request, res: Response, next: NextFunction) => {
+              interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
 
+              const { userId } = req as customRes;
               try {
-                     interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
 
-                     const { userId } = req as customRes;
 
 
 
