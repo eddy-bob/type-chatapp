@@ -25,9 +25,10 @@ const Group = new Schema(
 
               },
               photo: {
-                     name: { type: String, default: "noimage.jpg" },
+                     name: { type: String, default: "noimage" },
                      MimeType: String,
-                     size: String
+                     size: String,
+                     url: String
               },
 
               moderators: [{ type: Schema.ObjectId, ref: "User" }],

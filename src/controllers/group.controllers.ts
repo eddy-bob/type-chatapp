@@ -9,7 +9,7 @@ import endPoint from "../config/endpoints.config"
 import nodemailer from "../services/nodemailer"
 import GroupMessages from "../entities/GroupMessages"
 import User from "../entities/User"
-
+import uploadPhoto from "../utils/uploadPhoto"
 const groupFunc = () => {
        return {
 
@@ -80,6 +80,57 @@ const groupFunc = () => {
                                           }, { runValidators: true, new: true })
                                    await newGroup.save()
                                    successResponse(res, newGroup, 200, "Group updated successfully")
+                            }
+                            else {
+                                   return next(new customError("only moderators and  administrators may update this group"))
+                            }
+
+
+
+
+                     } catch (err: any) {
+
+                            return next(
+                                   new customError(
+
+                                          err.message, 500
+                                   )
+                            );
+                     }
+              },
+              uploadGroupPhoto: async (req: Request, res: Response, next: NextFunction) => {
+                     interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }
+
+                     const { userId, userRole } = req as customRes;
+                     const { photo } = req.body
+                     const { groupId } = req.params
+                     try {
+                            const isGroup = await group.findById(groupId)
+                            if (!isGroup) { return next(new customError("Group doesnt exist or disabled by admin", 404)) }
+
+                            if (userRole === "ADMIN" || isGroup.admin.toString() === userId.toString() || isGroup.moderators.includes(userId)) {
+                                   // upload image to cloudinary
+                                   if (!photo) {
+                                          return next(
+                                                 new customError(
+
+                                                        "Group photo is required", 400
+                                                 ))
+                                   }
+
+                                   const image = await uploadPhoto(photo);
+                                   const updateGroup = await group.findByIdAndUpdate(groupId, {
+                                          $set: {
+                                                 photo: {
+                                                        name: image.name,
+                                                        mimeType: image.type,
+                                                        size: image.size,
+                                                        url: image.url
+                                                 },
+                                          }
+                                   });
+
+                                   successResponse(res, updateGroup, 200, "Group photo updated Successfully")
                             }
                             else {
                                    return next(new customError("only moderators and  administrators may update this group"))

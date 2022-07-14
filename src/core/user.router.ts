@@ -14,8 +14,8 @@ userRouter.delete("/delete-user-account/:id", authorize(["ADMIN"]), user.deleteU
 userRouter.delete("/delete-account", user.deleteAccount)
 userRouter.put("/update-user/:id", authorize(["ADMIN"]), user.updateUser)
 userRouter.put("/update-profile", user.updateProfile)
-userRouter.put("/upload-profile-picture", user.uploadProfilePicture)
-userRouter.put("/upload-cover-photo", user.uploadCoverPicture)
+userRouter.put("/update-profile-picture", user.uploadProfilePicture)
+userRouter.put("/update-cover-photo", user.uploadCoverPicture)
 
 
 
