@@ -30,13 +30,13 @@ const FriendRequest = new Schema(
        },
        { timestamps: true }
 );
-FriendRequest.pre('save', {
-       async function(next: NextFunction) {
+FriendRequest.pre('save',
+       async function (next: NextFunction) {
               let response = await genFullName(this.friend)
               this.pendingFriendName = response[0]
               this.pendingFriendPhoto = response[1]
               return next()
-       }
-})
+
+       })
 
 export default model("FriendRequest", FriendRequest);

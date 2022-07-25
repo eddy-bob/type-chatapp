@@ -34,14 +34,14 @@ const FriendSchema = new Schema(
        },
        { timestamps: true }
 );
-FriendSchema.pre('save', {
-       async function(next: NextFunction) {
+FriendSchema.pre('save',
+       async function (next: NextFunction) {
               let response = await genFullName(this.friend)
               this.friendName = response[0]
               this.photo = response[1]
               return next()
        }
-})
+)
 
 
 export default model("Friend", FriendSchema);
