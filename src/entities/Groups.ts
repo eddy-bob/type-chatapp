@@ -25,7 +25,7 @@ const Group = new Schema(
 
               },
               photo: {
-                     name: { type: String, default: "noimage" },
+
                      MimeType: String,
                      size: String,
                      url: String

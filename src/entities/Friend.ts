@@ -23,9 +23,10 @@ const FriendSchema = new Schema(
                      required: [true, "please provide a friend name"],
               },
               photo: {
-                     name: { type: String, default: "noimage.jpg" },
+
                      MimeType: String,
-                     size: String
+                     size: String,
+                     url: String
               },
               blocked: { type: Boolean, default: false }
 
@@ -37,7 +38,7 @@ FriendSchema.pre('save', {
        async function(next: NextFunction) {
               let response = await genFullName(this.friend)
               this.friendName = response[0]
-              this.photo.name = response[1]
+              this.photo = response[1]
               return next()
        }
 })

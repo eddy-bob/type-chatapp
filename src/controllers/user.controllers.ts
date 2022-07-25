@@ -42,7 +42,6 @@ const user = {
                      const updateProfile = await User.findByIdAndUpdate(userId, {
                             $set: {
                                    photo: {
-                                          name: image.name,
                                           mimeType: image.type,
                                           size: image.size,
                                           url: image.url
@@ -78,7 +77,7 @@ const user = {
                      const updateProfile = await User.findByIdAndUpdate(userId, {
                             $set: {
                                    photo: {
-                                          name: image.name,
+
                                           mimeType: image.type,
                                           size: image.size,
                                           url: image.url

@@ -75,14 +75,14 @@ const User = new Schema({
 
 
        photo: {
-              name: { type: String, default: "noimage" },
+
               mimeType: String,
               size: String,
               url: String
        },
 
        coverPhoto: {
-              name: { type: String, default: "noimage" },
+
               mimeType: String,
               size: String,
               url: String
