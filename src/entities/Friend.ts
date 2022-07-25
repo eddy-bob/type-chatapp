@@ -35,7 +35,7 @@ const FriendSchema = new Schema(
        { timestamps: true }
 );
 FriendSchema.pre('save',
-       async function (next: NextFunction) {
+       async function (this: any, next: NextFunction) {
               let response = await genFullName(this.friend)
               this.friendName = response[0]
               this.photo = response[1]
