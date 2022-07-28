@@ -276,3 +276,5 @@
  Error: Mon Jul 25 2022 23:06:45 GMT+0100 (West Africa Standard Time) The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
  Error: Mon Jul 25 2022 23:07:58 GMT+0100 (West Africa Standard Time) Invalid scheme, expected connection string to start with "mongodb://" or "mongodb+srv://"
  Error: Mon Jul 25 2022 23:09:29 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017
+ Error: Wed Jul 27 2022 11:06:32 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017
+ Error: Wed Jul 27 2022 16:47:40 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017

@@ -32,24 +32,29 @@ const user = {
               try {
 
                      const { photo } = req.body
-                     // upload image to cloudinary
-                     if (!photo) { return } next(
-                            new customError(
 
-                                   "Profile picture is required", 400
-                            ))
+                     // upload image to cloudinary
+                     if (!photo) {
+                            return next(
+                                   new customError(
+
+                                          "Profile picture is required", 400
+                                   ))
+                     }
                      const image = await uploadPhoto(photo);
+                     
                      const updateProfile = await User.findByIdAndUpdate(userId, {
                             $set: {
                                    photo: {
-                                          mimeType: image.type,
-                                          size: image.size,
+                                          mimeType: image.format,
+                                          size: image.bytes,
                                           url: image.url
                                    },
                             }
                      });
 
                      successResponse(res, updateProfile, 200, "Profile picture updated Successfully")
+
               } catch (err: any) {
 
                      return next(
@@ -76,7 +81,7 @@ const user = {
                      const image = await uploadPhoto(coverPhoto);
                      const updateProfile = await User.findByIdAndUpdate(userId, {
                             $set: {
-                                   photo: {
+                                   coverPhoto: {
 
                                           mimeType: image.type,
                                           size: image.size,

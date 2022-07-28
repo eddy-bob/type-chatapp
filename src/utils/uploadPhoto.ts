@@ -9,7 +9,13 @@ const uploadPhoto = async (photo: Buffer) => {
     api_secret: endPoint.cloudApiSecret,
     secure: true,
   });
-  const image = await cloudinary.uploader.upload(photo);
-  return image;
+  try {
+    const image = await cloudinary.uploader.upload(photo);
+
+    return image
+  }
+  catch (err) {
+    return err
+  }
 };
 export default uploadPhoto;
