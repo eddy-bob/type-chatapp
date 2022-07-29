@@ -19,8 +19,7 @@ const FriendSchema = new Schema(
                      required: [true, "please provide a friend"],
               },
               friendName: {
-                     type: String,
-                     required: [true, "please provide a friend name"],
+                     type: String
               },
               photo: {
 
@@ -44,4 +43,4 @@ FriendSchema.pre('save',
 )
 
 
-export default model("Friend", FriendSchema);
+export default model("FriendSchema", FriendSchema);

@@ -42,16 +42,18 @@ const user = {
                                    ))
                      }
                      const image = await uploadPhoto(photo);
-                     
+
                      const updateProfile = await User.findByIdAndUpdate(userId, {
+
                             $set: {
                                    photo: {
                                           mimeType: image.format,
                                           size: image.bytes,
-                                          url: image.url
+                                          url: image.secure_url
                                    },
                             }
-                     });
+                     }, { new: true, runValidators: true });
+                     console.log(updateProfile)
 
                      successResponse(res, updateProfile, 200, "Profile picture updated Successfully")
 
@@ -73,22 +75,24 @@ const user = {
 
                      const { coverPhoto } = req.body
                      // upload image to cloudinary
-                     if (!coverPhoto) { return } next(
-                            new customError(
+                     if (!coverPhoto) {
+                            return next(
+                                   new customError(
 
-                                   "cover photo is required", 400
-                            ))
+                                          "cover photo is required", 400
+                                   ))
+                     }
                      const image = await uploadPhoto(coverPhoto);
                      const updateProfile = await User.findByIdAndUpdate(userId, {
                             $set: {
                                    coverPhoto: {
 
-                                          mimeType: image.type,
-                                          size: image.size,
-                                          url: image.url
+                                          mimeType: image.format,
+                                          size: image.bytes,
+                                          url: image.secure_url
                                    },
                             }
-                     });
+                     }, { new: true, runValidators: true });
 
                      successResponse(res, updateProfile, 200, "Cover photo updated Successfully")
               } catch (err: any) {
@@ -165,23 +169,42 @@ const user = {
               }
        },
        searchUser: async (req: Request, res: Response, next: NextFunction) => {
-
+              type Query = { search?: string }
+              const query: Query = { ...req.query };
 
               try {
                      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                      const isEmail = re.test(String(req.query.search).toLowerCase());
 
+                     if (!req.query.search) { return next(new customError("Search not found", 404)) }
                      if (isEmail == true) {
-                            const user = await User.findOne({ email: req.body.search });
-                            if (user) { successResponse(res, user, 200, "User Fetched Successfully") }
+
+                            const users = await User.findOne({ email: query.search });
+                            console.log(users)
+                            if (users) { successResponse(res, [users], 200, "User Fetched Successfully") }
                             else { return next(new customError("User not found or disabled", 404)) }
+
                      } else {
-                            let nameArr = req.body.query.split(" ")
-                            const users = await User.find({
-                                   $or: [{ firstName: nameArr[0], lastName: nameArr[1] },
-                                   { lastName: nameArr[0], firstName: nameArr[1] }]
-                            });
-                            successResponse(res, user, 200, "User Fetched Successfully")
+                            let users;
+                            let nameArr = query.search!.split(" ")
+                            console.log(nameArr)
+                            if (nameArr.length < 2) {
+
+                                   users = await User.find({
+                                          $or: [{ firstName: nameArr[0].toLowerCase() },
+                                          { lastName: nameArr[0].toLowerCase() }]
+                                   });
+
+                            }
+                            else {
+                                   console.log(true)
+                                   users = await User.find({
+                                          $or: [{ firstName: nameArr[0].toLowerCase(), lastName: nameArr[1].toLowerCase() },
+                                          { lastName: nameArr[0].toLowerCase(), firstName: nameArr[1].toLowerCase() }]
+                                   });
+                                   console.log(users)
+                            }
+                            successResponse(res, users, 200, "User Fetched Successfully")
 
                      }
 

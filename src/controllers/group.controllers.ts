@@ -19,31 +19,42 @@ const groupFunc = () => {
                      const failedMail: any[] = []
                      const { userId } = req as customRes;
                      try {
-
+                            console.log(members)
 
                             const newGroup = await group.create({ name, description, admin: userId, members: [userId] })
                             if (newGroup) {
                                    members.forEach(async (invite: string) => {
-                                          const singleInvite = await groupInvite.create({ group: newGroup._id, invitee: invite });
-                                          const inviteToken = await singleInvite.getToken()
-                                          const url = `${req.protocol}://${endPoint.baseUrl}/chat-home/${inviteToken}`;
+                                          let mem = await User.findById(invite)
+                                          if (!mem) { failedMail.push(mem) } else {
 
-                                          // send invite mail
-                                          members.forEach(async (member: string) => {
-                                                 let mem = await User.findById(member)
-                                                 if (!mem) { failedMail.push(mem) } else {
-                                                        await nodemailer(mem.email, endPoint.contactAddress, `You have been invited to collaborate in  ${newGroup.name}
-                                                 kindly click on  'accept invite' below to get started`, url, "accept invite")
-                                                 }
+                                                 const singleInvite = await groupInvite.create({ group: newGroup._id, invitee: invite });
+                                                 const inviteToken = await singleInvite.getToken()
+                                                 await groupInvite.findByIdAndUpdate(singleInvite._id,
+                                                        { inviteToken, expires: new Date(Date.now()) },
+                                                        { runValidators: true, new: true })
 
-                                          });
+                                                 const url = `${req.protocol}://${endPoint.baseUrl}/chat-home/${inviteToken}`;
+
+
+                                                 await nodemailer(mem.email, endPoint.contactAddress, `You have been invited to collaborate in  ${newGroup.name}
+                                          kindly click on  'accept invite' below to get started`, "Group Invite", url, "accept invite")
+                                          }
 
                                    })
+                                   // send invite mail
+                                   // members.forEach(async (member: string) => {
+                                   //        let mem = await User.findById(member)
+                                   //        if (!mem) { failedMail.push(mem) } else {
+                                   //               await nodemailer(mem.email, endPoint.contactAddress, "Group Invite", `You have been invited to collaborate in  ${newGroup.name}
+                                   //        kindly click on  'accept invite' below to get started`, url, "accept invite")
+                                   //        }
+
+                                   // });
                             }
 
                             await newGroup.save()
                             if (failedMail[0]) {
-                                   res.status(200).send({ data: newGroup, failedMail, message: "Group created successfully but couldnt send invite to all requested users because they not exist " })
+                                   res.status(200).send({ data: newGroup, failedInvite: failedMail, message: "Group created successfully but couldnt send invite to all requested users because they not exist " })
                             } else {
                                    successResponse(res, newGroup, 200, "Group created successfully")
                             }
@@ -226,7 +237,7 @@ const groupFunc = () => {
 
                             const { userId, userRole } = req as customRes;
 
-                            const groups = await group.find({ members: { $in: [userId] } })
+                            const groups = await group.find({ members: { $in: [userId] } }).sort({name:1})
                             successResponse(res, groups, 200, "Groups fetched successfully")
 
 
@@ -258,11 +269,16 @@ const groupFunc = () => {
                                    invitees.forEach(async (invite: string) => {
                                           const singleInvite = await groupInvite.create({ group: isGroup._id, invitee: invite });
                                           const inviteToken = await singleInvite.getToken()
+
+                                          await singleInvite.findByIdAndUpdate(singleInvite._id,
+                                                 { inviteToken, expires: new Date(Date.now()) },
+                                                 { runValidators: true, new: true })
+
                                           const url = `${req.protocol}://${endPoint.baseUrl}/chat-home/${inviteToken}`;
 
                                           // send invite mail
                                           await nodemailer(userData.email, endPoint.contactAddress, `You have been invited to collaborate in  ${isGroup.name}
-                                   kindly click on  'accept invite' below to get started`, url, "accept invite")
+                                   kindly click on  'accept invite' below to get started`, "Group Invite", url, "accept invite")
                                    });
 
                                    successResponse(res, undefined, 200, "Groups invite sent  successfully to user email")
@@ -286,7 +302,11 @@ const groupFunc = () => {
 
                      try {
 
-                            const isInvited = await groupInvite.findOne({ invitee: userId, token: inviteToken, $gte: { expires: new Date(Date.now()) } })
+                            const isInvited = await groupInvite.findOne({
+                                   invitee: userId,
+                                   inviteToken: inviteToken,
+                                   $gte: { expires: new Date(Date.now()) }
+                            })
                             if (!isInvited) { return next(new customError("Invite token expired or does not exist", 403)) }
                             else {
                                    await groupInvite.findByIdAndDelete(isInvited._id)

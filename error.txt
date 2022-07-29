@@ -278,3 +278,17 @@
  Error: Mon Jul 25 2022 23:09:29 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017
  Error: Wed Jul 27 2022 11:06:32 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017
  Error: Wed Jul 27 2022 16:47:40 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017
+ Error: Thu Jul 28 2022 16:12:34 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017
+ Error: Fri Jul 29 2022 11:29:46 GMT+0100 (West Africa Standard Time) groupInviteSchema validation failed: inviteToken: please provide an invite token
+ Error: Fri Jul 29 2022 11:58:38 GMT+0100 (West Africa Standard Time) singleInvite.findByIdAndUpdate is not a function
+ Error: Fri Jul 29 2022 12:45:15 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 12:45:15 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 12:50:23 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 12:50:23 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 12:53:02 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 12:53:02 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 12:53:30 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 12:53:30 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 13:01:21 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 13:01:21 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
+ Error: Fri Jul 29 2022 14:21:28 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017

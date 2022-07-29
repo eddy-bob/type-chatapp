@@ -5,7 +5,7 @@ const genFullName: genFullName =
        async function (id: ObjectId) {
 
               const friend = await UserMod.findById(id)
-              const fullname = `${friend.firstname} ' ' ${friend.firstname}`
+              const fullname = `${friend.firstName}  ${friend.lastName}`
               const picture = friend.photo
               return [fullname, picture]
        }

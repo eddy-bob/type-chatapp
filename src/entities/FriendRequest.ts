@@ -18,8 +18,8 @@ const FriendRequest = new Schema(
               },
 
               pendingFriendName: {
-                     type: String,
-                     required: [true, "please provide a friend name"],
+                     type: String
+                    
               },
               pendingFriendPhoto: {
 
@@ -32,11 +32,13 @@ const FriendRequest = new Schema(
 );
 FriendRequest.pre('save',
        async function (this: any, next: NextFunction) {
-              let response = await genFullName(this.friend)
+              console.log("e reach here oo")
+              console.log(this.PendingFriend)
+              let response = await genFullName(this.PendingFriend)
               this.pendingFriendName = response[0]
               this.pendingFriendPhoto = response[1]
               return next()
 
        })
 
-export default model("FriendRequest", FriendRequest);
+export default model("FriendRequestSchm", FriendRequest);

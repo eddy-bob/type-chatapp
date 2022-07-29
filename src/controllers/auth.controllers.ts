@@ -14,6 +14,7 @@ const auth = {
               next: NextFunction
        ): Promise<void> => {
               try {
+                     
                      const data = await User.create(req.body);
                      // hashpassword
                      await data.hashPassword();

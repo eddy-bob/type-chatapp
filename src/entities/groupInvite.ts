@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+import { NextFunction } from "express";
 import * as  crypto from "crypto";
 const groupInvite = new Schema(
        {
@@ -13,7 +14,7 @@ const groupInvite = new Schema(
                      required: [true, "please provide an  invitee"],
               },
               inviteToken: {
-                     type: String, required: [true, "please provide an invite token"],
+                     type: String
               },
               expires: { type: Date },
        },
@@ -27,4 +28,5 @@ groupInvite.methods.getToken = async function () {
        this.expires = new Date(Date.now() + 120 * 60 * 1000);
        return hashInviteToken;
 };
-export default model("groupInviteSchema", groupInvite);
+
+export default model("groupInvite", groupInvite);
