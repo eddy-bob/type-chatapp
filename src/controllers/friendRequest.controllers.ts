@@ -5,6 +5,7 @@ import FriendRequest from "../entities/FriendRequest";
 import User from "../entities/User";
 import Friend from "../entities/Friend";
 import { ObjectId } from "mongoose";
+import friend from "./friend.controllers";
 
 const friendRequest = {
   sendRequest: async (req: Request, res: Response, next: NextFunction) => {
@@ -18,6 +19,14 @@ const friendRequest = {
 
     const { userId } = req as customRes;
     try {
+      if (userId.toString() === id) {
+        return next(
+          new customError(
+            "You cant send requests to yourself",
+            400
+          )
+        );
+      }
       const user = await User.findById(id);
 
       const alreadySent = await FriendRequest.findOne({
@@ -67,23 +76,46 @@ const friendRequest = {
       if (!isRequest) {
         return next(
           new customError(
-            "request does not exist request does not exist or you are not authorized ",
+            "request does not exist request does not exist",
             404
           )
         );
       }
 
+      const isFriend = await Friend.findOne({
+        $or: [{
+          owner: userId,
+          friend: isRequest.PendingFriend,
+
+        }, {
+          friend: userId,
+          owner: isRequest.PendingFriend,
+        }]
+      })
+      if (isFriend) {
+        console.log("already friends jare")
+        await FriendRequest.findByIdAndDelete(isRequest._id);
+        return successResponse(
+          res,
+          isFriend,
+          200,
+          "You are already friends with this person"
+        )
+      }
       const acceptFriend = await Friend.create({
         owner: userId,
         friend: isRequest.PendingFriend,
       });
-      await acceptFriend.save();
 
+      await acceptFriend.save();
+      console.log("accept friend request ran")
       const addFriend = await Friend.create({
         friend: userId,
         owner: isRequest.PendingFriend,
       });
       await addFriend.save();
+      console.log("Add friend ran too completing the circle")
+
       await FriendRequest.findByIdAndDelete(isRequest._id);
 
       successResponse(
@@ -164,7 +196,7 @@ const friendRequest = {
     }
   },
   getRequests: async (req: Request, res: Response, next: NextFunction) => {
-    console.log("fired too");
+
     interface customRes extends Request {
       userId: ObjectId;
       userData: any;
@@ -173,7 +205,7 @@ const friendRequest = {
     const { userId } = req as customRes;
     try {
       const requests = await FriendRequest.find({ reciever: userId });
-      console.log(requests);
+
       successResponse(
         res,
         requests,
