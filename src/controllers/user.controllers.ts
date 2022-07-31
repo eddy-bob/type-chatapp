@@ -156,6 +156,7 @@ const user = {
                      const { id } = req.params;
 
                      const user = await User.findById(id);
+                     console.log(user)
                      if (user) { successResponse(res, user, 200, "User Fetched Successfully") }
                      else { return next(new customError("User not found or disabled", 404)) }
               } catch (err: any) {

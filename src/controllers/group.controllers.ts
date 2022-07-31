@@ -33,7 +33,7 @@ const groupFunc = () => {
                                                         { inviteToken, expires: new Date(Date.now()) },
                                                         { runValidators: true, new: true })
 
-                                                 const url = `${req.protocol}://${endPoint.baseUrl}/chat-home/${inviteToken}`;
+                                                 const url = `${req.protocol}://${endPoint.baseUrl}/group-chat/${inviteToken}`;
 
 
                                                  await nodemailer(mem.email, endPoint.contactAddress, `You have been invited to collaborate in  ${newGroup.name}
@@ -237,7 +237,7 @@ const groupFunc = () => {
 
                             const { userId, userRole } = req as customRes;
 
-                            const groups = await group.find({ members: { $in: [userId] } }).sort({name:1})
+                            const groups = await group.find({ members: { $in: [userId] } }).sort({ name: 1 })
                             successResponse(res, groups, 200, "Groups fetched successfully")
 
 
@@ -274,7 +274,7 @@ const groupFunc = () => {
                                                  { inviteToken, expires: new Date(Date.now()) },
                                                  { runValidators: true, new: true })
 
-                                          const url = `${req.protocol}://${endPoint.baseUrl}/chat-home/${inviteToken}`;
+                                          const url = `${req.protocol}://${endPoint.baseUrl}/group-home/${inviteToken}`;
 
                                           // send invite mail
                                           await nodemailer(userData.email, endPoint.contactAddress, `You have been invited to collaborate in  ${isGroup.name}

@@ -69,12 +69,12 @@ const privateChat = {
                             blocked: false
                      })
                      if (!isFriend) {
-                            return socket.emit("ChatError",
+                            return socket.emit("chatError",
                                    { message: "You are not friends with this person", statusCode: 403 })
                      }
                      const newMessage = await PrivateChat.create({ message: data.message, senderName: userFullName, attatchment: data.attatchment, sender: userId, reciever: data.userId })
                      if (!newMessage) { return socket.emit("chatError", { message: "could not send message", statuseCode: 500 }) }
-                     socket.emit("message", format(userFullName, data.message))
+                     socket.emit("message", format({ name: userFullName }, data.message))
                      io.to(data.socketId).emit("newMessage", format({ name: userFullName, id: socket.id }, data.message)
 
 

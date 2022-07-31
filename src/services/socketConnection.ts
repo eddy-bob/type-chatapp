@@ -53,7 +53,7 @@ const socketCon = {
                                    // send welcome message to the user that just  the group chat
 
 
-                                   socket.on("privateMessage", (data: { userId: ObjectId, message: string, attatchment: string[] }) => {
+                                   socket.on("privateMessage", (data: { socketId: string, userId: ObjectId, message: string, attatchment: string[] }) => {
                                           privateChat.addChat(socket, data, userId, io, userFullName)
 
                                    })

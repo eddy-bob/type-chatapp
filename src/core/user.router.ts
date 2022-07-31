@@ -6,7 +6,7 @@ import authorize from "../middlewares/authorize"
 
 userRouter.use(secure as any)
 userRouter.get("/users", authorize(["ADMIN"]), user.getUsers)
-userRouter.get("/user-profile/:id", authorize(["ADMIN"]), user.getUser)
+userRouter.get("/user-profile/:id", user.getUser)
 userRouter.get("/profile", user.getProfile)
 userRouter.get("/search-user", user.searchUser)
 userRouter.delete("/delete-all", authorize(["ADMIN"]), user.deleteUsers)
