@@ -61,21 +61,28 @@ const privateChat = {
        addChat: async (socket: any, data: any, userId: ObjectId, io: any, userFullName: string) => {
 
               try {
+                     const isUser = await User.findById(data.userId
+                     )
 
-
+                     if (!isUser) {
+                            return socket.emit("chatError",
+                                   { message: "User does not exist or disabled", statusCode: 404 })
+                     }
+                     console.log(data.userId, userId)
                      const isFriend = await Friend.findOne({
                             friend: userId,
                             owner: data.userId,
                             blocked: false
                      })
+                     console.log("is friend", isFriend)
                      if (!isFriend) {
                             return socket.emit("chatError",
                                    { message: "You are not friends with this person", statusCode: 403 })
                      }
                      const newMessage = await PrivateChat.create({ message: data.message, senderName: userFullName, attatchment: data.attatchment, sender: userId, reciever: data.userId })
                      if (!newMessage) { return socket.emit("chatError", { message: "could not send message", statuseCode: 500 }) }
-                     socket.emit("message", format({ name: userFullName }, data.message))
-                     io.to(data.socketId).emit("newMessage", format({ name: userFullName, id: socket.id }, data.message)
+                     socket.emit("message", format({ senderName: userFullName, sender: userId, attatchment: data.attatchment }, data.message))
+                     io.to(isUser.socket).emit("newMessage", format({ senderName: userFullName, sender: userId, id: socket.id, attatchment: data.attatchment }, data.message)
 
 
                      )

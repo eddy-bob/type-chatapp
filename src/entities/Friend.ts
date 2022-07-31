@@ -27,7 +27,8 @@ const FriendSchema = new Schema(
                      size: String,
                      url: String
               },
-              blocked: { type: Boolean, default: false }
+              blocked: { type: Boolean, default: false },
+            
 
 
        },

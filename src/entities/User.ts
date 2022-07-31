@@ -117,7 +117,7 @@ const User = new Schema({
        country: String,
        countryCode: String,
        state: String,
-
+       socket: String
 
 },
        { timestamps: true }

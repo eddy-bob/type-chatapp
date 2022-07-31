@@ -109,6 +109,7 @@ const friendRequest = {
 
       await acceptFriend.save();
       console.log("accept friend request ran")
+      
       const addFriend = await Friend.create({
         friend: userId,
         owner: isRequest.PendingFriend,

@@ -47,19 +47,23 @@ const socketCon = {
 
                                    }
 
-                                   userData = await User.findById(response.id)
+                                   userData = await User.findByIdAndUpdate(response.id,
+                                          { $set: { socket: socket.id } },
+                                          { new: true, runValidators: true })
+
                                    userId = userData._id;
                                    userFullName = userData.firstName + " " + userData.lastName
                                    // send welcome message to the user that just  the group chat
 
 
-                                   socket.on("privateMessage", (data: { socketId: string, userId: ObjectId, message: string, attatchment: string[] }) => {
+                                   socket.on("privateMessage", (data: { userId: ObjectId, message: string, attatchment: string[] }) => {
                                           privateChat.addChat(socket, data, userId, io, userFullName)
-
+                                          console.log(data)
                                    })
-                                   // send a notification to all users that a user started typing
-                                   // socket.on("typing", (data: any) => {
-                                   //        io.to(data.socketId).emit("typing",format({name:userFullName,id:socket.id},"typing....."))
+                                   // send a notification  that a user started typing
+                                   socket.on("typing", (data: any) => {
+                                          socket.to(data.recipient).emit("typing", { value: data.value })
+                                   })
 
 
                                    socket.on("joinGroup", (data: any) => {
