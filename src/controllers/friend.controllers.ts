@@ -66,7 +66,7 @@ const friend = {
               try {
 
                      const friends = await Friend.find({ owner: userId, blocked: false })
-                     console.log("friends",friends)
+                     console.log("friends", friends)
                      successResponse(res, friends, 200, "Friends fetched successfully")
               } catch (err: any) {
                      next(new customError(err.message, 500))

@@ -2,6 +2,7 @@
 import PrivateChat from "../entities/PrivateMessages"
 import Friend from "../entities/Friend"
 import { ObjectId } from "mongoose"
+const mongoose = require("mongoose")
 import { customError } from "../helpers/customError"
 import { format } from "../utils/formatMessage"
 import { NextFunction, Request, Response } from "express"
@@ -58,31 +59,39 @@ const privateChat = {
                             { message: err.message, statusCode: 500 })
               }
        },
-       addChat: async (socket: any, data: any, userId: ObjectId, io: any, userFullName: string) => {
+       addChat: async (socket: any, data: any, userId: ObjectId, io: any, userFullName: string, con: any) => {
 
               try {
-                     const isUser = await User.findById(data.userId
+
+
+
+                     const isUser = await User.findById(mongoose.Types.ObjectId(data.userId)
                      )
 
+
+                     const isFriend = await Friend.findById(mongoose.Types.ObjectId(data.friendId))
+                    
                      if (!isUser) {
                             return socket.emit("chatError",
                                    { message: "User does not exist or disabled", statusCode: 404 })
                      }
-                     console.log(data.userId, userId)
-                     const isFriend = await Friend.findOne({
-                            friend: userId,
-                            owner: data.userId,
-                            blocked: false
-                     })
-                     console.log("is friend", isFriend)
+
+
+
                      if (!isFriend) {
                             return socket.emit("chatError",
                                    { message: "You are not friends with this person", statusCode: 403 })
                      }
+                     if (isFriend && isFriend.blocked == true) {
+                            return socket.emit("chatError",
+                                   { message: "You blocked this user", statusCode: 403 })
+                     }
+
                      const newMessage = await PrivateChat.create({ message: data.message, senderName: userFullName, attatchment: data.attatchment, sender: userId, reciever: data.userId })
                      if (!newMessage) { return socket.emit("chatError", { message: "could not send message", statuseCode: 500 }) }
-                     socket.emit("message", format({ senderName: userFullName, sender: userId, attatchment: data.attatchment }, data.message))
-                     io.to(isUser.socket).emit("newMessage", format({ senderName: userFullName, sender: userId, id: socket.id, attatchment: data.attatchment }, data.message)
+                     console.log(newMessage)
+                     socket.emit("message", format({ chatId: newMessage._id, senderName: userFullName, sender: userId, attatchment: data.attatchment }, data.message))
+                     socket.to(con[[data.userId] as any]).emit("newMessage", format({ chatId: newMessage._id, senderName: userFullName, sender: userId, attatchment: data.attatchment }, data.message)
 
 
                      )

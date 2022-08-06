@@ -11,11 +11,11 @@ const FriendSchema = new Schema(
 
               owner: {
                      type: Schema.ObjectId,
-                     ref: "User",
+                     ref: "UserMod",
                      required: [true, "please provide a friend owner"],
               }, friend: {
                      type: Schema.ObjectId,
-                     ref: "User",
+                     ref: "UserMod",
                      required: [true, "please provide a friend"],
               },
               friendName: {
@@ -28,7 +28,7 @@ const FriendSchema = new Schema(
                      url: String
               },
               blocked: { type: Boolean, default: false },
-            
+
 
 
        },

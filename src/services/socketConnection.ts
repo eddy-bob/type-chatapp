@@ -8,10 +8,21 @@ import groupChat from "../controllers/groupChat.controllers"
 import Group from "../entities/Groups"
 import privateChat from "../controllers/privateChat.controllers"
 import socketAuth from "../utils/socket-auth"
+import { ObjectID } from "bson"
+
 const socketCon = {
 
        socketConnection: (io: any) => {
+
+              // const setDetails = async (response: any) => {
+              //        userData = await User.findById(response.id)
+              //        userId = userData._id as ObjectId;
+              //        userFullName = userData.firstName + " " + userData.lastName
+              //        return [userId, userFullName]
+              // }
+              var con: any = {}
               const chatBot = "chatBot";
+              const userDet: any = {};
               var userData: any;
               var userId: ObjectId;
               var userFullName: string;
@@ -19,6 +30,7 @@ const socketCon = {
               io.on("connection", async (socket: any) => {
 
                      let token = socket.handshake.headers.authorization;
+
                      socket.on('forceDisconnnect', () => {
                             socket.disconnect()
                             console.log("disconnected")
@@ -26,6 +38,7 @@ const socketCon = {
 
                      // if there is no auth header,disconnect connected socket
                      if (!token) {
+
                             socket.emit("noAuthDisconect", { statusCode: 401, message: "Unauthorized" })
                      }
 
@@ -37,61 +50,84 @@ const socketCon = {
 
                             } else {
 
-                                   console.log(" socket connected")
-                                   // rejoin all groups
-                                   const groups = await Group.find({ members: { $in: [userId] } })
-                                   if (groups[0]) {
-                                          groups.forEach((group: any) => {
-                                                 socket.join(group.name)
-                                          });
-
-                                   }
-
-                                   userData = await User.findByIdAndUpdate(response.id,
-                                          { $set: { socket: socket.id } },
-                                          { new: true, runValidators: true })
-
-                                   userId = userData._id;
+                                   userData = await User.findById(response.id)
+                                   userId = userData._id as ObjectId;
                                    userFullName = userData.firstName + " " + userData.lastName
-                                   // send welcome message to the user that just  the group chat
+
+                                   if (userId) {
+
+                                          con[userId as any] = socket.id
+                                          userDet[userId as any] = userFullName
+                                          console.log(userDet)
+                                          console.log(" socket connected")
+                                          // rejoin all groups
+                                          const groups = await Group.find({ members: { $in: [userId] } })
+                                          if (groups[0]) {
+                                                 groups.forEach((group: any) => {
+                                                        socket.join(group.name)
+                                                 });
+
+                                          }
 
 
-                                   socket.on("privateMessage", (data: { userId: ObjectId, message: string, attatchment: string[] }) => {
-                                          privateChat.addChat(socket, data, userId, io, userFullName)
-                                          console.log(data)
-                                   })
-                                   // send a notification  that a user started typing
-                                   socket.on("typing", (data: any) => {
-                                          socket.to(data.recipient).emit("typing", { value: data.value })
-                                   })
+                                          // send welcome message to the user that just  the group chat
 
 
-                                   socket.on("joinGroup", (data: any) => {
-
-                                          groupMethod.joinGroup(data, socket, userId, userData, userFullName)
-                                   })
-                                   socket.on("leaveGroup", (data: any) => {
-
-                                          groupMethod.leaveGroup(data, socket, userId, userData, userFullName)
-                                   })
-                                   // notify all the users that a user just left the chat
-
-                                   socket.on("groupMessage", (data: { groupId: ObjectId, message: string, attatchment: string[] }) => {
-                                          console.log("fired", data)
-                                          groupChat.addChat(socket, data, userId, userData, io, userFullName)
-
-                                   })
-                                   socket.on("groupForward", (data: any[]) => {
-                                          groupChat.forwardMessage(data, socket, userId, userData, userFullName, io)
-                                   })
-                                   socket.on("privateForward",
-                                          (data: any[]) => {
-                                                 privateChat.forwardMessage(data, socket, userId, userData, userFullName, io)
-                                          }),
-                                          socket.on("disconnect", () => {
-                                                 console.log("disconnected")
-                                                 io.emit("left", format(userFullName, "went offline"))
+                                          socket.on("privateMessage", async (data: { userId: ObjectId, message: string, attatchment: string[], friendId: ObjectId }) => {
+                                                 let token = socket.handshake.headers.authorization
+                                                 const response = socketAuth(token)
+                                                 // recompute the user's data
+                                                 privateChat.addChat(socket, data, response.id as ObjectId, io, userDet[[response.id] as any] as string, con)
+                                                 console.log(data)
                                           })
+                                          // send a notification  that a user started typing
+                                          socket.on("typing", (data: any) => {
+
+                                                 socket.to(con[[data.recipient] as any]).emit("typing", { value: data.value })
+                                          })
+
+
+                                          socket.on("joinGroup", (data: any) => {
+
+                                                 groupMethod.joinGroup(data, socket, userId, userData, userFullName)
+                                          })
+                                          socket.on("leaveGroup", (data: any) => {
+
+                                                 groupMethod.leaveGroup(data, socket, userId, userData, userFullName)
+                                          })
+                                          // notify all the users that a user just left the chat
+
+                                          socket.on("groupMessage", async (data: { groupId: ObjectId, message: string, attatchment: string[] }) => {
+                                                 console.log("fired", data)
+
+                                                 let token = socket.handshake.headers.authorization
+                                                 const response = socketAuth(token)
+                                                 userData = await User.findById(response.id)
+                                                 // recompute the user's data
+                                                 console.log(userDet[[response.id] as any])
+                                                 groupChat.addChat(socket, data, response.id as ObjectId, userData, io, userDet[[response.id] as any])
+
+                                          })
+                                          socket.on("groupForward", async (data: any[]) => {
+                                                 console.log("fired", data)
+
+                                                 let token = socket.handshake.headers.authorization
+                                                 const response = socketAuth(token)
+                                                 userData = await User.findById(response.id)
+                                                 groupChat.forwardMessage(data, socket, response.id as ObjectId, userData, userFullName, io)
+                                          })
+                                          socket.on("privateForward",
+                                                async (data: any[]) => {
+                                                        let token = socket.handshake.headers.authorization
+                                                        const response = socketAuth(token)
+                                                        userData = await User.findById(response.id)
+                                                        privateChat.forwardMessage(data, socket, response.id as ObjectId, userData, userDet[[response.id] as any], io)
+                                                 }),
+                                                 socket.on("disconnect", () => {
+                                                        console.log("disconnected")
+                                                        io.emit("left", format(userFullName, "went offline"))
+                                                 })
+                                   }
                             }
                      }
 

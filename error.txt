@@ -292,3 +292,92 @@
  Error: Fri Jul 29 2022 13:01:21 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
  Error: Fri Jul 29 2022 13:01:21 GMT+0100 (West Africa Standard Time) E11000 duplicate key error collection: eddy-technologies.groupinviteschemas index: inviteToken_1 dup key: { inviteToken: null }
  Error: Fri Jul 29 2022 14:21:28 GMT+0100 (West Africa Standard Time) connect ECONNREFUSED 127.0.0.1:27017
+ Error: Sun Jul 31 2022 23:02:14 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:14 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:16 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:20 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:20 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:21 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:29 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:30 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:31 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:57 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:57 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sun Jul 31 2022 23:02:58 GMT+0100 (West Africa Standard Time) Cannot read property 'toString' of undefined
+ Error: Sat Aug 06 2022 16:19:33 GMT+0100 (West Africa Standard Time) response is not defined
+ Error: Sat Aug 06 2022 16:19:34 GMT+0100 (West Africa Standard Time) response is not defined
+ Error: Sat Aug 06 2022 16:20:01 GMT+0100 (West Africa Standard Time) response is not defined
+ Error: Sat Aug 06 2022 16:20:05 GMT+0100 (West Africa Standard Time) response is not defined
+ Error: Sat Aug 06 2022 16:39:14 GMT+0100 (West Africa Standard Time) yes is not defined
+ Error: Sat Aug 06 2022 16:40:16 GMT+0100 (West Africa Standard Time) e is not defined
+ Error: Sat Aug 06 2022 16:40:16 GMT+0100 (West Africa Standard Time) e is not defined
+ Error: Sat Aug 06 2022 16:44:27 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:44:27 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:44:55 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:44:58 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:45:18 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:45:20 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:45:35 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:45:37 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:46:08 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:46:09 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:46:41 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:46:43 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:48:02 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:48:04 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:48:17 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:48:19 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:48:27 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:48:39 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:48:39 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:49:05 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:49:07 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:49:16 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:49:17 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:50:23 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:50:24 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:51:03 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:51:04 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:51:13 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:51:14 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:52:16 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:52:22 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:52:22 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:52:55 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:52:58 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:53:09 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:53:11 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:53:27 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:53:29 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:53:34 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:53:38 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:53:50 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:53:54 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:54:55 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 16:54:58 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"                                                                                                                                                                                                                                                                                                                                                                                  
+ Error: Sat Aug 06 2022 21:01:30 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:01:54 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:02:43 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:03:16 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:04:52 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:05:59 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:06:07 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:06:16 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:07:02 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:07:28 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:07:49 GMT+0100 (West Africa Standard Time) user is not defined
+ Error: Sat Aug 06 2022 21:07:57 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:08:19 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:08:28 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:08:44 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:08:56 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:09:08 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:09:32 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:09:41 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:09:57 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:10:02 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:10:48 GMT+0100 (West Africa Standard Time) userDet is not defined
+ Error: Sat Aug 06 2022 21:10:48 GMT+0100 (West Africa Standard Time) userData is not defined
+ Error: Sat Aug 06 2022 21:10:58 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
+ Error: Sat Aug 06 2022 21:10:58 GMT+0100 (West Africa Standard Time) userData is not defined
+ Error: Sat Aug 06 2022 21:16:56 GMT+0100 (West Africa Standard Time) res is not defined

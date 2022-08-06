@@ -175,12 +175,12 @@ const user = {
 
               try {
                      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                     const isEmail = re.test(String(req.query.search).toLowerCase());
+                     const isEmail = re.test(String(req.query.search));
 
                      if (!req.query.search) { return next(new customError("Search not found", 404)) }
                      if (isEmail == true) {
 
-                            const users = await User.findOne({ email: query.search });
+                            const users = await User.findOne({ email: new RegExp(`^${query.search}$`, 'i') })
                             console.log(users)
                             if (users) { successResponse(res, [users], 200, "User Fetched Successfully") }
                             else { return next(new customError("User not found or disabled", 404)) }
@@ -192,16 +192,22 @@ const user = {
                             if (nameArr.length < 2) {
 
                                    users = await User.find({
-                                          $or: [{ firstName: nameArr[0].toLowerCase() },
-                                          { lastName: nameArr[0].toLowerCase() }]
+                                          $or: [{ firstName: new RegExp(`^${nameArr[0]}$`, 'i') },
+                                          { lastName: new RegExp(`^${nameArr[0]}$`, 'i') }]
                                    });
 
                             }
                             else {
                                    console.log(true)
                                    users = await User.find({
-                                          $or: [{ firstName: nameArr[0].toLowerCase(), lastName: nameArr[1].toLowerCase() },
-                                          { lastName: nameArr[0].toLowerCase(), firstName: nameArr[1].toLowerCase() }]
+                                          $or: [{
+                                                 firstName: new RegExp(`^${nameArr[0]}$`, 'i'),
+                                                 lastName: new RegExp(`^${nameArr[1]}$`, 'i')
+                                          },
+                                          {
+                                                 lastName: new RegExp(`^${nameArr[0]}$`, 'i'),
+                                                 firstName: new RegExp(`^${nameArr[1]}$`, 'i')
+                                          }]
                                    });
                                    console.log(users)
                             }

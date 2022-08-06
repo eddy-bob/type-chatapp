@@ -5,7 +5,7 @@ import FriendRequest from "../entities/FriendRequest";
 import User from "../entities/User";
 import Friend from "../entities/Friend";
 import { ObjectId } from "mongoose";
-import friend from "./friend.controllers";
+
 
 const friendRequest = {
   sendRequest: async (req: Request, res: Response, next: NextFunction) => {
