@@ -1,19 +1,11 @@
+import { ObjectId } from "mongodb";
 const { Schema, model } = require("mongoose");
 import genFullName from "../utils/genFullName";
 import { NextFunction } from "express";
-
-
-
-
-const FriendSchema = new Schema(
+const RecentChat = new Schema(
        {
-
-
-              owner: {
-                     type: Schema.ObjectId,
-                     ref: "userMod",
-                     required: [true, "please provide a friend owner"],
-              }, friend: {
+              owner: { type: ObjectId, ref: "userMod" },
+              friend: {
                      type: Schema.ObjectId,
                      ref: "userMod",
                      required: [true, "please provide a friend"],
@@ -27,14 +19,12 @@ const FriendSchema = new Schema(
                      size: String,
                      url: String
               },
-              blocked: { type: Boolean, default: false },
-
-
 
        },
        { timestamps: true }
 );
-FriendSchema.pre('save',
+
+RecentChat.pre('save',
        async function (this: any, next: NextFunction) {
               let response = await genFullName(this.friend)
               this.friendName = response[0]
@@ -42,6 +32,4 @@ FriendSchema.pre('save',
               next()
        }
 )
-
-
-export default model("FriendSc", FriendSchema);
+export default model("RecentChat", RecentChat);
