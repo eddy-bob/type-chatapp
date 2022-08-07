@@ -10,6 +10,11 @@ const RecentChat = new Schema(
                      ref: "userMod",
                      required: [true, "please provide a friend"],
               },
+              relationship: {
+                     type: Schema.ObjectId,
+                     ref: "FriendSc",
+                     required: [true, "please provide a relationship id that shows that they are friends"],
+              },
               friendName: {
                      type: String
               },

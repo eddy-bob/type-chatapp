@@ -17,7 +17,8 @@ const recentChat = {
 
               const { userId } = req as customRes;
               try {
-                     const chats = await RecentChat.find({ owner: userId }).sort({ created_at: -1 })
+                     const chats = await RecentChat.find({ owner: userId }).sort({ createdAt: -1 })
+                     console.log(chats)
                      return successResponse(res, chats, 200, "Recent chats fetched successfully")
 
               } catch (err: any) {
@@ -35,9 +36,16 @@ const recentChat = {
 
               const { userId } = req as customRes;
               try {
+                     console.log(req.body)
+                     await RecentChat.deleteOne({ owner: userId, friend: req.body.friend })
+                     await RecentChat.deleteOne({ friend: userId, owner: req.body.friend })
 
-                     await RecentChat.deleteOne({ owner: userId, friend: req.body.friendId })
-                     const chats = await RecentChat.create({ owner: userId, friend: req.body.friendId })
+                     const chats = await RecentChat.create({ owner: userId, friend: req.body.friend, relationship: req.body.relationship })
+                     await chats.save()
+                     console.log("e reach ooooo")
+                     const reverseChats = await RecentChat.create({ owner: req.body.friend, friend: userId, relationship: req.body.relationship })
+                     await reverseChats.save()
+                     console.log(chats, "na recent be this")
                      return successResponse(res, chats, 200, "Recent chats created successfully")
 
               } catch (err: any) {
