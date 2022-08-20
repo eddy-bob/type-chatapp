@@ -70,7 +70,7 @@ const privateChat = {
 
 
                      const isFriend = await Friend.findById(mongoose.Types.ObjectId(data.friendId))
-                    
+
                      if (!isUser) {
                             return socket.emit("chatError",
                                    { message: "User does not exist or disabled", statusCode: 404 })
@@ -90,11 +90,12 @@ const privateChat = {
                      const newMessage = await PrivateChat.create({ message: data.message, senderName: userFullName, attatchment: data.attatchment, sender: userId, reciever: data.userId })
                      if (!newMessage) { return socket.emit("chatError", { message: "could not send message", statuseCode: 500 }) }
                      console.log(newMessage)
-                     socket.emit("message", format({ chatId: newMessage._id, senderName: userFullName, sender: userId, attatchment: data.attatchment }, data.message))
+                     socket.emit("message", format({ chatId: newMessage._id, senderName: userFullName, sender: userId, attatchment: data.attatchment, status: 'DELIEVERED' }, data.message))
                      socket.to(con[[data.userId] as any]).emit("newMessage", format({ chatId: newMessage._id, senderName: userFullName, sender: userId, attatchment: data.attatchment }, data.message)
 
 
                      )
+                     socket.on('read', (data: { chatId: ObjectId }) => { })
               } catch (err: any) {
                      socket.emit("ChatError",
                             { message: err.message, statusCode: 500 })
@@ -127,6 +128,23 @@ const privateChat = {
 
 
 
+       },
+       readChat: async (data: { chat: ObjectId }) => {
+
+              try {
+
+
+
+await PrivateChat.populate()
+
+
+
+              } catch (err: any) {
+                     //        socket.emit("ChatError",
+                     //               { message: err.message, statusCode: 500 })
+                     // }
+
+              }
        },
        deleteChat: async (req: Request, res: Response, next: NextFunction) => {
               interface customRes extends Request { userId: ObjectId, userData: any, userRole: string }

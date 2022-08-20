@@ -46,7 +46,8 @@ const recentChat = {
                      const reverseChats = await RecentChat.create({ owner: req.body.friend, friend: userId, relationship: req.body.relationship })
                      await reverseChats.save()
                      console.log(chats, "na recent be this")
-                     return successResponse(res, chats, 200, "Recent chats created successfully")
+                     const recentChats= await RecentChat.find({ owner: userId }).sort({ createdAt: -1 })
+                     return successResponse(res, recentChats, 200, "Recent chats created successfully")
 
               } catch (err: any) {
                      next(new customError(err.message, 500));
