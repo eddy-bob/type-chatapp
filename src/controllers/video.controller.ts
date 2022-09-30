@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-
 import { ObjectId } from "mongoose";
-import database from "../database/database";
+import Friend from "../entities/Friend";
+import User from "../entities/User";
 const mongoose = require("mongoose");
 import Video from "../entities/VideoCall";
 import { customError } from "../helpers/customError";
@@ -17,6 +17,27 @@ const video = {
     socketReference: string
   ) => {
     try {
+      const isUser = await User.findById(mongoose.Types.ObjectId(id));
+
+      const isFriend = await Friend.findOne({
+        friend: mongoose.Types.ObjectId(userId),
+        owner: mongoose.Types.ObjectId(id),
+        blocked: false,
+      });
+
+      if (!isUser) {
+        return socket.emit("private_video_call_init_fail", {
+          message: "User does not exist or disabled",
+          statusCode: 404,
+        });
+      }
+      if (!isFriend) {
+        return socket.emit("private_video_call_init_fail", {
+          message: "You are not friends with this person",
+          statusCode: 401,
+        });
+      }
+
       await Video.create({
         caller: userId,
         callerName: userFullName,
