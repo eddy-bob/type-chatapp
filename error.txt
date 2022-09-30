@@ -381,3 +381,5 @@
  Error: Sat Aug 06 2022 21:10:58 GMT+0100 (West Africa Standard Time) Cast to ObjectId failed for value "Promise { <pending> }" (type Promise) at path "members" for model "GroupSchema"
  Error: Sat Aug 06 2022 21:10:58 GMT+0100 (West Africa Standard Time) userData is not defined
  Error: Sat Aug 06 2022 21:16:56 GMT+0100 (West Africa Standard Time) res is not defined
+ Error: Thu Sep 29 2022 00:29:02 GMT+0100 (West Africa Standard Time) The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.
+ Error: Thu Sep 29 2022 00:32:42 GMT+0100 (West Africa Standard Time) The `uri` parameter to `openUri()` must be a string, got "undefined". Make sure the first parameter to `mongoose.connect()` or `mongoose.createConnection()` is a string.

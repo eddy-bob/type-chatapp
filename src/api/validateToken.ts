@@ -1,7 +1,7 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { verify, VerifyOptions } from 'jsonwebtoken';
-import endpoint from "../config/endpoints.config";
+
 
 
 

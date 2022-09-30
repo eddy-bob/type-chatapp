@@ -6,7 +6,7 @@ import User from "../entities/User"
 import { ObjectId } from "mongoose"
 
 
-// extend the request interface to make provision for non natice parameters
+// extend the request interface to make provision for non native parameters
 interface Authorize extends Request { userId: ObjectId, userRole: string, userData: any }
 interface MoreRes extends Response { id: ObjectId, role: string }
 // declare fetch details 
