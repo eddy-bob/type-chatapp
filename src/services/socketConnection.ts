@@ -57,6 +57,8 @@ const socketCon = {
 
             console.log(" socket connected");
             // rejoin all groups
+            // join private group
+            socket.join(userId);
             const groups = await Group.find({ members: { $in: [userId] } });
             if (groups[0]) {
               groups.forEach((group: any) => {
@@ -172,21 +174,25 @@ const socketCon = {
             socket.on("private_call_reject", async () => {});
             socket.on("private_call_end", async () => {});
 
-            socket.on("private_video_call_init", async (id: string) => {
-              const socketReference = con[[id] as any];
-              await video.startVideoCall(
-                socket,
-                io,
-                userId,
-                userFullName,
-                id,
-                socketReference
-              );
-            });
+            socket.on(
+              "private_video_call_init",
+              async (id: string, peerId: string) => {
+                const socketReference = con[[id] as any];
+                await video.startVideoCall(
+                  socket,
+                  io,
+                  userId,
+                  userFullName,
+                  id,
+                  socketReference,
+                  peerId
+                );
+              }
+            );
 
             socket.on(
               "private_video_call_answer",
-              async (callerId: ObjectId, callId: ObjectId) => {
+              async (callerId: ObjectId, callId: ObjectId, peerId: string) => {
                 const socketReference = con[[callerId] as any];
                 await video.updateCallStatus(
                   socket,
@@ -199,6 +205,7 @@ const socketCon = {
                     callerId,
                     socketReference,
                     callerName: userDet[[callerId] as any],
+                    peerId,
                   }
                 );
               }
@@ -206,7 +213,7 @@ const socketCon = {
 
             socket.on(
               "private_video_call_reject",
-              async (callerId: ObjectId, callId: ObjectId) => {
+              async (callerId: ObjectId, callId: ObjectId, peerId: string) => {
                 const socketReference = con[[callerId] as any];
                 await video.updateCallStatus(
                   socket,
@@ -219,13 +226,14 @@ const socketCon = {
                     callerId,
                     socketReference,
                     callerName: userDet[[callerId] as any],
+                    peerId,
                   }
                 );
               }
             );
 
             socket.on("private_video_call_end", async () => {
-              async (callerId: ObjectId, callId: ObjectId) => {
+              async (callerId: ObjectId, callId: ObjectId, peerId: string) => {
                 const socketReference = con[[callerId] as any];
                 await video.updateCallStatus(
                   socket,
@@ -238,6 +246,7 @@ const socketCon = {
                     callerId,
                     socketReference,
                     callerName: userDet[[callerId] as any],
+                    peerId,
                   }
                 );
               };

@@ -14,7 +14,8 @@ const video = {
     userId: ObjectId,
     userFullName: string,
     id: string,
-    socketReference: string
+    socketReference: string,
+    peerId: string
   ) => {
     try {
       const isUser = await User.findById(mongoose.Types.ObjectId(id));
@@ -46,11 +47,12 @@ const video = {
       io.to(socketReference).emit("private_video_call_init", {
         callerId: userId,
         name: userFullName,
+        peerId,
       });
-      socket.emit("private_video_call_inverse_init", {
-        recieverId: id,
-        name: userFullName,
-      });
+      // socket.emit("private_video_call_inverse_init", {
+      //   recieverId: id,
+      //   name: userFullName,
+      // });
     } catch (err: any) {
       socket.emit("private_video_call_init_fail", {
         message: "Unable to process call",
@@ -77,6 +79,7 @@ const video = {
   },
   updateCallStatus: async (
     socket: any,
+   
     io: any,
     userId: ObjectId,
     callId: ObjectId,
@@ -86,6 +89,7 @@ const video = {
       callerId: ObjectId;
       socketReference: string;
       callerName: string;
+      peerId: string;
     }
   ) => {
     try {
@@ -100,8 +104,9 @@ const video = {
 
       if (data.status === "ENDED" || data.status === "MISSED") {
         if (
-          calls.reciever === mongoose.Types.ObjectId(userId) ||
-          calls.caller === mongoose.Types.ObjectId(userId)
+          (calls.reciever === mongoose.Types.ObjectId(userId) ||
+            calls.caller === mongoose.Types.ObjectId(userId)) &&
+          data.status === "ENDED"
         ) {
           await calls.update(
             { status: data.status },
@@ -116,6 +121,9 @@ const video = {
               message: "Call ended successfully",
             }
           );
+          if (calls.reciever === mongoose.Types.ObjectId(userId)) {
+            socket.leave(data.callerId);
+          }
         } else {
           socket.emit("private_video_call_action_error", {
             statusCode: 403,
@@ -125,17 +133,19 @@ const video = {
       } else if (calls.reciever === mongoose.Types.ObjectId(userId)) {
         await calls.update({ status: data.status }, { validate: true });
         if (data.status === "ACCEPTED") {
-          io.to(data.socketReference).emit(
-            "private_video_call_reciever_answer",
-            {
-              recieverId: userId,
-              name: userFullName,
-            }
-          );
-          socket.emit("private_video_call_answer_success", {
+          socket.join(data.callerId);
+
+          socket.emit("private_video_call_authorize", {
             callerId: data.callerId,
             name: data.callerName,
+            peerId: data.peerId,
           });
+          // socket.broadcast
+          //   .to(data.callerId)
+          //   .emit("private_video_call_authorized", {
+          //     recieverId: userId,
+          //     name: userFullName,
+          //   });
         } else {
           socket.emit("private_video_call_reject_success", {
             callerId: data.callerId,
@@ -143,11 +153,11 @@ const video = {
             message: "Call rejected successfully",
           });
           io.to(data.socketReference).emit(
-            "private_video_call_reciever_reject",
+            "private_video_call_reciever_rejected",
             {
-              callerId: userId,
+              recieverId: userId,
               name: userFullName,
-              message: "Call rejected successfully",
+              message: "reciever rejected call",
             }
           );
         }
@@ -158,7 +168,7 @@ const video = {
         });
       }
       socket.to(data.socketReference).emit("private_video_call_missed_notify", {
-        message: `Video call ${data.status.toLowerCase()}`,
+        message: `Video call not answered`,
       });
       socket.emit("private_video_call_not_answered", {
         message: `Video call ${data.status.toLowerCase()}`,
