@@ -39,7 +39,7 @@ const video = {
         });
       }
 
-      await Video.create({
+    const callRecord=  await Video.create({
         caller: userId,
         callerName: userFullName,
         reciever: mongoose.Types.ObjectId(id),
@@ -48,6 +48,7 @@ const video = {
         callerId: userId,
         name: userFullName,
         peerId,
+        callId:callRecord._id
       });
       // socket.emit("private_video_call_inverse_init", {
       //   recieverId: id,
@@ -139,6 +140,7 @@ const video = {
             callerId: data.callerId,
             name: data.callerName,
             peerId: data.peerId,
+            callId
           });
           // socket.broadcast
           //   .to(data.callerId)

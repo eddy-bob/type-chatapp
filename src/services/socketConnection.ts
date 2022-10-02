@@ -176,36 +176,40 @@ const socketCon = {
 
             socket.on(
               "private_video_call_init",
-              async (id: string, peerId: string) => {
-                const socketReference = con[[id] as any];
+              async (data: { id: string; peerId: string }) => {
+                const socketReference = con[[data.id] as any];
                 await video.startVideoCall(
                   socket,
                   io,
                   userId,
                   userFullName,
-                  id,
+                  data.peerId,
                   socketReference,
-                  peerId
+                  data.peerId
                 );
               }
             );
 
             socket.on(
               "private_video_call_answer",
-              async (callerId: ObjectId, callId: ObjectId, peerId: string) => {
-                const socketReference = con[[callerId] as any];
+              async (data: {
+                callerId: ObjectId;
+                callId: ObjectId;
+                peerId: string;
+              }) => {
+                const socketReference = con[[data.callerId] as any];
                 await video.updateCallStatus(
                   socket,
                   io,
                   userId,
-                  callId,
+                  data.callId,
                   userFullName,
                   {
                     status: "ACCEPTED",
-                    callerId,
+                    callerId: data.callerId,
                     socketReference,
-                    callerName: userDet[[callerId] as any],
-                    peerId,
+                    callerName: userDet[[data.callerId] as any],
+                    peerId: data.peerId,
                   }
                 );
               }
@@ -213,47 +217,55 @@ const socketCon = {
 
             socket.on(
               "private_video_call_reject",
-              async (callerId: ObjectId, callId: ObjectId, peerId: string) => {
-                const socketReference = con[[callerId] as any];
+              async (data: {
+                callerId: ObjectId;
+                callId: ObjectId;
+                peerId: string;
+              }) => {
+                const socketReference = con[[data.callerId] as any];
                 await video.updateCallStatus(
                   socket,
                   io,
                   userId,
-                  callId,
+                  data.callId,
                   userFullName,
                   {
                     status: "REJECTED",
-                    callerId,
+                    callerId: data.callerId,
                     socketReference,
-                    callerName: userDet[[callerId] as any],
-                    peerId,
+                    callerName: userDet[[data.callerId] as any],
+                    peerId: data.peerId,
                   }
                 );
               }
             );
 
             socket.on("private_video_call_end", async () => {
-              async (callerId: ObjectId, callId: ObjectId, peerId: string) => {
-                const socketReference = con[[callerId] as any];
+              async (data: {
+                callerId: ObjectId;
+                callId: ObjectId;
+                peerId: string;
+              }) => {
+                const socketReference = con[[data.callerId] as any];
                 await video.updateCallStatus(
                   socket,
                   io,
                   userId,
-                  callId,
+                  data.callId,
                   userFullName,
                   {
                     status: "ENDED",
-                    callerId,
+                    callerId: data.callerId,
                     socketReference,
-                    callerName: userDet[[callerId] as any],
-                    peerId,
+                    callerName: userDet[[data.callerId] as any],
+                    peerId: data.peerId,
                   }
                 );
               };
             });
             socket.on("disconnect", () => {
               console.log("disconnected");
-              io.emit("left", format(userFullName, "went offline"));
+              io.emit("loggedOut", format(userFullName, "went offline"));
             });
           }
         }
