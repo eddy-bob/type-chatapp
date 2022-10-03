@@ -38,17 +38,21 @@ const video = {
           statusCode: 401,
         });
       }
+      console.log("it passed this place jare");
 
-    const callRecord=  await Video.create({
+      const callRecord = await Video.create({
         caller: userId,
         callerName: userFullName,
         reciever: mongoose.Types.ObjectId(id),
       });
-      io.to(socketReference).emit("private_video_call_init", {
+
+      console.log(socketReference);
+      
+      socket.to(socketReference).emit("private_video_call_init", {
         callerId: userId,
         name: userFullName,
         peerId,
-        callId:callRecord._id
+        callId: callRecord._id,
       });
       // socket.emit("private_video_call_inverse_init", {
       //   recieverId: id,
@@ -80,7 +84,7 @@ const video = {
   },
   updateCallStatus: async (
     socket: any,
-   
+
     io: any,
     userId: ObjectId,
     callId: ObjectId,
@@ -140,7 +144,7 @@ const video = {
             callerId: data.callerId,
             name: data.callerName,
             peerId: data.peerId,
-            callId
+            callId,
           });
           // socket.broadcast
           //   .to(data.callerId)

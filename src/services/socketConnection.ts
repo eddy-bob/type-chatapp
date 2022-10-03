@@ -183,6 +183,8 @@ const socketCon = {
               "private_video_call_init",
               async (data: { userId: string; peerId: string }) => {
                 const socketReference = con[[data.userId] as any];
+                console.log(socketReference);
+                console.log(userDet[[data.userId] as any]);
 
                 await video.startVideoCall(
                   socket,
