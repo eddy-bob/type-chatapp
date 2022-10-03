@@ -151,7 +151,7 @@ const privateChat = {
       }
       console.log(newMessage);
       socket.emit(
-        "message",
+        "myMessage",
         format(
           {
             chatId: newMessage._id,

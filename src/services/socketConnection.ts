@@ -271,6 +271,7 @@ const socketCon = {
             });
             socket.on("disconnect", () => {
               console.log("disconnected");
+
               io.emit("loggedOut", format(userFullName, "went offline"));
             });
           }
