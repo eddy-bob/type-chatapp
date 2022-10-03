@@ -74,7 +74,7 @@ const socketCon = {
                 userId: ObjectId;
                 message: string;
                 attatchment: string[];
-                friendId: ObjectId;
+                relationshipId: ObjectId;
               }) => {
                 let token = socket.handshake.headers.authorization;
                 const response = socketAuth(token);
