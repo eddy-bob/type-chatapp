@@ -52,8 +52,8 @@ const socketCon = {
           userFullName = userData.firstName + " " + userData.lastName;
 
           if (userId) {
-            con[userId] = socket.id;
-            console.log(con,userFullName)
+            con[userId as any] = socket.id;
+            console.log(con, userFullName);
             userDet[userId as any] = userFullName;
 
             console.log(" socket connected");
@@ -89,7 +89,10 @@ const socketCon = {
                   con
                 );
                 console.log(data);
-                console.log("recieverId==",userDet[[data.userId] as any] as string,)
+                console.log(
+                  "recieverId==",
+                  userDet[[data.userId] as any] as string
+                );
               }
             );
             // send a notification  that a user started typing
@@ -179,9 +182,8 @@ const socketCon = {
             socket.on(
               "private_video_call_init",
               async (data: { userId: string; peerId: string }) => {
-              
                 const socketReference = con[[data.userId] as any];
-                console.log(con,data.userId,con[[data.userId] as string])
+
                 await video.startVideoCall(
                   socket,
                   io,
