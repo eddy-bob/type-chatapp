@@ -162,7 +162,7 @@ const video = {
             name: data.callerName,
             message: "Call rejected successfully",
           });
-          io.to(data.socketReference).emit(
+          socket.to(data.socketReference).emit(
             "private_video_call_reciever_rejected",
             {
               recieverId:recieverId,
