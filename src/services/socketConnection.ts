@@ -205,6 +205,7 @@ const socketCon = {
                 callId: ObjectId;
                 peerId: string;
               }) => {
+                console.log("answer fired")
                 const socketReference = con[[data.callerId] as any];
                 await video.updateCallStatus(
                   socket,

@@ -47,7 +47,7 @@ const video = {
       });
 
       console.log(socketReference);
-      
+
       socket.to(socketReference).emit("private_video_call_init", {
         callerId: userId,
         name: userFullName,
@@ -100,13 +100,15 @@ const video = {
     try {
       let calls;
       calls = await Video.findById(mongoose.Types.ObjectId(callId));
+
       if (!calls) {
         socket.emit("private_video_call_action_error", {
           statusCode: 404,
           message: "Call record does not exist",
         });
       }
-
+      console.log(calls.reciever, mongoose.Types.ObjectId(userId));
+      console.log(calls.reciever.equals(mongoose.Types.ObjectId(userId)));
       if (data.status === "ENDED" || data.status === "MISSED") {
         if (
           (calls.reciever === mongoose.Types.ObjectId(userId) ||
@@ -120,12 +122,11 @@ const video = {
           socket.emit("private_video_call_end_success", {
             message: "Call ended successfully",
           });
-          io.to(data.socketReference).emit(
-            "private_video_call_end_inverse_success",
-            {
+          socket
+            .to(data.socketReference)
+            .emit("private_video_call_end_inverse_success", {
               message: "Call ended successfully",
-            }
-          );
+            });
           if (calls.reciever === mongoose.Types.ObjectId(userId)) {
             socket.leave(data.callerId);
           }
@@ -135,9 +136,11 @@ const video = {
             message: "Only a call reciever or caller can end call",
           });
         }
-      } else if (calls.reciever === mongoose.Types.ObjectId(userId)) {
+      } else if (calls.reciever.equals(mongoose.Types.ObjectId(userId))) {
+        console.log("reciver gat this");
         await calls.update({ status: data.status }, { validate: true });
         if (data.status === "ACCEPTED") {
+          console.log("accept region");
           socket.join(data.callerId);
 
           socket.emit("private_video_call_authorize", {
