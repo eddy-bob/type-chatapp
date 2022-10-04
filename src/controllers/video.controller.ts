@@ -47,7 +47,7 @@ const video = {
         reciever: mongoose.Types.ObjectId(id),
       });
 
-      console.log(socketReference);
+      console.log(callRecord);
 
       socket.to(socketReference).emit("private_video_call_init", {
         callerId: userId,
@@ -85,9 +85,8 @@ const video = {
   },
   updateCallStatus: async (
     socket: any,
-
     io: any,
-    userId: ObjectId,
+    recieverId: ObjectId,
     callId: ObjectId,
     userFullName: string,
     data: {
@@ -108,12 +107,12 @@ const video = {
           message: "Call record does not exist",
         });
       }
-      console.log(calls.reciever, mongoose.Types.ObjectId(userId));
-      console.log(calls.reciever.equals(mongoose.Types.ObjectId(userId)));
+      console.log(calls.reciever, mongoose.Types.ObjectId(recieverId));
+      console.log(calls.reciever.equals(mongoose.Types.ObjectId(recieverId)));
       if (data.status === "ENDED" || data.status === "MISSED") {
         if (
-          (calls.reciever === mongoose.Types.ObjectId(userId) ||
-            calls.caller === mongoose.Types.ObjectId(userId)) &&
+          (calls.reciever === mongoose.Types.ObjectId(recieverId) ||
+            calls.caller === mongoose.Types.ObjectId(recieverId)) &&
           data.status === "ENDED"
         ) {
           await calls.update(
@@ -128,7 +127,7 @@ const video = {
             .emit("private_video_call_end_inverse_success", {
               message: "Call ended successfully",
             });
-          if (calls.reciever === mongoose.Types.ObjectId(userId)) {
+          if (calls.reciever === mongoose.Types.ObjectId(recieverId)) {
             socket.leave(data.callerId);
           }
         } else {
@@ -137,7 +136,7 @@ const video = {
             message: "Only a call reciever or caller can end call",
           });
         }
-      } else if (calls.reciever.equals(mongoose.Types.ObjectId(userId))) {
+      } else if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
         console.log("reciver gat this");
         await calls.update({ status: data.status }, { validate: true });
         if (data.status === "ACCEPTED") {
@@ -165,7 +164,7 @@ const video = {
           io.to(data.socketReference).emit(
             "private_video_call_reciever_rejected",
             {
-              recieverId: userId,
+              recieverId:recieverId,
               name: userFullName,
               message: "reciever rejected call",
             }

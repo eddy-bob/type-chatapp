@@ -204,19 +204,16 @@ const socketCon = {
                 callerId: ObjectId;
                 callId: ObjectId;
                 peerId: string;
+                recieverId: string;
               }) => {
                 console.log("answer fired");
+                console.log(data);
                 const socketReference = con[[data.callerId] as any];
-                console.log(
-                  "i am the reciever",
-                  userDet[[userId] as any],
-                  "i am the caller:",
-                  console.log(userDet[[data.callerId] as any])
-                );
+
                 await video.updateCallStatus(
                   socket,
                   io,
-                  userId,
+                  data.recieverId as any,
                   data.callId,
                   userFullName,
                   {
@@ -236,12 +233,13 @@ const socketCon = {
                 callerId: ObjectId;
                 callId: ObjectId;
                 peerId: string;
+                recieverId: string;
               }) => {
                 const socketReference = con[[data.callerId] as any];
                 await video.updateCallStatus(
                   socket,
                   io,
-                  userId,
+                  data.recieverId as any,
                   data.callId,
                   userFullName,
                   {
@@ -260,12 +258,13 @@ const socketCon = {
                 callerId: ObjectId;
                 callId: ObjectId;
                 peerId: string;
+                recieverId: string;
               }) => {
                 const socketReference = con[[data.callerId] as any];
                 await video.updateCallStatus(
                   socket,
                   io,
-                  userId,
+                  data.recieverId as any,
                   data.callId,
                   userFullName,
                   {
