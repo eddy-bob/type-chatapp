@@ -205,8 +205,14 @@ const socketCon = {
                 callId: ObjectId;
                 peerId: string;
               }) => {
-                console.log("answer fired")
+                console.log("answer fired");
                 const socketReference = con[[data.callerId] as any];
+                console.log(
+                  "i am the reciever",
+                  userDet[[userId] as any],
+                  "i am the caller:",
+                  console.log(userDet[[data.callerId] as any])
+                );
                 await video.updateCallStatus(
                   socket,
                   io,

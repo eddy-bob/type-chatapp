@@ -19,6 +19,7 @@ const video = {
   ) => {
     try {
       const isUser = await User.findById(mongoose.Types.ObjectId(id));
+      console.log(isUser);
 
       const isFriend = await Friend.findOne({
         friend: mongoose.Types.ObjectId(userId),

@@ -102,12 +102,10 @@ const privateChat = {
     con: any
   ) => {
     try {
-      console.log(data);
       const isRelationship = await Friend.findById(
-        mongoose.Types.ObjectId(data.friendId)
+        mongoose.Types.ObjectId(data.relationshipId)
       );
-
-      console.log(isRelationship, "na friend obj be this o");
+      console.log("isRelationship:", isRelationship, data.relationshipId);
 
       const isFriend = await Friend.findOne({
         friend: mongoose.Types.ObjectId(userId),
@@ -118,7 +116,7 @@ const privateChat = {
       console.log(isFriend);
       if (!isRelationship) {
         return socket.emit("chatError", {
-          message: "You are friends with this person",
+          message: "You are not friends with this person",
           statusCode: 403,
         });
       }
