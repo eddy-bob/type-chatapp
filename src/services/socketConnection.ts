@@ -185,11 +185,12 @@ const socketCon = {
                 const socketReference = con[[data.userId] as any];
                 console.log(socketReference);
                 console.log(userDet[[data.userId] as any]);
-
+                let token = socket.handshake.headers.authorization;
+                const response = socketAuth(token);
                 await video.startVideoCall(
                   socket,
                   io,
-                  userId,
+                  response.id,
                   userFullName,
                   data.userId,
                   socketReference,

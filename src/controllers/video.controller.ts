@@ -27,6 +27,7 @@ const video = {
         blocked: false,
       });
 
+      console.log(isFriend)
       if (!isUser) {
         return socket.emit("private_video_call_init_fail", {
           message: "User does not exist or disabled",
