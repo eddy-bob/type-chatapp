@@ -102,24 +102,24 @@ const privateChat = {
     con: any
   ) => {
     try {
-      const isRelationship = await Friend.findById(
-        mongoose.Types.ObjectId(data.relationshipId)
-      );
-      console.log("isRelationship:", isRelationship, data.relationshipId);
+      // const isRelationship = await Friend.findById(
+      //   mongoose.Types.ObjectId(data.relationshipId)
+      // );
+      // console.log("isRelationship:", isRelationship, data.relationshipId);
 
       const isFriend = await Friend.findOne({
         friend: mongoose.Types.ObjectId(userId),
-        owner: mongoose.Types.ObjectId(isRelationship.friend),
+        owner: mongoose.Types.ObjectId(data.userId),
         blocked: false,
       });
 
       console.log(isFriend);
-      if (!isRelationship) {
-        return socket.emit("chatError", {
-          message: "You are not friends with this person",
-          statusCode: 403,
-        });
-      }
+      // if (!isRelationship) {
+      //   return socket.emit("chatError", {
+      //     message: "You are not friends with this person",
+      //     statusCode: 403,
+      //   });
+      // }
 
       if (!isFriend) {
         return socket.emit("chatError", {

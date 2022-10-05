@@ -27,7 +27,7 @@ const video = {
         blocked: false,
       });
 
-      console.log(isFriend)
+      console.log(isFriend);
       if (!isUser) {
         return socket.emit("private_video_call_init_fail", {
           message: "User does not exist or disabled",
@@ -120,6 +120,7 @@ const video = {
             { status: data.status },
             { new: true, validate: true }
           );
+          console.log("got to end call");
           socket.emit("private_video_call_end_success", {
             message: "Call ended successfully",
           });
@@ -162,14 +163,13 @@ const video = {
             name: data.callerName,
             message: "Call rejected successfully",
           });
-          socket.to(data.socketReference).emit(
-            "private_video_call_reciever_rejected",
-            {
-              recieverId:recieverId,
+          socket
+            .to(data.socketReference)
+            .emit("private_video_call_reciever_rejected", {
+              recieverId: recieverId,
               name: userFullName,
               message: "reciever rejected call",
-            }
-          );
+            });
         }
       } else {
         socket.emit("private_video_call_action_error", {

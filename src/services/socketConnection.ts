@@ -255,6 +255,7 @@ const socketCon = {
             );
 
             socket.on("private_video_call_end", async () => {
+              console.log("end call hit")
               async (data: {
                 callerId: ObjectId;
                 callId: ObjectId;
