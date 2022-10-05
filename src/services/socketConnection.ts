@@ -209,7 +209,10 @@ const socketCon = {
               }) => {
                 console.log("answer fired");
                 console.log(data);
+                let token = socket.handshake.headers.authorization;
+                const response = socketAuth(token);
                 const socketReference = con[[data.callerId] as any];
+                const inverseReference = con[[data.recieverId] as any];
 
                 await video.updateCallStatus(
                   socket,
@@ -217,6 +220,8 @@ const socketCon = {
                   data.recieverId as any,
                   data.callId,
                   userFullName,
+                  response.id,
+                  inverseReference,
                   {
                     status: "ACCEPTED",
                     callerId: data.callerId,
@@ -237,12 +242,17 @@ const socketCon = {
                 recieverId: string;
               }) => {
                 const socketReference = con[[data.callerId] as any];
+                const inverseReference = con[[data.recieverId] as any];
+                let token = socket.handshake.headers.authorization;
+                const response = socketAuth(token);
                 await video.updateCallStatus(
                   socket,
                   io,
                   data.recieverId as any,
                   data.callId,
                   userFullName,
+                  response.id,
+                  inverseReference,
                   {
                     status: "REJECTED",
                     callerId: data.callerId,
@@ -254,21 +264,29 @@ const socketCon = {
               }
             );
 
-            socket.on("private_video_call_end", async () => {
-              console.log("end call hit")
+            socket.on(
+              "private_video_call_end",
+
               async (data: {
                 callerId: ObjectId;
                 callId: ObjectId;
                 peerId: string;
                 recieverId: string;
               }) => {
+                console.log("end call hit");
+                let token = socket.handshake.headers.authorization;
+                const response = socketAuth(token);
+                console.log(response.id)
                 const socketReference = con[[data.callerId] as any];
+                const inverseReference = con[[data.recieverId] as any];
                 await video.updateCallStatus(
                   socket,
                   io,
                   data.recieverId as any,
                   data.callId,
                   userFullName,
+                  response.id,
+                  inverseReference,
                   {
                     status: "ENDED",
                     callerId: data.callerId,
@@ -277,8 +295,9 @@ const socketCon = {
                     peerId: data.peerId,
                   }
                 );
-              };
-            });
+              }
+            );
+
             socket.on("disconnect", () => {
               console.log("disconnected");
 

@@ -56,6 +56,7 @@ const video = {
         peerId,
         callId: callRecord._id,
       });
+
       // socket.emit("private_video_call_inverse_init", {
       //   recieverId: id,
       //   name: userFullName,
@@ -90,6 +91,8 @@ const video = {
     recieverId: ObjectId,
     callId: ObjectId,
     userFullName: string,
+    userId: any,
+    inverseReference: any,
     data: {
       status: string;
       callerId: ObjectId;
@@ -99,6 +102,7 @@ const video = {
     }
   ) => {
     try {
+      console.log("it entered here", callId);
       let calls;
       calls = await Video.findById(mongoose.Types.ObjectId(callId));
 
@@ -108,28 +112,49 @@ const video = {
           message: "Call record does not exist",
         });
       }
-      console.log(calls.reciever, mongoose.Types.ObjectId(recieverId));
-      console.log(calls.reciever.equals(mongoose.Types.ObjectId(recieverId)));
+      if (!calls && data.callerId === userId) {
+        socket.emit("private_video_call_end_success", {
+          message: "Call ended successfully",
+        });
+      }
+      console.log(calls);
       if (data.status === "ENDED" || data.status === "MISSED") {
+        console.log("endeddddddd");
+        console.log(calls.caller, userId);
         if (
-          (calls.reciever === mongoose.Types.ObjectId(recieverId) ||
-            calls.caller === mongoose.Types.ObjectId(recieverId)) &&
+          (calls.reciever.equals(mongoose.Types.ObjectId(userId)) ||
+            calls.caller.equals(mongoose.Types.ObjectId(userId))) &&
           data.status === "ENDED"
         ) {
-          await calls.update(
+          console.log("got to end call check");
+          await calls.updateOne(
             { status: data.status },
             { new: true, validate: true }
           );
           console.log("got to end call");
-          socket.emit("private_video_call_end_success", {
-            message: "Call ended successfully",
-          });
-          socket
-            .to(data.socketReference)
-            .emit("private_video_call_end_inverse_success", {
+
+          if (calls.caller.equals(mongoose.Types.ObjectId(userId))) {
+            console.log("i am the caller trying to end the call");
+            socket.emit("private_video_call_end_success", {
               message: "Call ended successfully",
             });
-          if (calls.reciever === mongoose.Types.ObjectId(recieverId)) {
+            socket
+              .to(inverseReference)
+              .emit("private_video_call_end_inverse_success", {
+                message: "Call ended successfully",
+              });
+          } else {
+            console.log("i am the reciever trying to end the call");
+            socket.emit("private_video_call_end_success", {
+              message: "Call ended successfully",
+            });
+            socket
+              .to(data.socketReference)
+              .emit("private_video_call_end_inverse_success", {
+                message: "Call ended successfully",
+              });
+          }
+          if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
             socket.leave(data.callerId);
           }
         } else {
@@ -140,7 +165,7 @@ const video = {
         }
       } else if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
         console.log("reciver gat this");
-        await calls.update({ status: data.status }, { validate: true });
+        await calls.updateOne({ status: data.status }, { validate: true });
         if (data.status === "ACCEPTED") {
           console.log("accept region");
           socket.join(data.callerId);
@@ -151,6 +176,14 @@ const video = {
             peerId: data.peerId,
             callId,
           });
+          socket
+            .to(data.socketReference)
+            .emit("private_video_call_inverse_authorize", {
+              callerId: data.callerId,
+              name: data.callerName,
+              peerId: data.peerId,
+              callId,
+            });
           // socket.broadcast
           //   .to(data.callerId)
           //   .emit("private_video_call_authorized", {
