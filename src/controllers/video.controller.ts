@@ -49,7 +49,12 @@ const video = {
       });
 
       console.log(callRecord);
-
+      socket.emit("private_video_call_inverse_init", {
+        callerId: userId,
+        name: userFullName,
+        peerId,
+        callId: callRecord._id,
+      });
       socket.to(socketReference).emit("private_video_call_init", {
         callerId: userId,
         name: userFullName,
