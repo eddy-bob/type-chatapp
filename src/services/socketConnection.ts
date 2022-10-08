@@ -182,6 +182,7 @@ const socketCon = {
             socket.on(
               "private_video_call_init",
               async (data: { userId: string; peerId: string }) => {
+                console.log("private call started");
                 const socketReference = con[[data.userId] as any];
                 console.log(socketReference);
                 console.log(userDet[[data.userId] as any]);
@@ -276,7 +277,7 @@ const socketCon = {
                 console.log("end call hit");
                 let token = socket.handshake.headers.authorization;
                 const response = socketAuth(token);
-                console.log(response.id)
+                console.log(response.id);
                 const socketReference = con[[data.callerId] as any];
                 const inverseReference = con[[data.recieverId] as any];
                 await video.updateCallStatus(
