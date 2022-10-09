@@ -22,7 +22,7 @@ database()
 
 const io = require('socket.io')(server, {
        cors: {
-              origin: "http://localhost:3000"
+              origin: ["http://localhost:3000","https://echat.vercel.app"]
        }
 
 })
@@ -30,7 +30,7 @@ const io = require('socket.io')(server, {
 socketCon.socketConnection(io)
 
 app.set('socketio', io);//here you export my socket.io to a global       
-app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200"] }))
+app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200",https://eddychatapp.herokuapp.com] }))
 
 // serve static files
 app.use(express.static(path.resolve(__dirname, "/public")))
