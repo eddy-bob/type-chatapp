@@ -32,7 +32,18 @@ app.set("socketio", io); //here you export my socket.io to a global
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "https://echat.vercel.app");
-  next()
+  // Request methods you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+  );
+
+  // Request headers you wish to allow
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-Requested-With,content-type"
+  );
+  next();
 });
 // serve static files
 app.use(express.static(path.resolve(__dirname, "/public")));
