@@ -47,5 +47,10 @@
     "socket.io-client": "^4.5.1",
     "typeorm": "^0.3.6",
     "cloudinary": "^1.26.2"
+  },
+  "engines": {
+    "node": "16.17.0",
+    "npm": "8.15.0",
+    "yarn": "1.22.19"
   }
 }
