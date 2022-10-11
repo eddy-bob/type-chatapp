@@ -38,6 +38,7 @@ app.use((req, res, next) => {
     "GET, POST, OPTIONS, PUT, PATCH, DELETE"
   );
 
+  
   // Request headers you wish to allow
   res.setHeader(
     "Access-Control-Allow-Headers",
