@@ -1,1 +1,0 @@
-{"version":3,"file":"socket-auth.js","sourceRoot":"","sources":["../../src/utils/socket-auth.ts"],"names":[],"mappings":";;AAAA,wDAAoD;AACpD,MAAM,UAAU,GAAG,CAAC,KAAa,EAAE,EAAE;IAC9B,MAAM,QAAQ,GAAG,IAAA,6BAAa,EAAC,KAAK,CAAC,CAAA;IACrC,OAAO,QAAQ,CAAA;AACtB,CAAC,CAAA;AACD,kBAAe,UAAU,CAAA"}
