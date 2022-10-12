@@ -5,12 +5,11 @@
   "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "tsc": "./node_modules/typescript/bin/tsc",
+    "tsc": "tsc",
     "start": " yarn run  build && node ./dist/index.js",
-    "postinstall": "tsc",
-    "build": "rimraf ./dist && tsc", 
-    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
     
+    "build": "rimraf ./dist && yarn tsc",
+    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
   },
   "author": "eddy madu",
   "license": "ISC",
