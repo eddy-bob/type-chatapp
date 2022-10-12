@@ -6,9 +6,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "start": " yarn run  build && node ./dist/index.js",
-    
-    "build": "rimraf ./dist && yarn tsc",
+    "start": "node ./dist/server.js",
+    "postinstall": "yarn build",
+    "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
   },
   "author": "eddy madu",
