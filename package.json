@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "./node_modules/typescript/bin/tsc",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts",
-    "postinstall": "yarn  tsc",
-    "start": "node ./dist/server.js"
+    "start": " yarn tsc node ./dist/server.js"
   },
   "author": "eddy madu",
   "license": "ISC",
