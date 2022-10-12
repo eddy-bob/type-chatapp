@@ -47,6 +47,8 @@ app.use((req, res, next) => {
   next();
 });
 
+
+
 // serve static files
 app.use(express.static(path.resolve(__dirname, "/public")));
 app.set("port", endpoints.port);
