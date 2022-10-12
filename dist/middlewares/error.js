@@ -7,7 +7,7 @@ const error = (err, req, res, next) => {
             .json({
             success: false,
             data: null,
-            Error: "sorry no two users can have matching details eg email,username,phone number,reg/matric number,  etc",
+            Error: `sorry no two users can have matching details eg email,username,phone number,  etc.Check ${err.message.split("key")[2]}`,
         });
     }
     else {
@@ -15,6 +15,7 @@ const error = (err, req, res, next) => {
             .status(err.statusCode || 500)
             .json({ success: false, data: null, Error: err.message });
     }
+    next();
 };
 exports.default = error;
 //# sourceMappingURL=error.js.map

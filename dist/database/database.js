@@ -13,30 +13,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const endpoints_config_1 = __importDefault(require("../config/endpoints.config"));
-require("reflect-metadata");
-const typeorm_1 = require("typeorm");
-// import { MongoClient, Db } from "mongodb"
+const mongoose_1 = __importDefault(require("mongoose"));
 const database = () => __awaiter(void 0, void 0, void 0, function* () {
-    const connection = yield typeorm_1.createConnection({
-        type: "mongodb",
-        "name": endpoints_config_1.default.mongoName,
-        "url": endpoints_config_1.default.mongoString,
-        "useNewUrlParser": true,
-        "ssl": true,
-        "synchronize": true,
-        "logging": false,
-        "useUnifiedTopology": true,
-        "entities": [
-            "src/entity/**/*.ts"
-        ]
-    });
-    if (connection.isInitialized == true) {
-        console.log(`Successfully connected to database: ${connection.name}`.blue);
-    }
+    // let myConnection: Connection;
+    // const hasConnection = getConnectionManager().has(endPoint.mongoName);
+    // if (hasConnection) {
+    //        myConnection = getConnectionManager().get(endPoint.mongoName);
+    //        if (!myConnection.isConnected) {
+    //               myConnection = await myConnection.connect();
+    //        }
+    // }
+    // else {
+    //        const connectionOptions: ConnectionOptions = {
+    //               type: "mongodb",
+    //               name: 'default',
+    //               url: endPoint.mongoString,
+    //               useNewUrlParser: true,
+    //               ssl: true,
+    //               synchronize: true,
+    //               logging: false,
+    //               useUnifiedTopology: true,
+    //               entities: [
+    //                      User
+    //               ]
+    //        }
+    // const connection = await createConnection(connectionOptions)
+    // if (connection.isInitialized == true) { console.log(`Successfully connected to database: ${connection.name}`.blue); }
     // const client: MongoClient = new MongoClient(endPoint.mongoString);
     // await client.connect();
     // const db: Db = client.db(endPoint.mongoName);
-    // console.log(`Successfully connected to database: ${db.databaseName}`.blue);
+    const db = mongoose_1.default.connect(endpoints_config_1.default.mongoString);
+    console.log(`Successfully connected to database: ${endpoints_config_1.default.mongoName}`.blue);
 });
 exports.default = database;
 //# sourceMappingURL=database.js.map

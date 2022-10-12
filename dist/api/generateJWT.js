@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -18,20 +22,25 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const jsonwebtoken_1 = require("jsonwebtoken");
 const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
+const endpoints_config_1 = __importDefault(require("../config/endpoints.config"));
 function generateJWT(payload) {
-    const privateKey = fs.readFileSync(path.join(__dirname, '../private.pem'));
+    const privateKey = fs.readFileSync(path.resolve(__dirname, '../../private.key'), { encoding: "utf8" });
     const signInOptions = {
         // RS256 uses a public/private key pair. The API provides the private key
         // to generate the JWT. The client gets a public key to validate the
         // signature
         algorithm: 'RS256',
-        expiresIn: '2h'
+        expiresIn: '5d'
     };
-    return jsonwebtoken_1.sign(payload, privateKey, signInOptions);
+    const signed = (0, jsonwebtoken_1.sign)(payload, { key: privateKey, passphrase: endpoints_config_1.default.passPhrase }, signInOptions);
+    return signed;
 }
 exports.default = generateJWT;
 //# sourceMappingURL=generateJWT.js.map

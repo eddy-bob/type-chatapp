@@ -1,24 +1,26 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const app_1 = __importDefault(require("./app"));
+const app_1 = require("./app");
+require("reflect-metadata");
+const fs_1 = require("fs");
 const process_1 = require("process");
-const port = app_1.default.get("port");
-// create server
+const port = app_1.app.get("port");
+const mode = app_1.app.get("enviroment");
 const server = () => {
-    // send a default welcome page when you hit the root router
-    app_1.default.get("/", (req, res, next) => {
-        res.send("........welcome to type-chat-app.You must have strck the wrong route that is why you are here........");
-    });
-    const myApp = app_1.default.listen(port, "0.0.0.0", () => { console.log(`server running on port ${port}`.blue); });
+    const myApp = app_1.server.listen(port, "0.0.0.0", () => { console.log(`server running on port ${port} in mode ${mode}`.blue); });
     process.on('unhandledRejection', function (reason) {
-        console.log((reason.name + ":", reason.message).underline.red);
-        myApp.close(() => {
-            console.log("server closed".red);
-            process_1.exit(1);
-        });
+        // write error to file
+        (0, fs_1.appendFileSync)("error.txt", `\n Error: ${new Date(Date.now())} ${reason.message}`);
+        if (reason.message === "querySrv ESERVFAIL _mongodb._tcp.nodechatapp.khmbi.mongodb.net") {
+            myApp.close(() => {
+                console.log((reason.name + ":", reason.message).underline.red);
+                console.log("server closed".red);
+                (0, process_1.exit)(1);
+            });
+        }
+        else {
+            console.log(reason.message.red);
+        }
     });
 };
 server();

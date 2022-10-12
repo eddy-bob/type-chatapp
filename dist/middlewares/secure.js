@@ -8,26 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const customError_1 = require("../helpers/customError");
 const validateToken_1 = require("../api/validateToken");
-const User_1 = require("../entities/User");
-const typeorm_1 = require("typeorm");
-// instantiate repository
-const repository = typeorm_1.getMongoRepository(User_1.User);
-let userDetails;
+const User_1 = __importDefault(require("../entities/User"));
 // declare fetch details 
-const getUserDetails = (id, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        userDetails = yield repository.findOne({ where: { id: id } });
-        console.log(userDetails);
-    }
-    catch (err) {
-        return next(new customError_1.customError());
-    }
-});
 // declare middleware
-const secure = (req, res, next) => {
+const secure = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     // make sure req.headers.authorization doesnt come undefined
     if (typeof req.headers.authorization === "undefined") {
         req.headers.authorization = "";
@@ -40,14 +30,14 @@ const secure = (req, res, next) => {
             return next(new customError_1.customError("You are not authorized to access this route", 401));
         }
         const token = req.headers.authorization.split(" ")[1];
-        const response = validateToken_1.validateToken(token);
+        const response = (0, validateToken_1.validateToken)(token);
         if (response.id) {
             // fetch user details from database
-            getUserDetails(response.id, next),
-                // store user id in the userId variable
-                req.userId = response.id;
+            const userDetails = yield User_1.default.findById(response.id);
+            req.userId = response.id;
             // store user role in the userRole variable
             req.userRole = userDetails.role;
+            req.userData = userDetails;
             next();
         }
         else {
@@ -59,6 +49,6 @@ const secure = (req, res, next) => {
             }
         }
     }
-};
+});
 exports.default = secure;
 //# sourceMappingURL=secure.js.map

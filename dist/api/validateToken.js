@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -28,8 +32,8 @@ const validateToken = (token) => {
         algorithms: ['RS256'],
     };
     // fetch public key
-    const publicKey = fs.readFileSync(path.join(__dirname, '../public.pem'));
-    const response = jsonwebtoken_1.verify(token, publicKey, verifyOptions);
+    const publicKey = fs.readFileSync(path.resolve(__dirname, '../../public.key'), { encoding: "utf8" });
+    const response = (0, jsonwebtoken_1.verify)(token, publicKey, verifyOptions);
     return response;
 };
 exports.validateToken = validateToken;
