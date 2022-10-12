@@ -46,6 +46,7 @@ app.use((req, res, next) => {
   console.log("headers middle ware ran");
   next();
 });
+
 // serve static files
 app.use(express.static(path.resolve(__dirname, "/public")));
 app.set("port", endpoints.port);
