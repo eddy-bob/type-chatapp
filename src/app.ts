@@ -74,4 +74,3 @@ app.use("*", (req, res, next) => {
 app.use(error);
 
 export { app, server };
-// "build": "tsc && node ./dist/server.js"
