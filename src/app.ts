@@ -33,7 +33,7 @@ socketCon.socketConnection(io);
 
 app.set("socketio", io); //here you export my socket.io to a global
 app.use(
-  cors({ origin: ["http://localhost:3000", "https://echat.vercel.app","https://eddychat.netlify.ap"] })
+  cors({ origin: ["http://localhost:3000", "https://echat.vercel.app","https://eddychat.netlify.app"] })
 );
 
 // app.use((req, res, next) => {
