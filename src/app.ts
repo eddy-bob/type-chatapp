@@ -23,8 +23,9 @@ const io = require("socket.io")(server, {
   cors: {
     origin: [
       "http://localhost:3000",
-      "https://echat.vercel.app",
       "https://eddychat.netlify.app",
+      "https://echat.vercel.app"
+     
     ],
   },
 });
