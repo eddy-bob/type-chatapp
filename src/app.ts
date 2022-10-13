@@ -21,7 +21,11 @@ database();
 
 const io = require("socket.io")(server, {
   cors: {
-    origin: ["http://localhost:3000", "https://echat.vercel.app"],
+    origin: [
+      "http://localhost:3000",
+      "https://echat.vercel.app",
+      "https://eddychat.netlify.app",
+    ],
   },
 });
 // pass socket to custom
