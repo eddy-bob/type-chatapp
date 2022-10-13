@@ -31,7 +31,12 @@ app.set("socketio", io); //here you export my socket.io to a global
 // app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200","https://echat.vercel.app"] }))
 
 app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "https://echat.vercel.app");
+  const origin = req.headers.origin;
+  const allowedOrigins = ["https://echat.vercel.app", "http://localhost:3000"];
+  if (allowedOrigins.includes(origin as string)) {
+    res.setHeader("Access-Control-Allow-Origin", origin as string);
+  }
+
   // Request methods you wish to allow
   res.setHeader(
     "Access-Control-Allow-Methods",
@@ -46,8 +51,6 @@ app.use((req, res, next) => {
   console.log("headers middle ware ran");
   next();
 });
-
-
 
 // serve static files
 app.use(express.static(path.resolve(__dirname, "/public")));
