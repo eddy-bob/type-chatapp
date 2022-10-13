@@ -28,29 +28,35 @@ const io = require("socket.io")(server, {
 socketCon.socketConnection(io);
 
 app.set("socketio", io); //here you export my socket.io to a global
-// app.use(cors({ origin: ["http://localhost:3000", "http://localhost:8080", "http://localhost:4200","https://echat.vercel.app"] }))
+app.use(
+  cors({ origin: ["http://localhost:3000", "https://echat.vercel.app"] })
+);
 
-app.use((req, res, next) => {
-  const origin = req.headers.origin;
-  const allowedOrigins = ["https://echat.vercel.app", "http://localhost:3000"];
-  if (allowedOrigins.includes(origin as string)) {
-    res.setHeader("Access-Control-Allow-Origin", origin as string);
-  }
+// app.use((req, res, next) => {
+//   const origin = req.headers.origin;
+//   console.log(origin);
+//   const allowedOrigins = ["https://echat.vercel.app", "http://localhost:3000"];
+//   if (allowedOrigins.includes(origin as string)) {
+//     console.log("yeo origin allowed");
+//     res.setHeader("Access-Control-Allow-Origin", origin as string);
 
-  // Request methods you wish to allow
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
+//     // // Request methods you wish to allow
+//     // res.setHeader(
+//     //   "Access-Control-Allow-Methods",
+//     //   "GET, POST, OPTIONS, PUT, PATCH, DELETE"
+//     // );
 
-  // Request headers you wish to allow
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  console.log("headers middle ware ran");
-  next();
-});
+//     // // Request headers you wish to allow
+//     res.setHeader(
+//       "Access-Control-Allow-Headers",
+//       "X-Requested-With,Content-Type,Authorization,Origin, X-Auth-Token'"
+//     );
+//     // // Request headers you wish to allow
+//     res.setHeader("Access-Control-Max-Age", "86400");
+//   }
+//   console.log("headers middle ware ran");
+//   next();
+// });
 
 // serve static files
 app.use(express.static(path.resolve(__dirname, "/public")));

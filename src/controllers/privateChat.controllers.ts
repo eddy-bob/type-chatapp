@@ -179,21 +179,29 @@ const privateChat = {
     }
   },
   getChats: async (req: Request, res: Response, next: NextFunction) => {
+    console.log("get chat ooo")
     interface customRes extends Request {
       userId: ObjectId;
       userData: any;
       userRole: string;
     }
-    const { friendId } = req.params;
+    const { friendId } = req.query;
 
+   
     const { userId, userRole } = req as customRes;
     try {
+      console.log(friendId)
+      if(!friendId){
+        return  successResponse(res,undefined, 200, "Chats fetched succesfully");
+      }
       // const isFriend = await Friend.findOne({
       //        owner: friendId,
       //        friend: userId,
       //        blocked: false
       // })
       // console.log(isFriend)
+      
+      
       // if (!isFriend && userRole !== "ADMIN") { return next(new customError("you are not friends with this person", 403)) }
       const chats = await PrivateChat.find({
         $or: [
@@ -202,6 +210,8 @@ const privateChat = {
         ],
         hideFrom: { $ne: userId },
       });
+     
+
       successResponse(res, chats, 200, "Chats fetched succesfully");
     } catch (err: any) {
       next(new customError(err.message, 500));
