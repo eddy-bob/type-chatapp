@@ -28,8 +28,11 @@ database();
 //     ],
 //   },
 // });
-const io = require("socket.io")(server);
-io.set("origins", "*:*");
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
 console.log(io);
 // pass socket to custom
 socketCon.socketConnection(io);
