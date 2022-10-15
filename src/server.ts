@@ -9,7 +9,7 @@ const port = app.get("port");
 const mode = app.get("enviroment");
 
 const server = (): void => {
-  const myApp = appServer.listen(port,"0.0.0.0", () => {
+  const myApp = appServer.listen(port || 5000, "0.0.0.0", () => {
     console.log(`server running on port ${port} in mode ${mode}`.blue);
   });
 
