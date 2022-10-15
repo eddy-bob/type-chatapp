@@ -28,7 +28,7 @@ const io = require("socket.io")(server, {
     ],
   },
 });
-console.log(io);
+
 // pass socket to custom
 socketCon.socketConnection(io);
 
