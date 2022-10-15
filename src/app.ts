@@ -24,17 +24,23 @@ const io = require("socket.io")(server, {
     origin: [
       "http://localhost:3000",
       "https://eddychat.netlify.app",
-      "https://echat.vercel.app"
-     
+      "https://echat.vercel.app",
     ],
   },
 });
+console.log(io);
 // pass socket to custom
 socketCon.socketConnection(io);
 
 app.set("socketio", io); //here you export my socket.io to a global
 app.use(
-  cors({ origin: ["http://localhost:3000", "https://echat.vercel.app","https://eddychat.netlify.app"] })
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://echat.vercel.app",
+      "https://eddychat.netlify.app",
+    ],
+  })
 );
 
 // app.use((req, res, next) => {
