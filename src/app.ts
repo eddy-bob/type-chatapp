@@ -19,18 +19,13 @@ var server = http.createServer(app);
 // instantiate database
 database();
 
-// const io = require("socket.io")(server, {
-//   cors: {
-//     origin: [
-//       "http://localhost:3000",
-//       "https://eddychat.netlify.app",
-//       "https://echat.vercel.app",
-//     ],
-//   },
-// });
 const io = require("socket.io")(server, {
   cors: {
-    origin: "*",
+    origin: [
+      "http://localhost:3000",
+      "https://eddychat.netlify.app",
+      "https://echat.vercel.app",
+    ],
   },
 });
 console.log(io);
