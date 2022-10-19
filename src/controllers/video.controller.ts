@@ -121,11 +121,11 @@ const video = {
           message: "Call record does not exist",
         });
       }
-      if (!calls && data.callerId === userId) {
-        return socket.emit("private_video_call_end_success", {
-          message: "Call ended successfully",
-        });
-      }
+      // if (!calls && data.callerId === userId) {
+      //   return socket.emit("private_video_call_end_success", {
+      //     message: "Call ended successfully",
+      //   });
+      // }
       console.log(calls);
       if (data.status === "ENDED" || data.status === "MISSED") {
         console.log("endeddddddd");
