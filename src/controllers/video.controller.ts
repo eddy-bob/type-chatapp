@@ -116,13 +116,13 @@ const video = {
       calls = await Video.findById(mongoose.Types.ObjectId(callId));
 
       if (!calls) {
-        socket.emit("private_video_call_action_error", {
+        return socket.emit("private_video_call_action_error", {
           statusCode: 404,
           message: "Call record does not exist",
         });
       }
       if (!calls && data.callerId === userId) {
-        socket.emit("private_video_call_end_success", {
+        return socket.emit("private_video_call_end_success", {
           message: "Call ended successfully",
         });
       }
@@ -144,32 +144,32 @@ const video = {
             console.log("got to end call");
 
             if (calls.caller.equals(mongoose.Types.ObjectId(userId))) {
-            }
-            console.log("i am the caller trying to end the call");
-            socket.emit("private_video_call_end_success", {
-              message: "Call ended successfully",
-            });
+              console.log("i am the caller trying to end the call");
+              socket.emit("private_video_call_end_success", {
+                message: "Call ended successfully",
+              });
 
-            socket
-              .to(inverseReference)
-              .emit("private_video_call_end_inverse_success", {
+              socket
+                .to(inverseReference)
+                .emit("private_video_call_end_inverse_success", {
+                  message: "Call ended successfully",
+                });
+            } else {
+              console.log("i am the reciever trying to end the call");
+              if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
+                socket.leave(data.callerId);
+              }
+              socket.emit("private_video_call_end_success", {
                 message: "Call ended successfully",
               });
+              return socket
+                .to(data.socketReference)
+                .emit("private_video_call_end_inverse_success", {
+                  message: "Call ended successfully",
+                });
+            }
           } else {
-            console.log("i am the reciever trying to end the call");
-            socket.emit("private_video_call_end_success", {
-              message: "Call ended successfully",
-            });
-            socket
-              .to(data.socketReference)
-              .emit("private_video_call_end_inverse_success", {
-                message: "Call ended successfully",
-              });
-          }
-          if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
-            socket.leave(data.callerId);
-          } else {
-            socket.emit("private_video_call_action_error", {
+            return socket.emit("private_video_call_action_error", {
               statusCode: 403,
               message: "Only a call reciever or caller can end call",
             });
@@ -180,12 +180,16 @@ const video = {
             .emit("private_video_call_missed_notify", {
               message: `Video call not answered`,
             });
-          socket.emit("private_video_call_not_answered", {
+          return socket.emit("private_video_call_not_answered", {
             message: `Video call ${data.status.toLowerCase()}`,
           });
         }
       }
-      if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
+
+      if (
+        calls.reciever.equals(mongoose.Types.ObjectId(recieverId)) &&
+        (data.status === "ACCEPTED" || data.status === "REJECTED")
+      ) {
         console.log("reciver gat this");
         await calls.updateOne({ status: data.status }, { validate: true });
         if (data.status === "ACCEPTED") {
@@ -198,7 +202,7 @@ const video = {
             peerId: data.peerId,
             callId,
           });
-          socket
+          return socket
             .to(data.socketReference)
             .emit("private_video_call_inverse_authorize", {
               callerId: data.callerId,
@@ -218,7 +222,7 @@ const video = {
             name: data.callerName,
             message: "Call rejected successfully",
           });
-          socket
+          return socket
             .to(data.socketReference)
             .emit("private_video_call_reciever_rejected", {
               recieverId: recieverId,
