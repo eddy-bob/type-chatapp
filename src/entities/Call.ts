@@ -1,13 +1,17 @@
 const { Schema, model } = require("mongoose");
 // define enum
-enum CallEnum {
+ export enum CallEnum {
   INITIALIZED = "INITIALIZED",
   REJECTED = "REJECTED",
   ENDED = "ENDED",
   ACCEPTED = "ACCEPTED",
   MISSED = "MISSED",
 }
-const PrivateVideoCall = new Schema(
+export enum Type {
+  VIDEO = "VIDEO",
+  VOICE = "VOICE",
+}
+const PrivateCall = new Schema(
   {
     caller: {
       type: Schema.ObjectId,
@@ -26,8 +30,9 @@ const PrivateVideoCall = new Schema(
 
     hideFrom: { type: Schema.ObjectId, ref: "User" },
     status: { type: String, enum: CallEnum, default: CallEnum.INITIALIZED },
+    type: { type: String, enum: Type, required: true },
   },
   { timestamps: true }
 );
 
-export default model("PrivateVideoCall", PrivateVideoCall);
+export default model("Call", PrivateCall);

@@ -298,6 +298,39 @@ const socketCon = {
                 );
               }
             );
+            socket.on(
+              "private_video_call_missed",
+
+              async (data: {
+                callerId: ObjectId;
+                callId: ObjectId;
+                peerId: string;
+                recieverId: string;
+              }) => {
+                console.log("missed call hit");
+                let token = socket.handshake.headers.authorization;
+                const response = socketAuth(token);
+                console.log(response.id);
+                const socketReference = con[[data.callerId] as any];
+                const inverseReference = con[[data.recieverId] as any];
+                await video.updateCallStatus(
+                  socket,
+                  io,
+                  data.recieverId as any,
+                  data.callId,
+                  userFullName,
+                  response.id,
+                  inverseReference,
+                  {
+                    status: "MISSED",
+                    callerId: data.callerId,
+                    socketReference,
+                    callerName: userDet[[data.callerId] as any],
+                    peerId: data.peerId,
+                  }
+                );
+              }
+            );
 
             socket.on("disconnect", () => {
               console.log("disconnected");

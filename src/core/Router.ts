@@ -7,7 +7,7 @@ import friendRouter from "./friend.router";
 import userRouter from "./user.router";
 import friendRequestRouter from "./friendRequest.router";
 import recentPrivateChatRouter from "./recentChats.router";
-import videoRouter from "./video.router";
+import callRouter from "./call.router";
 
 const useRouter = Router();
 useRouter.use("/user/auth", authRouter);
@@ -16,7 +16,7 @@ useRouter.use("/group/chat", groupChatRouter);
 useRouter.use("/user/private-chat", privateChatRouter);
 useRouter.use("/user/friend", friendRouter);
 useRouter.use("/user", userRouter);
-useRouter.use("/videoCall", videoRouter);
+useRouter.use("/Calls", callRouter);
 useRouter.use("/user/friend/request", friendRequestRouter);
 useRouter.use("/user/recent-private-chat", recentPrivateChatRouter);
 

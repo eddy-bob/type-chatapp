@@ -3,7 +3,8 @@ import { ObjectId } from "mongoose";
 import Friend from "../entities/Friend";
 import User from "../entities/User";
 const mongoose = require("mongoose");
-import Video from "../entities/VideoCall";
+import Video from "../entities/Call";
+import { Type } from "../entities/Call";
 import { customError } from "../helpers/customError";
 import successResponse from "../helpers/success.response";
 
@@ -34,6 +35,7 @@ const video = {
           statusCode: 404,
         });
       }
+
       if (!isFriend) {
         return socket.emit("private_video_call_init_fail", {
           message: "You are not friends with this person",
@@ -46,6 +48,7 @@ const video = {
         caller: userId,
         callerName: userFullName,
         reciever: mongoose.Types.ObjectId(id),
+        type: Type.VIDEO,
       });
 
       console.log(callRecord);
@@ -72,24 +75,25 @@ const video = {
       });
     }
   },
-  getVideoCalls: async (req: Request, res: Response, next: NextFunction) => {
-    interface customRes extends Request {
-      userId: ObjectId;
-      userData: any;
-    }
+  // getVideoCalls: async (req: Request, res: Response, next: NextFunction) => {
+  //   interface customRes extends Request {
+  //     userId: ObjectId;
+  //     userData: any;
+  //   }
 
-    const { userId } = req as customRes;
+  //   const { userId } = req as customRes;
 
-    try {
-      const calls = await Video.find({
-        $or: [{ caller: userId }, { reciever: userId }],
-      });
+  //   try {
+  //     const calls = await Video.find({
+  //       $or: [{ caller: userId }, { reciever: userId }],
+  //     });
 
-      successResponse(res, calls, 200, "Video calls fetched  successfully");
-    } catch (err: any) {
-      next(new customError(err.message, err.statusCode || 500));
-    }
-  },
+  //     successResponse(res, calls, 200, "Video calls fetched  successfully");
+  //   } catch (err: any) {
+  //     next(new customError(err.message, err.statusCode || 500));
+  //   }
+  // },
+
   updateCallStatus: async (
     socket: any,
     io: any,
@@ -126,23 +130,26 @@ const video = {
       if (data.status === "ENDED" || data.status === "MISSED") {
         console.log("endeddddddd");
         console.log(calls.caller, userId);
-        if (
-          (calls.reciever.equals(mongoose.Types.ObjectId(userId)) ||
-            calls.caller.equals(mongoose.Types.ObjectId(userId))) &&
-          data.status === "ENDED"
-        ) {
-          console.log("got to end call check");
-          await calls.updateOne(
-            { status: data.status },
-            { new: true, validate: true }
-          );
-          console.log("got to end call");
 
-          if (calls.caller.equals(mongoose.Types.ObjectId(userId))) {
+        if (data.status === "ENDED") {
+          if (
+            calls.reciever.equals(mongoose.Types.ObjectId(userId)) ||
+            calls.caller.equals(mongoose.Types.ObjectId(userId))
+          ) {
+            console.log("got to end call check");
+            await calls.updateOne(
+              { status: data.status },
+              { new: true, validate: true }
+            );
+            console.log("got to end call");
+
+            if (calls.caller.equals(mongoose.Types.ObjectId(userId))) {
+            }
             console.log("i am the caller trying to end the call");
             socket.emit("private_video_call_end_success", {
               message: "Call ended successfully",
             });
+
             socket
               .to(inverseReference)
               .emit("private_video_call_end_inverse_success", {
@@ -161,14 +168,24 @@ const video = {
           }
           if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
             socket.leave(data.callerId);
+          } else {
+            socket.emit("private_video_call_action_error", {
+              statusCode: 403,
+              message: "Only a call reciever or caller can end call",
+            });
           }
         } else {
-          socket.emit("private_video_call_action_error", {
-            statusCode: 403,
-            message: "Only a call reciever or caller can end call",
+          socket
+            .to(data.socketReference)
+            .emit("private_video_call_missed_notify", {
+              message: `Video call not answered`,
+            });
+          socket.emit("private_video_call_not_answered", {
+            message: `Video call ${data.status.toLowerCase()}`,
           });
         }
-      } else if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
+      }
+      if (calls.reciever.equals(mongoose.Types.ObjectId(recieverId))) {
         console.log("reciver gat this");
         await calls.updateOne({ status: data.status }, { validate: true });
         if (data.status === "ACCEPTED") {
@@ -215,12 +232,6 @@ const video = {
           message: "Only a call reciever can reject or accept a call",
         });
       }
-      socket.to(data.socketReference).emit("private_video_call_missed_notify", {
-        message: `Video call not answered`,
-      });
-      socket.emit("private_video_call_not_answered", {
-        message: `Video call ${data.status.toLowerCase()}`,
-      });
     } catch (err: any) {
       socket.emit("private_video_call_action_error", {
         statusCode: err.statusCode || 500,
