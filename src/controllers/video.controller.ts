@@ -122,9 +122,14 @@ const video = {
         });
       }
       // if (!calls && data.callerId === userId) {
-      //   return socket.emit("private_video_call_end_success", {
+      //    socket.emit("private_video_call_end_success", {
       //     message: "Call ended successfully",
       //   });
+      //   return socket
+      //     .to(data.socketReference)
+      //     .emit("private_video_call_end_inverse_success", {
+      //       message: "Call ended successfully",
+      //     });
       // }
       console.log(calls);
       if (data.status === "ENDED" || data.status === "MISSED") {
