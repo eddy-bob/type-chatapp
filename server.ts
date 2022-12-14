@@ -1,4 +1,4 @@
-import { app, server as appServer } from "./app";
+import { app, server as appServer } from "./index";
 import "reflect-metadata";
 import { appendFileSync } from "fs";
 
