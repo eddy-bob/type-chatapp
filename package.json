@@ -2,11 +2,11 @@
   "name": "vide-chat-app",
   "version": "1.0.0",
   "description": "a video chat app made with type script",
-  "main": "dist/server.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "start": "node ./dist/server.js",
+    "start": "node ./dist/index.js",
     "deploy": "vercel deploy --prod",
     "postinstall": "yarn build",
     "build": "tsc",
