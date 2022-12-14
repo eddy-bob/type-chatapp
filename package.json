@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
     "start": "node ./dist/server.js",
+    "deploy": "vercel deploy --prod",
     "postinstall": "yarn build",
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
@@ -15,8 +16,6 @@
   "license": "ISC",
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
-    "@types/node": "^17.0.35",
-    "@types/nodemailer": "^6.4.4",
     "@types/body-parser": "^1.19.2",
     "@types/compression": "^1.7.2",
     "@types/cors": "^2.8.12",
@@ -24,6 +23,8 @@
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/mongoose": "^5.11.97",
+    "@types/node": "^17.0.35",
+    "@types/nodemailer": "^6.4.4",
     "cors": "^2.8.5",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.6.4"
@@ -32,23 +33,23 @@
     "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
     "class-validator": "^0.13.2",
+    "cloudinary": "^1.26.2",
     "colors": "^1.4.0",
     "compression": "^1.7.4",
     "crypto-js": "^4.1.1",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "helmet": "^5.1.0",
+    "install": "^0.13.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.3",
     "mongodb": "^4.6.0",
+    "mongoose": "^6.3.4",
     "node-geocoder": "^4.0.0",
     "nodemailer": "^6.7.5",
     "reflect-metadata": "^0.1.13",
     "socket.io": "^4.5.1",
     "socket.io-client": "^4.5.1",
-    "typeorm": "^0.3.6",
-    "mongoose": "^6.3.4",
-    "cloudinary": "^1.26.2"
+    "typeorm": "^0.3.6"
   }
- 
 }
