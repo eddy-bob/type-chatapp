@@ -1,5 +1,6 @@
 import { geocoder } from '../services/goecoder';
 import * as bcrypt from 'bcrypt';
+
 import generateJWT from "../api/generateJWT"
 import endPoint from "../config/endpoints.config"
 import * as crypto from "crypto";
