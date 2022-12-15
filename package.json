@@ -2,15 +2,15 @@
   "name": "vide-chat-app",
   "version": "1.0.0",
   "description": "a video chat app made with type script",
-  "main": "dist/index.js",
+  "main": "dist/api/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "tsc": "tsc",
-    "start": "node ./dist/index.js",
+    "start": "vercel dev",
     "deploy": "vercel deploy --prod",
     "postinstall": "yarn build",
     "build": "tsc",
-    "dev": "ts-node-dev --respawn --transpile-only ./src/server.ts"
+    "dev": "ts-node-dev --respawn --transpile-only ./src/api/index.ts"
   },
   "author": "eddy madu",
   "license": "ISC",
